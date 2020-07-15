@@ -56,10 +56,15 @@ vboxmanage storagectl webos-image --add ide --name webos-image
 # vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-master-**.wic.vmdk>
 vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium "C:\Users\Jikjoo\Downloads\webos-image-qemux86-master-20200528044350.wic.vmdk\webos-image-qemux86-master-20200528044350.wic.vmdk"
 ```
-- 실행 `vboxmanage startvm webos-image`
-- webos-image 설정 -> USB -> USB 3.0 추가 (안되면 VirtualBox Extension pack 설치) -> 모든 리스트 추가
+- 실행 
+```
+vboxmanage startvm webos-image
+```
+- webos-image 설정 -> USB -> USB 3.0 추가 (안되면 VirtualBox Extension pack 설치) -> ~모든 리스트 추가~
 - SSH 연결
-`ssh -p 6622 -o StrictHostKeyChecking=no -o UserKnownHostsFile=null root@localhost`
+```
+ssh -p 6622 -o StrictHostKeyChecking=no -o UserKnownHostsFile=null root@localhost
+```
 
 
 # ~webOS 장비 설정~
