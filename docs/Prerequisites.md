@@ -46,12 +46,16 @@ vboxmanage modifyvm webos-image --memory 2048 --vram 128 --ioapic on --cpus 2
 vboxmanage modifyvm webos-image --graphicscontroller vmsvga
 vboxmanage modifyvm webos-image --accelerate3d on
 vboxmanage modifyvm webos-image --audio pulse --audioout on --audioin on
+boxmanage modifyvm webos-image --audio dsound --audioout on --audioin on
 vboxmanage modifyvm webos-image --nic1 nat --nictype1 82540EM --natpf1 ssh,tcp,,6622,,22
 vboxmanage modifyvm webos-image --natpf1 web-inspector,tcp,,9998,,9998
 vboxmanage modifyvm webos-image --mouse usbtablet
 vboxmanage modifyvm webos-image --uart1 0x3f8 4 --uartmode1 file null
 vboxmanage modifyvm webos-image --audio dsound --audioout on --audioin on
 vboxmanage storagectl webos-image --add ide --name webos-image
+
+# 모니터가 1920*1080보다 작을 때
+# vboxmanage setextradata webos-image GUI/ScaleFactor 0.7
 
 # vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-master-**.wic.vmdk>
 vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium "C:\Users\Jikjoo\Downloads\webos-image-qemux86-master-20200528044350.wic.vmdk\webos-image-qemux86-master-20200528044350.wic.vmdk"
