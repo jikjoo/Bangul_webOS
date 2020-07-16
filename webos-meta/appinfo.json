@@ -1,0 +1,12 @@
+{
+  "id": "com.bangul.app.webos",
+  "version": "1.0.0",
+  "vendor": "LGE-SVL",
+  "type": "web",
+  "main": "index.html",
+  "title": "방울이가 타고있어요",
+  "icon": "icon.png",
+  "miniicon": "icon-mini.png",
+  "largeIcon": "icon-large.png",
+  "uiRevision": 2
+}
