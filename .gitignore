@@ -113,7 +113,9 @@ coverage
 # production
 build
 dist
+*.ipk
 
 # misc
 .DS_Store
 npm-debug.log
+

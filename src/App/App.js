@@ -1,27 +1,30 @@
-import kind from '@enact/core/kind';
+//import kind from '@enact/core/kind';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
-import Panels from '@enact/moonstone/Panels';
+import { Panels } from '@enact/moonstone/Panels';
+import PropTypes from 'prop-types';
 import React from 'react';
-
-import MainPanel from '../views/MainPanel';
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+} from "react-router-dom";
+import MainView from '../views/MainView';
+import HomeView from '../views/HomeView';
+import KennelView from '../views/KennelView';
 
 import css from './App.module.less';
 
-const App = kind({
-	name: 'App',
+//const RoutablePanels = Routable({ navigate: 'onBack' }, Panels);
 
-	styles: {
-		css,
-		className: 'app'
-	},
-
-	render: (props) => (
-		<div {...props}>
-			<Panels>
-				<MainPanel />
-			</Panels>
-		</div>
-	)
-});
-
-export default MoonstoneDecorator(App);
+const App = (props) => (
+	<Router>
+		<Switch>
+			<Route exact path="/" component={MainView} />
+			<Route path="/home" component={HomeView} />
+			<Route path="/kennel" component={KennelView} />
+		</Switch>
+	</Router>
+);
+export default MoonstoneDecorator(
+	App);
+	//AppStateDecorator(App));
