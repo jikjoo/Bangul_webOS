@@ -4,7 +4,7 @@ import { Panels } from '@enact/moonstone/Panels';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
-	BrowserRouter as Router,
+	HashRouter as Router,
 	Switch,
 	Route,
 } from "react-router-dom";
