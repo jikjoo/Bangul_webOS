@@ -1,17 +1,22 @@
 import Button from '@enact/moonstone/Button';
 import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-
+import BtnPush from '../components/Buttons/BtnPush';
+import BtnConnect from '../components/Buttons/BtnConnect'
+import StayTime from '../components/StayTIme';
 // 함수형 component
 
 const MainView = (props) => {
-	let history = useHistory();
 	return (
 		<Panel>
 			<Header title="차량용 스마트 펫케어: 방울이가 타고 있어요" />
-			<Button onClick={(e)=>{history.push("/home")}}>스마트 홈</Button>
-			<Button onClick={(e)=>{history.push("/kennel")}}>스마트 켄넬</Button>
+			<BtnPush push="kennel" >스마트 켄넬</BtnPush>
+			<BtnPush push="home" >스마트 홈</BtnPush>
+			<BtnPush push="location" >위치 정보</BtnPush>
+			<BtnConnect conn="main" />
+			<BtnConnect conn="kenn" />
+			<BtnConnect conn="home" />
+			<StayTime/>
 		</Panel>
 	)
 }

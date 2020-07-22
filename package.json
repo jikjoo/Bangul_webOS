@@ -1,7 +1,7 @@
 {
 	"name": "bangul_webos",
 	"version": "1.0.0",
-	"description": "A general template for an Enact Moonstone application.",
+	"description": "차량용 스마트 펫케어 : 방울이가 타고있어요",
 	"author": "",
 	"main": "src/index.js",
 	"scripts": {
@@ -35,6 +35,7 @@
 		"@enact/moonstone": "^3.2.5",
 		"@enact/spotlight": "^3.2.5",
 		"@enact/ui": "^3.2.5",
+		"axios": "^0.19.2",
 		"ilib": "^14.2.0",
 		"prop-types": "^15.6.2",
 		"react": "^16.13.1",

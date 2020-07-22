@@ -25,8 +25,6 @@
   `npm run pack -p` (완성모드)
 * ipk 파일 생성   
  `ares-package dist`
-* 기존 app 삭제(생략해도 되는지 확인해야함)   
- `ares-install -r com.bangul.app.webos -d emulator`
 * app 설치   
  `ares-install com.bangul.app.webos_1.0.0_all.ipk -d emulator `
 * app 실행   
