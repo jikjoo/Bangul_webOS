@@ -1,6 +1,6 @@
 # Bangul_webOS
 "차량용 스마트 펫케어 서비스 : 방울이가타고있어요"의 차량용 소프트웨어입니다
-
+- [Contribute Rule](/docs/Rule.md)
 ## 관련 Repository
 - 스마트기기 : https://github.com/Galocg/Bangul_Smart
 - 서버 : https://github.com/Chaeoon-Park/Bangul_server-github-
@@ -32,3 +32,14 @@
 
 ## webOS 디버깅
 - `ares-inspect com.bangul.app.webos -d emulator`
+
+## webOS 장치 연결
+- `ares-setup-device`
+- add 선택
+- 장치 ip 입력(network 설정에서 확인 가능), 이름은 webos로
+
+## webOS 장치에서 실행
+* app 설치   
+ `ares-install com.bangul.app.webos_1.0.0_all.ipk -d webos `
+* app 실행   
+ `ares-launch com.bangul.app.webos -d webos`

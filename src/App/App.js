@@ -18,7 +18,6 @@ import LampView from '../views/Kennel/LampView';
 import TempView from '../views/Kennel/TempView';
 import VideoView from '../views/Kennel/VideoView';
 
-//const RoutablePanels = Routable({ navigate: 'onBack' }, Panels);
 
 const App = (props) => (
 	<Router>
@@ -34,6 +33,7 @@ const App = (props) => (
 		</Switch>
 	</Router>
 );
+import AppStateDecorator from './AppStateDecorator'
 export default MoonstoneDecorator(
-	App);
-	//AppStateDecorator(App));
+	//App);
+	AppStateDecorator(App));
