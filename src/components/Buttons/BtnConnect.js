@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ToggleButton from '@enact/moonstone/ToggleButton';
-import Axios from 'axios';
-import config from '../../../resources/config.json';
+import axios from '../../api';
 
 const BtnConnect = ({conn,...rest}) => {
     const [isConn, setConn] = useState(false);
@@ -11,10 +10,9 @@ const BtnConnect = ({conn,...rest}) => {
         server : '메인 서버',
         kenn : '스마트 켄넬'
     }
-    const {HOST, PORT} = config.SERVER;
     function handleClick(e) {
         e.preventDefault();
-        Axios.get(`http://${HOST}:${PORT}/${conn}/hello`)
+        axios.get(`/${conn}/hello/webos`)
             .then(res => {
                 console.log(res)
                 setConn(true)
