@@ -2,7 +2,8 @@ import Button from '@enact/moonstone/Button';
 import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
 import BtnPush from '../components/Buttons/BtnPush';
-import BtnConnect from '../components/Buttons/BtnConnect'
+import BtnConnect from '../components/Buttons/BtnConnect';
+import BtnCheck from '../components/Buttons/BtnCheck';
 import StayTime from '../components/StayTIme';
 // 함수형 component
 
@@ -13,10 +14,10 @@ const MainView = (props) => {
 			<BtnPush push="kennel" >스마트 켄넬</BtnPush>
 			<BtnPush push="home" >스마트 홈</BtnPush>
 			<BtnPush push="location" >위치 정보</BtnPush>
-			<BtnConnect conn="server" />
-			<BtnConnect conn="kenn" />
-			<BtnConnect conn="home" />
-			<StayTime/>
+			<BtnConnect />
+			<BtnCheck target="kennel" />
+			<BtnCheck target="home" />
+			<StayTime />
 		</Panel>
 	)
 }
