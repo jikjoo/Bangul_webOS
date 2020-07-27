@@ -10,9 +10,14 @@ const BtnConnect = ({conn,...rest}) => {
         server : '메인 서버',
         kenn : '스마트 켄넬'
     }
+    const api = {
+        server : '/server/hello/webos',
+        home : '/home/check',
+        kenn : '/kennel/check'
+    }
     function handleClick(e) {
         e.preventDefault();
-        axios.get(`/${conn}/hello/webos`)
+        axios.get(api[conn])
             .then(res => {
                 console.log(res)
                 setConn(true)
