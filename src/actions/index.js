@@ -4,3 +4,10 @@ export const navigate = (path) => {
 		path
 	};
 };
+
+export const get = (url) => {
+	return{
+		type: 'GET',
+		url
+	}
+}

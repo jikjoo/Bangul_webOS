@@ -5,9 +5,9 @@ import App from './App';
 import store from './store';
 
 const appElement = (
-	//<Provider store={store}>
+	<Provider store={store}>
 		<App />
-	//</Provider>
+	</Provider>
 )
 
 // In a browser environment, render instead of exporting
