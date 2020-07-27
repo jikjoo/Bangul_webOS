@@ -27,7 +27,7 @@ fi
 
 # webOS image build
 https://www.webosose.org/docs/guides/setup/building-webos-ose/
-- http://build.webos-ports.org/webosose/qemux86/에서  
+- http://build.webos-ports.org/webosose/qemux86/   에서  
 > webos-image-devel-qemux86-master-20200528044350..> 28-May-2020 05:56           865831296   
 > webos-image-qemux86-master-20200528044350.wic.v..> 28-May-2020 05:53           388744762   
 

@@ -8,6 +8,7 @@
 
 ## 설치
 - `git clone https://github.com/jikjoo/Bangul_webOS`
+- `npm install -g @enact/cli`
 - `npm install`
 
 ## 로컬 서버 실행
