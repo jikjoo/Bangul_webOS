@@ -1,15 +1,16 @@
 import React from 'react';
 import Button from '@enact/moonstone/Button';
 import { useHistory } from 'react-router-dom';
+import BtnVideo from '../Common/BtnVideo';
 
-const BtnPush = ({push,children,...rest}) => {
+const BtnVideoPush = ({push,children,...rest}) => {
     let history = useHistory();
     const onPush = (e) => {
         history.push(push)
     }
     return (
-        <Button onClick={onPush}>{children}</Button>
+        <BtnVideo onClick={onPush}>{children}</BtnVideo>
     )
 }
 
-export default BtnPush;
+export default BtnVideoPush;

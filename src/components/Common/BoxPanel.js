@@ -5,7 +5,7 @@ import BtnGoBack from './BtnGoBack';
 
 const BoxPanel = ({ children, ...rest }) => {
     return (
-        <Panel>
+        <Panel className={'box-panel'}>
             {children}
         </Panel>
     )
