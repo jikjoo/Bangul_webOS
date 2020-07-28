@@ -1,14 +1,14 @@
 import Button from '@enact/moonstone/Button';
 import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
-import BtnGoBack from '../../components/Buttons/BtnGoBack';
+import BtnGoBack from '../../components/Common/BtnGoBack';
+import { BoxHeader, BoxPanel } from '../../components/Common';
 
 const TempView = (props) => {
     return (
-        <Panel>
-            <Header title="온도 조절" />
-            <BtnGoBack/>
-        </Panel>
+        <BoxPanel>
+            <BoxHeader title="온도 조절" />
+        </BoxPanel>
     );
 }
 

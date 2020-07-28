@@ -1,3 +1,7 @@
+/* 
+Reducer를 모아서 state를 저장하는 곳
+Redux-devtool 연결하기도 함
+*/
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer,{initialState} from '../reducers';
 import thunk from 'redux-thunk';

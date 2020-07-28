@@ -1,3 +1,7 @@
+/* 
+ACTION으로 부터 나온 결과를 state로 저장하는 곳
+*/
+
 import { combineReducers } from 'redux';
 import { CONNECT_SERVER, CHECK_CONNECT, CHECK_CONNECT_HOME, CHECK_CONNECT_KENNEL } from '../actions';
 import axios from '../api';

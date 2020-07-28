@@ -1,24 +1,18 @@
 import Button from '@enact/moonstone/Button';
-import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
-import BtnPush from '../components/Buttons/BtnPush';
-import BtnConnect from '../components/Buttons/BtnConnect';
-import BtnCheck from '../components/Buttons/BtnCheck';
-import StayTime from '../components/StayTIme';
-// 함수형 component
+import {BoxMainBtn,BtnCheck,BtnConnect} from '../components/Main';
+import {BoxPanel,BoxHeader} from '../components/Common';
 
+// 함수형 component
 const MainView = (props) => {
 	return (
-		<Panel>
-			<Header title="차량용 스마트 펫케어: 방울이가 타고 있어요" />
-			<BtnPush push="kennel" >스마트 켄넬</BtnPush>
-			<BtnPush push="home" >스마트 홈</BtnPush>
-			<BtnPush push="location" >위치 정보</BtnPush>
+		<BoxPanel>
+			<BoxHeader title="차량용 스마트 펫케어: 방울이가 타고 있어요" />
+			<BoxMainBtn />
 			<BtnConnect />
 			<BtnCheck target="kennel" />
 			<BtnCheck target="home" />
-			<StayTime />
-		</Panel>
+		</BoxPanel>
 	)
 }
 

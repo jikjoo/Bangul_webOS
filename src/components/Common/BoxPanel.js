@@ -1,0 +1,14 @@
+import React from 'react';
+import {Panel,Header} from '@enact/moonstone/Panels';
+import BtnGoMain from './BtnGoMain';
+import BtnGoBack from './BtnGoBack';
+
+const BoxPanel = ({ children, ...rest }) => {
+    return (
+        <Panel>
+            {children}
+        </Panel>
+    )
+}
+
+export default BoxPanel;
