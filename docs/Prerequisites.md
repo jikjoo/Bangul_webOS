@@ -80,6 +80,8 @@ https://www.webosose.org/docs/guides/setup/system-requirements/
 - HDMI cable
 - Small Case
 
-현재 디스플레이가 없어서 라즈베리파이를 출력을 못함.   
-노트북으로는 라즈베리파이와 HDMI와 연결할 수 없음.   
-노트북으로 라즈베리파이와 연결하기 위해선 랜선을 통한 SSH 연결이 필요. [참고](https://blog.naver.com/PostView.nhn?blogId=icbanq&logNo=221320624608&redirect=Dlog&widgetTypeCall=true&directAccess=false)
+1. 디스플레이 5v-touch랑 라즈베리파이 USB랑 연결(usb 옛날 케이블)
+1. 디스플레이 HDMI랑 라즈베리파이 왼쪽 small hdmi 랑 연결(short HDMI 케이블)
+1. 라즈베리파이 랜선이랑 노트북 랜선 연결
+1. 디스플레이 5v in에 전원 연결(usb 옛날 케이블)
+1. 라즈베리파이 전원 연결(ctype 케이블)
