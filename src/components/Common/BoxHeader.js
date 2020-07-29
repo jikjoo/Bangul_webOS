@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from '@enact/moonstone/Panels';
+import { Header } from '@jikjoo/moonstone/Panels';
 import BtnGoBack from './BtnGoBack';
 import BtnGoMain from './BtnGoMain';
 

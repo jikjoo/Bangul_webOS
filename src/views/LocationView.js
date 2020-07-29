@@ -1,6 +1,6 @@
 /* global  */
-import Button from '@enact/moonstone/Button';
-import { Panel, Header } from '@enact/moonstone/Panels';
+import Button from '@jikjoo/moonstone/Button';
+import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
 import BtnGoMain from '../components/Common/BtnGoMain'
 import BoxPanel from '../components/Common/BoxPanel';

@@ -1,5 +1,5 @@
 import React from 'react'
-import Item from '@enact/moonstone/Item'
+import Item from '@jikjoo/moonstone/Item'
 
 const StayTime = (props) =>{
     return(

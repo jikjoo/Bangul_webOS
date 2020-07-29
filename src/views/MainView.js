@@ -1,4 +1,4 @@
-import Button from '@enact/moonstone/Button';
+import Button from '@jikjoo/moonstone/Button';
 import React from 'react';
 import {BoxMainBtn,BtnCheck,BtnConnect} from '../components/Main';
 import {BoxPanel,BoxHeader} from '../components/Common';
