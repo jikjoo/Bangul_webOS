@@ -1,5 +1,5 @@
 import React from 'react'
-import VideoPlayer, { MediaControls } from '@enact/moonstone/VideoPlayer';
+import VideoPlayer, { MediaControls } from '../../../bangulTheme/VideoPlayer';
 import BtnVideo from './BoxVideoBtn';
 import BoxVideoBtn from './BoxVideoBtn';
 import style from './Video.less';

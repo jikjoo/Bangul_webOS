@@ -1,5 +1,4 @@
-import Button from '@enact/moonstone/Button';
-import BodyText from '@enact/moonstone/BodyText';
+import BodyText from '../../../bangulTheme/BodyText';
 import React from 'react';
 import { BoxHeader, BoxPanel } from '../../components/Common';
 

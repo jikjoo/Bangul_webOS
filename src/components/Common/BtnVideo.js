@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@enact/moonstone/Button';
+import Button from '../Common/Button';
 import './Button.less';
 
 const BtnVideo = ({children,...props}) => {

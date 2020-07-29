@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ToggleButton from '@enact/moonstone/ToggleButton';
+import ToggleButton from '../../../bangulTheme/ToggleButton';
 import axios from '../../api';
 import { sendConnect, sendCheckConnect } from '../../actions'
 import { connect } from 'react-redux';

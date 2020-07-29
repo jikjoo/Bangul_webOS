@@ -1,5 +1,5 @@
 //import kind from '@enact/core/kind';
-import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
+import MoonstoneDecorator from '../../bangulTheme/MoonstoneDecorator';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {

@@ -1,7 +1,4 @@
-import Button from '@enact/moonstone/Button';
-import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import { BoxHeader, BoxPanel, Video } from '../components/Common';
 import BtnVideoPush from '../components/Kennel/BtnVideoPush';
 

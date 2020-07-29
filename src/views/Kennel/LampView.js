@@ -1,6 +1,4 @@
-import Button from '@enact/moonstone/Button';
-import { Panel, Header } from '@enact/moonstone/Panels';
-import Slider from '@enact/moonstone/Slider';
+import Slider from '../../../bangulTheme/Slider';
 import React from 'react';
 import { BoxPanel, BoxHeader,Video } from '../../components/Common';
 

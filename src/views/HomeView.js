@@ -1,5 +1,3 @@
-import Button from '@enact/moonstone/Button';
-import { Panel, Header } from '@enact/moonstone/Panels';
 import React from 'react';
 import { BoxHeader,BoxPanel } from '../components/Common';
 
