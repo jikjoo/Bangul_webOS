@@ -40,6 +40,10 @@
 - 장치 ip 입력(network 설정에서 확인 가능), 이름은 webos로
 
 ## webOS 장치에서 실행
+* dist 생성   
+ `npm run pack`    
+* ipk 파일 생성   
+ `ares-package dist`
 * app 설치   
  `ares-install com.bangul.app.webos_1.0.0_all.ipk -d webos `
 * app 실행   

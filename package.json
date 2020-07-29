@@ -32,9 +32,9 @@
 	"dependencies": {
 		"@enact/core": "^3.2.5",
 		"@enact/i18n": "^3.2.5",
-		"@enact/moonstone": "^3.2.5",
 		"@enact/spotlight": "^3.2.5",
 		"@enact/ui": "^3.2.5",
+		"@jikjoo/moonstone": "^3.2.53",
 		"axios": "^0.19.2",
 		"ilib": "^14.2.0",
 		"prop-types": "^15.6.2",
@@ -42,6 +42,10 @@
 		"react-dom": "^16.13.1",
 		"react-redux": "^7.2.0",
 		"react-router-dom": "^5.2.0",
-		"redux": "^4.0.5"
+		"redux": "^4.0.5",
+		"redux-thunk": "^2.3.0"
+	},
+	"devDependencies": {
+		"redux-devtools-extension": "^2.13.8"
 	}
 }

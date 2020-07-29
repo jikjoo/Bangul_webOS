@@ -1,10 +1,16 @@
-import { createStore } from 'redux';
+/* 
+Reducer를 모아서 state를 저장하는 곳
+Redux-devtool 연결하기도 함
+*/
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer,{initialState} from '../reducers';
+import thunk from 'redux-thunk';
+import {composeWithDevTools} from 'redux-devtools-extension'
 
-import rootReducer from '../reducers';
 const store = createStore(
 	rootReducer,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-	//initialState
+	initialState,
+	composeWithDevTools(applyMiddleware(thunk)),
 );
 
 if (module.hot) {

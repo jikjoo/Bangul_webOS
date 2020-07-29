@@ -1,5 +1,5 @@
 //import kind from '@enact/core/kind';
-import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
+import MoonstoneDecorator from '@jikjoo/moonstone/MoonstoneDecorator';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -33,7 +33,7 @@ const App = (props) => (
 		</Switch>
 	</Router>
 );
-import AppStateDecorator from './AppStateDecorator'
+//import AppStateDecorator from './AppStateDecorator'
 export default MoonstoneDecorator(
-	//App);
-	AppStateDecorator(App));
+	App);
+	//AppStateDecorator(App));

@@ -1,20 +1,17 @@
-import VideoPlayer from '@enact/moonstone/VideoPlayer';
-import { Panel, Header } from '@enact/moonstone/Panels';
+import VideoPlayer from '@jikjoo/moonstone/VideoPlayer';
+import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
-import BtnGoBack from '../../components/Buttons/BtnGoBack';
-import StayTime from '../../components/StayTIme';
-import VomitCheck from '../../components/VomitCheck';
-import Video from '../../components/Video';
+import VomitCheck from '../../components/Kennel/VomitCheck';
+import { BoxPanel, BoxHeader,Video, StayTime } from '../../components/Common';
 
 const VideoView = (props) => {
     return (
-        <Panel>
-            <Header title="켄넬 내부 영상" />
-            <BtnGoBack />
+        <BoxPanel>
+            <BoxHeader title="켄넬 내부 영상" />
             <StayTime />
             <VomitCheck />
             <Video/>
-        </Panel>
+        </BoxPanel>
     );
 }
 
