@@ -1,10 +1,14 @@
 # Bangul_webOS
 "차량용 스마트 펫케어 서비스 : 방울이가타고있어요"의 차량용 소프트웨어입니다
 - [Contribute Rule](/docs/Rule.md)
+- [Prerequisites](/docs/Prerequisites.md)
+- [EnactSample](/docs/EnactSample.md)
+- [EnactJS](/docs/enactjs.md)
 ## 관련 Repository
 - 스마트기기 : https://github.com/Galocg/Bangul_Smart
 - 서버 : https://github.com/Chaeoon-Park/Bangul_server-github-
 - 머신러닝 : https://github.com/Adam-Kim/dogvomitML
+- 디자인 :https://github.com/jikjoo/moonstone
 
 ## 설치
 - `git clone https://github.com/jikjoo/Bangul_webOS`

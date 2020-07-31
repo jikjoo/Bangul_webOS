@@ -1,17 +1,20 @@
 import Button from '@jikjoo/moonstone/Button';
 import React from 'react';
-import {BoxMainBtn,BtnCheck,BtnConnect} from '../components/Main';
-import {BoxPanel,BoxHeader} from '../components/Common';
+import { BoxMainBtn, BtnCheck, BtnConnect, BtnPush } from '../components/Main';
+import { BoxPanel, BoxHeader } from '../components/Common';
 
 // 함수형 component
 const MainView = (props) => {
 	return (
 		<BoxPanel>
-			<BoxHeader title="차량용 스마트 펫케어: 방울이가 타고 있어요" />
-			<BoxMainBtn />
-			<BtnConnect />
+			<BoxMainBtn >
+				<BtnPush push="kennel" >스마트 켄넬</BtnPush>
+				<BtnPush push="home" >스마트 홈</BtnPush>
+				<BtnPush push="location" >위치 정보</BtnPush>
+			</BoxMainBtn>
+			{/* <BtnConnect />
 			<BtnCheck target="kennel" />
-			<BtnCheck target="home" />
+			<BtnCheck target="home" /> */}
 		</BoxPanel>
 	)
 }
