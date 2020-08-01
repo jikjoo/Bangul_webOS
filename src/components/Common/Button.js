@@ -9,6 +9,7 @@ const Button = ({ children, ...props }) => {
             css={{
                 bg : 'bg'
             }}
+            {...props}
         >
             {children}
         </ButtonBase>

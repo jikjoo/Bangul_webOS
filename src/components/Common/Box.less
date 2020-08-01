@@ -1,22 +1,36 @@
-.box{
-    display:block;
+/* 
+montitor : 1024*600
+*/
+.box {
+    display: block;
 }
-.box-panel{
+
+.box-panel {
     background-color: whitesmoke;
-    section{
-        display: flex;
+
+    section {
+        display       : flex;
         flex-direction: column;
     }
 }
-.box-video-btn{
-    position: absolute;
-    top:0;
-    right: 0;
+
+.box-main-btn{
     display:flex;
+    position: fixed;
+   /*  padding-right: 30px;
+    padding-left: 30px; */
+    padding:30px;
+}
+
+.box-video-btn {
+    position      : absolute;
+    top           : 0;
+    right         : 0;
+    display       : flex;
     flex-direction: column;
 }
 
-.box-video{
-    flex:1 1;
+.box-video {
+    flex    : 1 1;
     position: relative;
 }
