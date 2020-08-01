@@ -6,3 +6,4 @@ export {default as BtnGoMain} from './BtnGoMain';
 export {default as BtnLogo} from './BtnLogo';
 export {default as StayTime} from './StayTIme';
 export {default as Video } from './Video'
+export {default as Icon} from './Icon'

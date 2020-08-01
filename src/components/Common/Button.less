@@ -1,12 +1,22 @@
+@import '~@jikjoo/moonstone/styles/colors.less';
+
 .button{
+    &:hover{
+        background-color: transparent;
+    }
+    .bg:hover{
+        background-color: @moon-accent;
+    }
 
 }
 
 .btn-push{
     flex : 1 1;
-    margin-top:auto !important;
-    margin-bottom: auto !important;
-    height: 300px !important;
+    margin:auto !important;
+    height: -webkit-fill-available !important;
+    width: -webkit-fill-available !important;
+    max-width: unset !important;
+    border-style: ridge;
 }
 
 .button.btn-video{

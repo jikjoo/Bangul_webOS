@@ -8,9 +8,9 @@ const MainView = (props) => {
 	return (
 		<BoxPanel>
 			<BoxMainBtn >
-				<BtnPush push="kennel" >스마트 켄넬</BtnPush>
-				<BtnPush push="home" >스마트 홈</BtnPush>
-				<BtnPush push="location" >위치 정보</BtnPush>
+				<BtnPush push="home" ></BtnPush>
+				<BtnPush push="kennel" ></BtnPush>
+				<BtnPush push="location" ></BtnPush>
 			</BoxMainBtn>
 			{/* <BtnConnect />
 			<BtnCheck target="kennel" />
