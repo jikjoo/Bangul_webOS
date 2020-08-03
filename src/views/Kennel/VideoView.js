@@ -9,7 +9,7 @@ import VideoKennel from '../../components/Kennel/VideoKennel';
 const VideoView = (props) => {
     return (
         <BoxPanel>
-            <BoxHeader title="켄넬 내부 영상" />
+            <BoxHeader target={"kennel"} sub="video"/>
             <StayTime />
             <VomitCheck />
             <VideoKennel/>

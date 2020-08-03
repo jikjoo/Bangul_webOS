@@ -2,5 +2,9 @@
     "home" :"스마트 홈",
     "kennel" : "스마트 켄넬",
     "location" : "위치 정보",
-    "setting" : "설정"
+    "setting" : "설정",
+    "fix":"고정 장치 확인",
+    "lamp" : "무드등",
+    "temp" : "온도 조절",
+    "video" : "내부 영상 확인"
 }

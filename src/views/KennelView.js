@@ -10,7 +10,7 @@ import VideoKennel from '../components/Kennel/VideoKennel';
 const KennelView = (props) => {
     return (
         <BoxPanel>
-            <BoxHeader title="스마트 켄넬" />
+            <BoxHeader target={"kennel"} />
             <VideoKennel>
                 <BtnVideoPush push={`/kennel/video`}>내부 영상</BtnVideoPush>
                 <BtnVideoPush push={`/kennel/lamp`}>무드등</BtnVideoPush>

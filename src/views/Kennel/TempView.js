@@ -6,7 +6,7 @@ import { BoxHeader, BoxPanel } from '../../components/Box';
 const TempView = (props) => {
     return (
         <BoxPanel>
-            <BoxHeader title="온도 조절" />
+            <BoxHeader target={"kennel"} sub="temp"/>
         </BoxPanel>
     );
 }

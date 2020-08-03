@@ -11,7 +11,7 @@ import MainView from '../views/MainView';
 import HomeView from '../views/HomeView';
 import KennelView from '../views/KennelView';
 
-import css from './App.module.less';
+import  './App.less';
 import LocationView from '../views/LocationView';
 import FixView from '../views/Kennel/FixView';
 import LampView from '../views/Kennel/LampView';

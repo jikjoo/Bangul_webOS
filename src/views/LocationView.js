@@ -9,7 +9,7 @@ const LocationView = (props) => {
 
     return (
         <BoxPanel>
-            <BoxHeader title="위치 정보" />
+            <BoxHeader target="location" />
             <KakaoMap />
         </BoxPanel>
     )

@@ -1,13 +1,16 @@
 import React from 'react';
 import { Header } from '@jikjoo/moonstone/Panels';
-import {BtnGoBack, BtnGoMain} from '../Button';
+import { BtnGoBack, BtnGoMain } from '../Button';
+import text from '../../../resources/text.json';
 
-const BoxHeader = ({ title, ...props }) => {
+const BoxHeader = ({ target,sub, ...props }) => {
     return (
-        <Header title={title}>
-            <BtnGoBack/>
-            <BtnGoMain/>
-        </Header>
+        <header className={'header'}>
+
+            <BtnGoBack />
+            <h1>{text[target]}</h1>
+            {sub?<h3>{text[sub]}</h3>:null}
+        </header>
     )
 }
 

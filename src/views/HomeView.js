@@ -6,7 +6,7 @@ import { BoxHeader,BoxPanel } from '../components/Box';
 const HomeView = (props) => {
     return (
         <BoxPanel >
-            <BoxHeader title="스마트 홈" />
+            <BoxHeader target="home" />
         </BoxPanel>
     )
 }
