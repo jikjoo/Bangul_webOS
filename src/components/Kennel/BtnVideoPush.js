@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@jikjoo/moonstone/Button';
 import { useHistory } from 'react-router-dom';
-import BtnVideo from '../Common/BtnVideo';
+import {BtnVideo} from '../Button';
 
 const BtnVideoPush = ({push,children,...rest}) => {
     let history = useHistory();

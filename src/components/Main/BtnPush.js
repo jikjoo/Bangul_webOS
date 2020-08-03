@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Button from '../Common/Button';
+import { Button } from '../Button';
 import { useHistory, withRouter } from 'react-router-dom';
 import { Icon } from '../Common'
 import text from '../../../resources/text'
@@ -20,13 +20,15 @@ class BtnPush extends React.Component {
     //BtnPush가 rendering 되고 난 직후
     componentDidMount() {
         const { push, onCheck } = this.props;
-        onCheck(push);
+        if (push === 'home' || push === 'kennel')
+            onCheck(push);
     }
     onPush = (e) => {
         const { push, check, history, onCheck } = this.props;
-        onCheck(push);
-        if (push === 'home' || push === 'kennel' && !check[push].isOn)
-            this.setState({ alarmOn: true });
+        if (push === 'home' || push === 'kennel') {
+            onCheck(push);
+            if (!check[push].isOn) this.setState({ alarmOn: true });
+        }
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
         history.push(push)
@@ -62,6 +64,7 @@ check : {
     }
 }
 */
+
 const mapStateToProps = ({ check }) => ({
     check
 });
