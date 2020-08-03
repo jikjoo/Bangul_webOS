@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../api';
 import config from '../../../resources/config.json';
+import Touchable from '@enact/ui/Touchable';
 import './Kakao.less';
 
 const KakaoMap = (props) => {
@@ -43,8 +44,10 @@ const KakaoMap = (props) => {
         </div>
     )
 }
+const KakaoMap_ = Touchable({activeProp : 'pressed'},KakaoMap);
+//const KakaoMap_ = touchDeco(KakaoMap);
 
-export default KakaoMap;
+export default KakaoMap_;
 
 /*
 class LocationView extends React.Component {
