@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../api';
+import config from '../../../resources/config.json';
+import './Kakao.less';
 
 const KakaoMap = (props) => {
     const [html, setHtml] = useState('');
+    const { HOST, PORT } = config.SERVER;
     useEffect(() => {
         const script = document.createElement('script');
         script.type = "text/javascript"
         script.async = true;
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=aefdc433d657b3802f48149819d88496&libraries=services&autoload=false";
+        script.src = "http://dapi.kakao.com/v2/maps/sdk.js?appkey=aefdc433d657b3802f48149819d88496&libraries=services&autoload=false";
         document.head.appendChild(script);
-        axios.get(`/location/map`)
-            .then(res => {
-                console.log(res)
-                const { html, src, js } = res.data
-                setHtml(html);
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
         script.onload = () => {
             if (window.kakao !== undefined) {
                 let Kakao = window.kakao;
@@ -27,19 +20,27 @@ const KakaoMap = (props) => {
                     console.log("kakao loaded")
                     const script2 = document.createElement('script');
                     script2.type = "text/javascript"
-                    //script2.async = true;
-                    script2.src = "//52.78.205.68:8000/location/kakaoNew.js";
+                    script2.src = `http://${HOST}:${PORT}/location/kakaoNew.js`;
                     document.body.appendChild(script2);
                 })
             }
         }
 
     })
-    function createMarkup(html) {
-        return { __html: html };
-    }
     return (
-        <div s dangerouslySetInnerHTML={createMarkup(html)} />
+        <div className="map_wrap">
+            <div id="map" ></div>
+            <ul id="category">
+                <li id="CE7" data-order="4">
+                    <span className="category_bg cafe"></span>
+            애견카페
+        </li>
+                <li id="OL7" data-order="3">
+                    <span className="category_bg oil"></span>
+            주유소
+        </li>
+            </ul>
+        </div>
     )
 }
 
