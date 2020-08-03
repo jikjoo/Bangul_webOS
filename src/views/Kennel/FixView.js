@@ -1,7 +1,7 @@
 import Button from '@jikjoo/moonstone/Button';
 import BodyText from '@jikjoo/moonstone/BodyText';
 import React from 'react';
-import { BoxHeader, BoxPanel } from '../../components/Common';
+import { BoxHeader, BoxPanel } from '../../components/Box';
 
 const FixView = (props) => {
     return (

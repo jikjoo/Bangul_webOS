@@ -1,7 +1,7 @@
 import Button from '@jikjoo/moonstone/Button';
 import React from 'react';
-import { BoxMainBtn, BtnCheck, BtnConnect, BtnPush } from '../components/Main';
-import { BoxPanel, BoxHeader } from '../components/Common';
+import { BoxMainBtn, BtnPush } from '../components/Main';
+import { BoxPanel, BoxHeader } from '../components/Box';
 
 // 함수형 component
 const MainView = (props) => {

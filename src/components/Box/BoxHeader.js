@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header } from '@jikjoo/moonstone/Panels';
-import BtnGoBack from './BtnGoBack';
-import BtnGoMain from './BtnGoMain';
+import {BtnGoBack, BtnGoMain} from '../Button';
 
 const BoxHeader = ({ title, ...props }) => {
     return (
