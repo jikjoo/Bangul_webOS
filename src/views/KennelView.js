@@ -12,10 +12,10 @@ const KennelView = (props) => {
         <BoxPanel>
             <BoxHeader target={"kennel"} />
             <VideoKennel>
-                <BtnVideoPush push={`/kennel/video`}>내부 영상</BtnVideoPush>
-                <BtnVideoPush push={`/kennel/lamp`}>무드등</BtnVideoPush>
-                <BtnVideoPush push={`/kennel/temp`}>온도 조절</BtnVideoPush>
-                <BtnVideoPush push={`/kennel/fix`}>고정 확인</BtnVideoPush>
+                <BtnVideoPush target={"kennel"}sub={"video"}/>
+                <BtnVideoPush target={"kennel"} sub={"fix"}/>
+                <BtnVideoPush target={"kennel"}sub={"temp"}/>
+                <BtnVideoPush target={"kennel"}sub={"lamp"}/>
             </VideoKennel>
         </BoxPanel>
     );

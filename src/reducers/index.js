@@ -11,6 +11,7 @@ import {
 	VIDEO_URL_KENNEL
 } from '../actions';
 import axios from '../api';
+import '../../resources/sample_dog.jpg';
 
 function path(state = '/', action) {
 	switch (action.type) {
@@ -78,10 +79,10 @@ export const initialState = {
 	},
 	video: {
 		home: {
-			url: ''
+			url: '/resources/sample_dog.jpg'
 		},
 		kennel: {
-			url: ''
+			url: '/resources/sample_dog.jpg'
 		}
 	}
 }
