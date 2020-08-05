@@ -3,54 +3,57 @@
 /* 
 montitor : 1024*600
 */
-.box {
-}
+.box {}
 
 .box-panel {
     background-color: whitesmoke;
-    padding : 0;
+    padding         : 0;
 
     section {
-        display: flex;
+        display       : flex;
         flex-direction: column;
     }
 }
 
 .header {
-    align-items: flex-end;
-    height : 80px;
+    align-items     : flex-end;
+    height          : 80px;
     background-color: #efdc05;
-    margin : 0;
-    flex-direction: row-reverse !important;
-    line-height: 1.2;
+    margin          : 0;
+    flex-direction  : row-reverse !important;
+    line-height     : 1.2;
+
     // color : #090707;
     h1 {
-        font-size : 30pt;
+        font-size     : 30pt;
         vertical-align: middle;
 
     }
-    h1,h3 {
+
+    h1,
+    h3 {
         display: inline;
     }
+
     h3 {
         vertical-align: bottom;
-        margin-left: 10px;
+        margin-left   : 10px;
     }
 }
 
-.box-main-btn{
-    display:flex;
-    position: fixed;
-   /*  padding-right: 30px;
-    padding-left: 30px; */
-    padding:30px;
+.box-main-btn {
+    display          : flex;
+    position         : fixed;
+    /*  padding-right: 30px;
+    padding-left     : 30px; */
+    padding          : 30px;
 }
 
 .box-video-btn {
     position      : absolute;
     top           : 0;
     right         : 0;
-    bottom : 0;
+    bottom        : 0;
     display       : flex;
     flex-direction: column;
 }
@@ -58,5 +61,13 @@ montitor : 1024*600
 .box-video {
     flex    : 1 1;
     position: relative;
-    
+
+}
+
+.box-alarm {
+    bottom: -100px;
+    padding : 12px 17px !important;
+    &.server_not_connected {
+        bottom: -200px;
+    }
 }

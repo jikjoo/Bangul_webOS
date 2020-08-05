@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from '@jikjoo/moonstone/Panels';
 import { BtnGoBack, BtnGoMain } from '../Button';
 import text from '../../../resources/text.json';
+import { Icon } from '../Common';
 
 const BoxHeader = ({ target,sub, ...props }) => {
     return (

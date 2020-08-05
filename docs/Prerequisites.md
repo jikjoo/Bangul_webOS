@@ -54,11 +54,20 @@ vboxmanage modifyvm webos-image --uart1 0x3f8 4 --uartmode1 file null
 vboxmanage modifyvm webos-image --audio dsound --audioout on --audioin on
 vboxmanage storagectl webos-image --add ide --name webos-image
 
-# 모니터가 1920*1080보다 작을 때
+# 모니터가 1024*600보다 작을 때
 vboxmanage setextradata webos-image GUI/ScaleFactor 0.7
 
 # vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-master-**.wic.vmdk>
 vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium "C:\Users\Jikjoo\Documents\webos-image\webos-image-qemux86-master-20200528044350.wic.vmdk"
+```
+- 모니터 해상도 설정
+```
+ares-shell -d emulator
+
+config="{\"com.webos.surfacemanager.compositorGeometry\":\"1024x600+0+0r0s1\",\"com.webos.surfacemanager.displayConfig\":[{\"device\":\"/dev/dri/card0\",\"hwcursor\":false,\"outputs\":[{\"name\":\"HDMI1\",\"geometry\":\"1024x600+0+0r0s1\",\"mode\":\"1024x600\"}]}]}"; luna-send -n 1 -f luna://com.webos.service.config/setConfigs "{\"configs\":$config}"
+
+# 확인용
+luna-send -n 1 -f luna://com.webos.service.config/getConfigs '{"configNames":["com.webos.surfacemanager.*"]}'
 ```
 - 실행 
 ```

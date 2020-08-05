@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
 import { BtnVideo } from '../Button';
 import { BoxVideoBtn } from '../Box';
-import style from './Video.less';
+import './Common.less';
 import { connect } from 'react-redux';
 import { sendVideoURL } from '../../actions';
 
@@ -13,7 +13,7 @@ const Video = ({ children, video, target, onURL, ...props }) => {
 
     const { url } = video[target]
     return (
-        <div className="box-video" style={style}>
+        <div className="box-video">
             <img className = "video enact-fit" src={url}></img>
             {/* <VideoPlayer className="video">
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4"></source>

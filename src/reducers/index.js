@@ -8,7 +8,8 @@ import {
 	CHECK_CONNECT_HOME,
 	CHECK_CONNECT_KENNEL,
 	VIDEO_URL_HOME,
-	VIDEO_URL_KENNEL
+	VIDEO_URL_KENNEL,
+	CONNECT_INTERNET
 } from '../actions';
 import axios from '../api';
 import '../../resources/sample_dog.jpg';
@@ -26,6 +27,8 @@ function connect(state = {}, action) {
 	switch (action.type) {
 		case CONNECT_SERVER:
 			return Object.assign({}, state, action.payload);
+		case CONNECT_INTERNET:
+			return Object.assign({},state,action.internetOn);
 		default:
 			return state;
 	}
@@ -64,8 +67,9 @@ const rootReducer = combineReducers({
 
 export const initialState = {
 	connect: {
-		isOn: false,
-		error: ''
+		serverOn: false,
+		serverError: '',
+		internetOn : false
 	},
 	check: {
 		home: {
