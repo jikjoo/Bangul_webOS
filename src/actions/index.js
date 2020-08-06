@@ -1,8 +1,10 @@
-export { CONNECT_SERVER, sendConnectServer as sendConnect, connectServer,
-	connectInternet,CONNECT_INTERNET, sendConnectInternet, 
+export {
+	CONNECT_SERVER, sendConnectServer as sendConnect, connectServer,
+	connectInternet, CONNECT_INTERNET, sendConnectInternet,
 } from './connectAction';
 export { CHECK_CONNECT_HOME, CHECK_CONNECT_KENNEL, checkConnect, sendCheckConnect } from './checkAction';
 export { VIDEO_URL_HOME, VIDEO_URL_KENNEL, sendVideoURL, videoURL } from './videoAction';
+export { LOAD_KAKAO_MAP, loadKakaoMap } from './locationAction';
 
 export const navigate = (path) => {
 	return {

@@ -17,7 +17,6 @@ const BoxMainBtn = ({ children, isConn, err, onConnect, ...props }) => {
     )
 }
 
-
 const mapStateToProps = ({ connect }) => ({
     isConn: connect.serverOn,
     err: connect.serverError

@@ -9,7 +9,8 @@ import {
 	CHECK_CONNECT_KENNEL,
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
-	CONNECT_INTERNET
+	CONNECT_INTERNET,
+	LOAD_KAKAO_MAP
 } from '../actions';
 import axios from '../api';
 import sample from '../../resources/sample_dog.jpg';
@@ -58,11 +59,22 @@ function video(state = {}, action) {
 	}
 }
 
+function location(state={},action){
+	const {isLoaded} = action;
+	switch (action.type){
+		case LOAD_KAKAO_MAP:
+			return Object.assign({},state,{isLoaded})
+		default:
+			return state;
+	}
+}
+
 const rootReducer = combineReducers({
 	path,
 	connect,
 	check,
-	video
+	video,
+	location
 });
 
 export const initialState = {
@@ -88,6 +100,9 @@ export const initialState = {
 		kennel: {
 			url: sample
 		}
+	},
+	location : {
+		isLoaded : false
 	}
 }
 
