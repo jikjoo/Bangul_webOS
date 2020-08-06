@@ -12,7 +12,7 @@ import {
 	CONNECT_INTERNET
 } from '../actions';
 import axios from '../api';
-import '../../resources/sample_dog.jpg';
+import sample from '../../resources/sample_dog.jpg';
 
 function path(state = '/', action) {
 	switch (action.type) {
@@ -83,10 +83,10 @@ export const initialState = {
 	},
 	video: {
 		home: {
-			url: '/resources/sample_dog.jpg'
+			url: sample
 		},
 		kennel: {
-			url: '/resources/sample_dog.jpg'
+			url: sample
 		}
 	}
 }
