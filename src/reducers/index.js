@@ -10,7 +10,8 @@ import {
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
 	CONNECT_INTERNET,
-	LOAD_KAKAO_MAP
+	LOAD_KAKAO_MAP,
+	CHANGE_LOAD_MAP
 } from '../actions';
 import axios from '../api';
 import sample from '../../resources/sample_dog.jpg';
@@ -62,7 +63,7 @@ function video(state = {}, action) {
 function location(state={},action){
 	const {isLoaded} = action;
 	switch (action.type){
-		case LOAD_KAKAO_MAP:
+		case CHANGE_LOAD_MAP:
 			return Object.assign({},state,{isLoaded})
 		default:
 			return state;

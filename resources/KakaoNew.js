@@ -1,7 +1,10 @@
-if (window.kakao !== undefined) {
+console.log("KakaoNew.js")
+if (window.kakao === undefined)
+    console.log("kakao unloaded");
+else {
     let kakao = window.kakao;
-    // 마커 상세정보 오버레이
-    kakao.maps.load(() => {// 마커 상세정보 오버레이
+    kakao.maps.load(() => {
+        // 마커 상세정보 오버레이
         //Object.defineProperty(window.navigator, 'userAgent', { get: function () { return 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36'; } })
         console.log("kakao loaded")
         var placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }),
