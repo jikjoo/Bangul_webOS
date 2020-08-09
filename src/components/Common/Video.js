@@ -6,15 +6,15 @@ import './Common.less';
 import { connect } from 'react-redux';
 import { sendVideoURL } from '../../actions';
 
-const Video = ({ children, video, target, onURL, ...props }) => {
+const Video = ({ children, video, target, onURL, sub, ...props }) => {
     useEffect(() => {
         onURL(target);
     }, [])
-
+    const className = sub ? "video-small" : "";
     const { url } = video[target]
     return (
-        <div className="box-video">
-            <img className = "video enact-fit" src={url}></img>
+        <div className="box-video"  {...props}>
+            <img className={`video enact-fit ${className}`} src={url}></img>
             {/* <VideoPlayer className="video">
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4"></source>
             </VideoPlayer> */}

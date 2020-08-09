@@ -16,7 +16,7 @@ const KakaoMap = ({ isLoaded, onLoadMap }) => {
         script.type = "text/javascript"
         script.src = `http://${HOST}:${PORT}/location/kakaoNew.js`;
         //development mode
-        script.src = `http://localhost:${PORT}/location/kakaoNew.js`
+        //script.src = `http://localhost:${PORT}/location/kakaoNew.js`
         if (isLoaded) {
             if (window.kakao === undefined)
                 console.log("kakao unloaded");

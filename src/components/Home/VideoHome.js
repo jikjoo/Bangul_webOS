@@ -2,12 +2,12 @@ import React  from 'react'
 import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
 import { Video } from '../Common';
 
-const VideoKennel = ({ children,sub, ...props }) => {
+const VideoHome = ({ children,sub, ...props }) => {
     return (
-        <Video target="kennel" sub={sub} {...props} >
+        <Video target="home" sub={sub} {...props} >
             {children}
         </Video >
     )
 }
 
-export default VideoKennel;
+export default VideoHome;
