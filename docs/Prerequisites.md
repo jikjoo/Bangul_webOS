@@ -28,8 +28,7 @@ fi
 # webOS image build
 https://www.webosose.org/docs/guides/setup/building-webos-ose/
 - http://build.webos-ports.org/webosose/qemux86/   에서  
-> webos-image-devel-qemux86-master-20200528044350..> 28-May-2020 05:56           865831296   
-> webos-image-qemux86-master-20200528044350.wic.v..> 28-May-2020 05:53           388744762   
+> webos-image-qemux86-master-20200724162342.wic.v..> 24-Jul-2020 22:08           398518999
 
 다운로드, 압축풀기
 
@@ -58,7 +57,8 @@ vboxmanage storagectl webos-image --add ide --name webos-image
 #vboxmanage setextradata webos-image GUI/ScaleFactor 1.2
 
 # vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-master-**.wic.vmdk>
-vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium "C:\Users\Jikjoo\Documents\webos-image\webos-image-qemux86-master-20200528044350.wic.vmdk"
+
+vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium "C:\Users\Jikjoo\Documents\webos-image\webos-image-qemux86-master-20200724162342.wic.vmdk"
 ```
 - 모니터 해상도 설정
 ```
