@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import BtnPush from './BtnPush';
 import { sendConnect } from '../../actions'
 import { connect } from 'react-redux';
+import text from '../../../resources/text.json';
+import BoxAlarm from '../Box/BoxAlarm';
 
 const BoxMainBtn = ({ children, isConn, err, onConnect, ...props }) => {
     useEffect(() => {
@@ -10,18 +12,14 @@ const BoxMainBtn = ({ children, isConn, err, onConnect, ...props }) => {
     return (
         <div className={"box-main-btn enact-fit"}>
             {children}
-            {isConn ? null :
-                <div className={"alarm connect-miss"}>
-                    연결 안됨
-                </div>}
+            <BoxAlarm open={!isConn} type="server_not_connected" />
         </div>
     )
 }
 
-
 const mapStateToProps = ({ connect }) => ({
-    isConn: connect.isOn,
-    err: connect.error
+    isConn: connect.serverOn,
+    err: connect.serverError
 });
 
 const mapDispatchToProps = (dispatch) => {

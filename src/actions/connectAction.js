@@ -1,29 +1,48 @@
 import axios from '../api'
 
 export const CONNECT_SERVER = 'CONNECT_SERVER';
+export const CONNECT_INTERNET = 'CONNECT_INTERNET';
 
 // connected with BtnConnect
-export const connectServer = ({ isOn, error }) => {
+export const connectServer = ({ serverOn, serverError }) => {
 	return {
 		type: CONNECT_SERVER,
-		payload : {
-			isOn,
-			error
+		payload: {
+			serverOn,
+			serverError
 		}
 	}
 }
 
 // async action
-export const sendConnect = params => dispatch => {
+export const sendConnectServer = params => dispatch => {
 	return axios.get('/server/hello/webos')
 		.then(res => {
 			//console.log(res)
 			if (res.status == 200) {
-				dispatch(connectServer({ isOn: true, error: '' }))
+				dispatch(connectServer({ serverOn: true, serverError: '' }))
 			}
 		})
 		.catch(err => {
 			console.log(err)
-			dispatch(connectServer({isOn:false,error:err.message}))
+			dispatch(connectServer({ serverOn: false, serverError: err.message }))
+		})
+}
+
+export const connectInternet = (internetOn) => {
+	return {
+		type: CONNECT_INTERNET,
+		internetOn
+	}
+}
+export const sendConnectInternet = params => dispatch => {
+	return axios.get('http://www.google.com', )
+		.then(res => {
+			//console.log(res)
+			dispatch(connectInternet(true))
+		})
+		.catch(err => {
+			console.log(err)
+			dispatch(connectInternet(false))
 		})
 }

@@ -3,95 +3,73 @@ import axios from '../../api';
 import config from '../../../resources/config.json';
 import Touchable from '@enact/ui/Touchable';
 import './Kakao.less';
+import { loadKakaoMap } from '../../actions';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-const KakaoMap = (props) => {
+const KakaoMap = ({ isLoaded, onLoadMap }) => {
     const [html, setHtml] = useState('');
     const { HOST, PORT } = config.SERVER;
+    const history = useHistory()
     useEffect(() => {
         const script = document.createElement('script');
         script.type = "text/javascript"
-        script.async = true;
-        script.src = "http://dapi.kakao.com/v2/maps/sdk.js?appkey=aefdc433d657b3802f48149819d88496&libraries=services&autoload=false";
-        document.head.appendChild(script);
-        script.onload = () => {
-            if (window.kakao !== undefined) {
-                let Kakao = window.kakao;
-                // 마커 상세정보 오버레이
-                Kakao.maps.load(() => {
-                    console.log("kakao loaded")
-                    const script2 = document.createElement('script');
-                    script2.type = "text/javascript"
-                    script2.src = `http://${HOST}:${PORT}/location/kakaoNew.js`;
-                    document.body.appendChild(script2);
+        script.src = `http://${HOST}:${PORT}/location/kakaoNew.js`;
+        //development mode
+        //script.src = `http://localhost:${PORT}/location/kakaoNew.js`
+        if (isLoaded) {
+            if (window.kakao === undefined)
+                console.log("kakao unloaded");
+            else {
+                let kakao = window.kakao;
+                kakao.maps.load(() => {
+                    console.log('useEffect on KakaoMap')
+                    document.body.appendChild(script);
+                    //Object.defineProperty(window.navigator, 'userAgent', { get: function () { return 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36'; } })
+                    /* var ANDROID = window.navigator.userAgent.indexOf('Android') >= 0;
+                    var TOUCHABLE = ('ontouchstart' in document.documentElement) &&
+                        (window.navigator.userAgent.indexOf('Chrome') < 0 || ANDROID); */
                 })
             }
         }
-
+        else {
+            onLoadMap();
+        }
     })
     return (
-        <div className="map_wrap">
-            <div id="map" ></div>
-            <ul id="category">
-                <li id="CE7" data-order="4">
-                    <span className="category_bg cafe"></span>
+        <div className="kakao-map">
+            <div className="map_wrap">
+                <div id="map" ></div>
+                <ul id="category">
+                    <li id="CE7" data-order="4">
+                        <span className="category_bg cafe"></span>
             애견카페
         </li>
-                <li id="OL7" data-order="3">
-                    <span className="category_bg oil"></span>
+                    <li id="OL7" data-order="3">
+                        <span className="category_bg oil"></span>
             주유소
         </li>
-            </ul>
+                </ul>
+            </div>
         </div>
+
     )
 }
-const KakaoMap_ = Touchable({activeProp : 'pressed'},KakaoMap);
+//const KakaoMap_ = Touchable({ activeProp: 'pressed' }, KakaoMap);
 //const KakaoMap_ = touchDeco(KakaoMap);
 
-export default KakaoMap_;
 
-/*
-class LocationView extends React.Component {
-    constructor() {
-        super();
-        this.state = { html: '' }
-    }
-    componentDidMount() {
+const mapStateToProps = ({ location }) => ({
+    isLoaded: location.isLoaded
+});
 
-        axios.get(`/location/map`)
-            .then(res => {
-                console.log(res)
-                const { html, src, js } = res.data
-                this.setState({ html: html });
-                const script = document.createElement('script');
-                script.type = "text/javascript"
-                script.async = true;
-                script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=aefdc433d657b3802f48149819d88496&libraries=services&autoload=false";
-                document.head.appendChild(script);
-                script.onload = () => {
-                    //console.log({window:window, kakao:kakao})
-                }
-                return () => {
-                    document.head.removeChild(script);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onLoadMap: () => dispatch(loadKakaoMap())
+    };
+};
 
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-    render() {
-        function createMarkup(html) {
-            return { __html: html };
-        }
-        return (
-            <Panel>
-                <Header title="위치 정보" />
-                <BtnGoMain />
-                <div s dangerouslySetInnerHTML={createMarkup(this.state.html)} />
-                <source src="https://github.com/jikjoo/Bangul_webOS/issues/3"></source>
-            </Panel>
-        )
+const KakaoMapContainer = connect(mapStateToProps, mapDispatchToProps)(KakaoMap);
 
-    }
-}
- */
+
+export default KakaoMapContainer;

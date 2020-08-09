@@ -3,8 +3,10 @@
     "kennel" : "스마트 켄넬",
     "location" : "위치 정보",
     "setting" : "설정",
-    "fix":"고정 장치 확인",
+    "fix":"고정 장치",
     "lamp" : "무드등",
     "temp" : "온도 조절",
-    "video" : "내부 영상 확인"
+    "video" : "내부 영상",
+    "server_not_connected" : "서버와 연결이 끊겼습니다.",
+    "internet_not_connected" : "인터넷이 연결되어 있지 않습니다."
 }

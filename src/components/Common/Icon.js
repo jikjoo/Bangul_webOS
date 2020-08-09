@@ -1,18 +1,30 @@
 import React from 'react';
 import { GrHome, GrBriefcase, GrCompass } from 'react-icons/gr'
-import { IoIosArrowBack } from 'react-icons/io'
+import {
+    IoIosArrowBack, IoIosVideocam, IoMdThermometer,
+    IoMdBulb, IoIosConstruct, IoIosWarning, IoIosCloseCircleOutline
+} from 'react-icons/io'
 /* 
 search icon in https://react-icons.github.io/react-icons/
 */
+
+const list = {
+    home: GrHome,
+    kennel: GrBriefcase,
+    location: GrCompass,
+    back: IoIosArrowBack,
+    fix: IoIosConstruct,
+    lamp: IoMdBulb,
+    temp: IoMdThermometer,
+    video: IoIosVideocam,
+    warning: IoIosWarning,
+    close : IoIosCloseCircleOutline
+}
+
 const Icon = ({ icon, ...props }) => {
-    const list = {
-        home: <GrHome {...props} />,
-        kennel: <GrBriefcase {...props} />,
-        location: <GrCompass {...props} />,
-        back : <IoIosArrowBack {...props} />
-    }
+    const _Icon = list[icon];
     return (
-        list[icon]
+        list[icon] ? <_Icon {...props} className={`icon icon-${icon}`} /> : null
     )
 }
 

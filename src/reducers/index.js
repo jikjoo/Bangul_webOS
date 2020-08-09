@@ -8,9 +8,13 @@ import {
 	CHECK_CONNECT_HOME,
 	CHECK_CONNECT_KENNEL,
 	VIDEO_URL_HOME,
-	VIDEO_URL_KENNEL
+	VIDEO_URL_KENNEL,
+	CONNECT_INTERNET,
+	LOAD_KAKAO_MAP,
+	CHANGE_LOAD_MAP
 } from '../actions';
 import axios from '../api';
+import sample from '../../resources/sample_dog.jpg';
 
 function path(state = '/', action) {
 	switch (action.type) {
@@ -25,6 +29,8 @@ function connect(state = {}, action) {
 	switch (action.type) {
 		case CONNECT_SERVER:
 			return Object.assign({}, state, action.payload);
+		case CONNECT_INTERNET:
+			return Object.assign({},state,action.internetOn);
 		default:
 			return state;
 	}
@@ -54,17 +60,29 @@ function video(state = {}, action) {
 	}
 }
 
+function location(state={},action){
+	const {isLoaded} = action;
+	switch (action.type){
+		case CHANGE_LOAD_MAP:
+			return Object.assign({},state,{isLoaded})
+		default:
+			return state;
+	}
+}
+
 const rootReducer = combineReducers({
 	path,
 	connect,
 	check,
-	video
+	video,
+	location
 });
 
 export const initialState = {
 	connect: {
-		isOn: false,
-		error: ''
+		serverOn: false,
+		serverError: '',
+		internetOn : false
 	},
 	check: {
 		home: {
@@ -78,11 +96,14 @@ export const initialState = {
 	},
 	video: {
 		home: {
-			url: ''
+			url: sample
 		},
 		kennel: {
-			url: ''
+			url: sample
 		}
+	},
+	location : {
+		isLoaded : false
 	}
 }
 

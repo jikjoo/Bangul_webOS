@@ -36,6 +36,6 @@ export const sendVideoURL = target => dispatch => {
         })
         .catch(err => {
             console.log(err)
-            dispatch(videoURL({ target, url: err }))
+            //dispatch(videoURL({ target, url: err }))
         })
 }
