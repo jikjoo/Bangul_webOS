@@ -14,7 +14,6 @@ import {
 	CHANGE_LOAD_MAP
 } from '../actions';
 import axios from '../api';
-import sample from '../../resources/sample_dog.jpg';
 
 function path(state = '/', action) {
 	switch (action.type) {
@@ -80,9 +79,9 @@ const rootReducer = combineReducers({
 
 export const initialState = {
 	connect: {
-		serverOn: false,
+		serverOn: true,
 		serverError: '',
-		internetOn : false
+		internetOn : true
 	},
 	check: {
 		home: {
@@ -96,10 +95,10 @@ export const initialState = {
 	},
 	video: {
 		home: {
-			url: sample
+			url: ''
 		},
 		kennel: {
-			url: sample
+			url: ''
 		}
 	},
 	location : {
