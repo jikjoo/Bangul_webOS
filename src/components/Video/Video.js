@@ -60,10 +60,10 @@ class Video extends React.Component {
     console.log("in getUserMedia")
     return new Promise((resolve, reject) => {
       const { navigator } = window;
-      navigator.getUserMedia = navigator.getUserMedia =
+      /* navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
+        navigator.mozGetUserMedia; */
       const op = {
         /* video: {
           width: { min: 160, ideal: 640, max: 1280 },
@@ -72,16 +72,33 @@ class Video extends React.Component {
         video: false,
         audio: true
       };
-      navigator.getUserMedia(
-        op,
-        stream => {
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-          console.log('return getUserMedia')
-          resolve();
-        },
-        () => { }
-      );
+      navigator.mediaDevices.getUserMedia(op)
+        .catch(function (error) {
+          if (error.name !== 'NotFoundError') {
+            throw error;
+          }
+          return navigator.mediaDevices.enumerateDevices()
+            .then(function (devices) {
+              var mic = devices.find(function (device) {
+                return device.kind === 'audioinput';
+              });
+              var constraints = {
+                video: false,
+                audio: mic && op.audio
+              };
+              console.log("enumerateDevices", { audio: constraints.audio })
+              return navigator.mediaDevices.getUserMedia(constraints);
+            });
+        })
+        .then(
+          stream => {
+            this.setState({ streamUrl: stream, localStream: stream });
+            this.localVideo.srcObject = stream;
+            console.log('return getUserMedia')
+            resolve();
+          },
+          () => { }
+        );
     });
   }
 
@@ -159,13 +176,13 @@ class Video extends React.Component {
         <video
           autoPlay
           id='localVideo'
-          className="local"
+          className="video local"
           muted
           ref={video => (this.localVideo = video)}
         />
         <video
           autoPlay
-          className={`remote ${
+          className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
