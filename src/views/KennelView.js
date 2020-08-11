@@ -3,7 +3,6 @@ import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { BoxHeader, BoxPanel } from '../components/Box';
-import {Video} from '../components/Common';
 import BtnVideoPush from '../components/Kennel/BtnVideoPush';
 import VideoKennel from '../components/Kennel/VideoKennel';
 
