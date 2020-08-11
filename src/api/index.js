@@ -1,9 +1,8 @@
 import Axios from 'axios';
-import config from '../../resources/config.json';
 
-const {SERVER} = config;
-const {HOST,PORT } = SERVER;
+export const HOST = process.env.REACT_APP_MAIN_HOST || "http://localhost"
+    , PORT = process.env.REACT_APP_MAIN_PORT || 3000;
 const axios = Axios;
-axios.defaults.baseURL = `http://${HOST}:${PORT}`
+axios.defaults.baseURL = `${HOST}:${PORT}`
 
 export default axios;

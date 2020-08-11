@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../api';
-import config from '../../../resources/config.json';
+import axios, { HOST, PORT } from '../../api';
 import Touchable from '@enact/ui/Touchable';
 import './Kakao.less';
 import { loadKakaoMap } from '../../actions';
@@ -9,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 
 const KakaoMap = ({ isLoaded, onLoadMap }) => {
     const [html, setHtml] = useState('');
-    const { HOST, PORT } = config.SERVER;
     const history = useHistory()
     useEffect(() => {
         const script = document.createElement('script');

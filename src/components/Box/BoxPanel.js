@@ -9,7 +9,7 @@ import BoxAlarm from './BoxAlarm';
 const BoxPanel = ({ children,onLine, ...rest }) => {
     useEffect(() => {
        // onLine();
-    })
+    },[])
     const online = window.navigator.onLine;
     return (
         <Panel className={'box box-panel'}>

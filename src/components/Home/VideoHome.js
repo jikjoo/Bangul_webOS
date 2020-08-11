@@ -1,6 +1,6 @@
 import React  from 'react'
 import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
-import { Video } from '../Common';
+import { Video } from '../Video';
 
 const VideoHome = ({ children,sub, ...props }) => {
     return (

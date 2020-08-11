@@ -1,4 +1,5 @@
 import axios from '../api'
+import sample from '../../resources/sample_dog.jpg';
 
 export const VIDEO_URL_HOME = 'VIDEO_URL/HOME';
 export const VIDEO_URL_KENNEL = 'VIDEO_URL/KENNEL';
@@ -36,6 +37,6 @@ export const sendVideoURL = target => dispatch => {
         })
         .catch(err => {
             console.log(err)
-            //dispatch(videoURL({ target, url: err }))
+            dispatch(videoURL({ target, url: sample }))
         })
 }
