@@ -27,7 +27,6 @@ class Video extends React.Component {
   videoCall = new VideoCall();
 
   componentDidMount() {
-    console.log({ signal_server: process.env.REACT_APP_SIGNALING_SERVER })
     const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
@@ -55,7 +54,11 @@ class Video extends React.Component {
     });
   }
 
-
+  componentWillUnmount() {
+    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
+    socket.emit('disconnect')
+    console.log('disconnect')
+  }
   getUserMedia(cb) {
     console.log("in getUserMedia")
     return new Promise((resolve, reject) => {
@@ -86,8 +89,14 @@ class Video extends React.Component {
                 video: false,
                 audio: mic && op.audio
               };
-              console.log("enumerateDevices", { audio: constraints.audio })
-              return navigator.mediaDevices.getUserMedia(constraints);
+              console.log("enumerateDevices", { audio: constraints.audio, error })
+              navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                  this.setState({ streamUrl: stream, localStream: stream });
+                  this.localVideo.srcObject = stream;
+                  console.log('return enumerate getUserMedia')
+                  resolve();
+                })
             });
         })
         .then(
@@ -167,7 +176,7 @@ class Video extends React.Component {
   };
   renderFull = () => {
     if (this.state.full) {
-      return <div className="status">The room is full</div>;
+      return <p>The room is full</p>;
     }
   };
   render() {
@@ -190,18 +199,16 @@ class Video extends React.Component {
         />
         {this.props.children}
 
-
-        {this.state.connecting && (
-          <div className='status'>
+        <div className='status'>
+          {this.state.connecting && (
             <p>Establishing connection...</p>
-          </div>
-        )}
-        {this.state.waiting && (
-          <div className='status'>
+          )}
+          {this.state.waiting && (
             <p>Waiting for someone...</p>
-          </div>
-        )}
-        {this.renderFull()}
+          )}
+          {this.renderFull()}
+        </div>
+
       </div>
     );
   }
