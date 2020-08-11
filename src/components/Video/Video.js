@@ -6,7 +6,6 @@ import './Video.less';
 import { connect } from 'react-redux';
 import { sendVideoURL } from '../../actions';
 import io from 'socket.io-client';
-import config from '../../../resources/config.json';
 import VideoCall from './VideoCall'
 
 class Video extends React.Component {
@@ -28,10 +27,11 @@ class Video extends React.Component {
   videoCall = new VideoCall();
 
   componentDidMount() {
-    const socket = io(config.REACT_APP_SIGNALING_SERVER);
+    console.log({ signal_server: process.env.REACT_APP_SIGNALING_SERVER })
+    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
-    const roomId = 0;// this.props.match.params;
+    const roomId = 'fish';// this.props.match.params;
     this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
     });
@@ -57,12 +57,13 @@ class Video extends React.Component {
 
 
   getUserMedia(cb) {
+    console.log("in getUserMedia")
     return new Promise((resolve, reject) => {
       const { navigator } = window;
-      /* navigator.getUserMedia = navigator.getUserMedia =
+      navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia; */
+        navigator.mozGetUserMedia;
       const op = {
         /* video: {
           width: { min: 160, ideal: 640, max: 1280 },
@@ -71,11 +72,12 @@ class Video extends React.Component {
         video: false,
         audio: true
       };
-      navigator.mediaDevices.getUserMedia(
+      navigator.getUserMedia(
         op,
         stream => {
           this.setState({ streamUrl: stream, localStream: stream });
           this.localVideo.srcObject = stream;
+          console.log('return getUserMedia')
           resolve();
         },
         () => { }
@@ -104,21 +106,21 @@ class Video extends React.Component {
       camState: !this.state.camState
     })
   }
-
-  getDisplay() {
-    window.navigator.mediaDevices.getUserMedia().then(stream => {
-      stream.oninactive = () => {
-        this.state.peer.removeStream(this.state.localStream);
-        this.getUserMedia().then(() => {
-          this.state.peer.addStream(this.state.localStream);
-        });
-      };
-      this.setState({ streamUrl: stream, localStream: stream });
-      this.localVideo.srcObject = stream;
-      this.state.peer.addStream(stream);
-    });
-  }
-
+  /* 
+    getDisplay() {
+      window.navigator.mediaDevices.getUserMedia().then(stream => {
+        stream.oninactive = () => {
+          this.state.peer.removeStream(this.state.localStream);
+          this.getUserMedia().then(() => {
+            this.state.peer.addStream(this.state.localStream);
+          });
+        };
+        this.setState({ streamUrl: stream, localStream: stream });
+        this.localVideo.srcObject = stream;
+        this.state.peer.addStream(stream);
+      });
+    }
+   */
   enter = roomId => {
     this.setState({ connecting: true });
     const peer = this.videoCall.init(
@@ -153,66 +155,25 @@ class Video extends React.Component {
   };
   render() {
     return (
-      <div className='video-wrapper'>
-        <div className='local-video-wrapper'>
-          <video
-            autoPlay
-            id='localVideo'
-            muted
-            ref={video => (this.localVideo = video)}
-          />
-        </div>
+      <div className='box-video'>
         <video
           autoPlay
-          className={`${
+          id='localVideo'
+          className="local"
+          muted
+          ref={video => (this.localVideo = video)}
+        />
+        <video
+          autoPlay
+          className={`remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
           ref={video => (this.remoteVideo = video)}
         />
-
-        <div className='controls'>
-          <button
-            className='control-btn'
-            onClick={() => {
-              this.getDisplay();
-            }}
-          >
-            {/*  <ShareScreenIcon /> */}
-          </button>
-
-
-          <button
-            className='control-btn'
-            onClick={() => {
-              this.setAudioLocal();
-            }}
-          >
-            {/* 
-              this.state.micState?(
-                <MicOnIcon/>
-              ):(
-                <MicOffIcon/>
-              )
-             */}
-          </button>
-
-          <button
-            className='control-btn'
-            onClick={() => {
-              this.setVideoLocal();
-            }}
-          >
-            {/* {
-              this.state.camState?(
-                <CamOnIcon/>
-              ):(
-                <CamOffIcon/>
-              )
-            } */}
-          </button>
-        </div>
-
+        <BoxVideoBtn>
+          {this.props.children}
+        </BoxVideoBtn>
 
 
         {this.state.connecting && (

@@ -14,6 +14,7 @@
 - `git clone https://github.com/jikjoo/Bangul_webOS`
 - `npm install -g @enact/cli`
 - `npm install`
+- copy `.env.example` to `.env`
 
 ## 로컬 서버 실행
 - `npm run serve`
