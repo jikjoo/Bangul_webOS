@@ -167,7 +167,7 @@ class Video extends React.Component {
   };
   renderFull = () => {
     if (this.state.full) {
-      return 'The room is full';
+      return <div className="status">The room is full</div>;
     }
   };
   render() {
@@ -188,9 +188,7 @@ class Video extends React.Component {
           id='remoteVideo'
           ref={video => (this.remoteVideo = video)}
         />
-        <BoxVideoBtn>
-          {this.props.children}
-        </BoxVideoBtn>
+        {this.props.children}
 
 
         {this.state.connecting && (
