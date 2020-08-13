@@ -30,7 +30,8 @@ class Video extends React.Component {
     const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
-    const roomId = 'fish';// this.props.match.params;
+    const {target} = this.props;
+    const roomId = `bangul${target}`;// this.props.match.params;
     this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
     });
