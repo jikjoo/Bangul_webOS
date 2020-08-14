@@ -5,8 +5,8 @@
 - [EnactSample](/docs/EnactSample.md)
 - [EnactJS](/docs/enactjs.md)
 ## 관련 Repository
-- 스마트기기 : https://github.com/Galocg/Bangul_Smart
-- 서버 : https://github.com/Chaeoon-Park/Bangul_server-github-
+- 서버 : https://github.com/Galocg/Bangul_Smart
+- 스마트기기 : https://github.com/Chaeoon-Park/Bangul_server-github-
 - 머신러닝 : https://github.com/Adam-Kim/dogvomitML
 - 디자인 :https://github.com/jikjoo/moonstone
 
