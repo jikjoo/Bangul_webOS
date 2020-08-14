@@ -7,11 +7,12 @@ import { connect } from 'react-redux';
 import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
+import sample_dog from '../../../resources/sample_dog.jpg'
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       localStream: {},
       remoteStreamUrl: '',
       streamUrl: '',
@@ -23,7 +24,8 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       socket : null
-    };
+    }
+    this.state = this.initialState;
   }
   videoCall = new VideoCall();
 
@@ -58,6 +60,7 @@ class Video extends React.Component {
 
   componentWillUnmount() {
     this.state.socket.disconnect();
+    this.setState(this.initialState);
     console.log('disconnect')
   }
   getUserMedia(cb) {
@@ -94,7 +97,7 @@ class Video extends React.Component {
               navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
                   this.setState({ streamUrl: stream, localStream: stream });
-                  this.localVideo.srcObject = stream;
+                  //this.localVideo.srcObject = stream;
                   console.log('return enumerate getUserMedia')
                   resolve();
                 })
@@ -103,7 +106,7 @@ class Video extends React.Component {
         .then(
           stream => {
             this.setState({ streamUrl: stream, localStream: stream });
-            this.localVideo.srcObject = stream;
+            //this.localVideo.srcObject = stream;
             console.log('return getUserMedia')
             resolve();
           },
@@ -183,19 +186,20 @@ class Video extends React.Component {
   render() {
     return (
       <div className='box-video'>
-        <video
+        {/* <video
           autoPlay
           id='localVideo'
           className="video local"
           muted
           ref={video => (this.localVideo = video)}
-        />
+        /> */}
         <video
           autoPlay
           className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
+          poster={sample_dog}
           ref={video => (this.remoteVideo = video)}
         />
         {this.props.children}
