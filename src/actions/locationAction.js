@@ -9,11 +9,11 @@ export const changeLoadMap = (isLoaded) => {
     }
 }
 
-export const loadKakaoMap = params => dispatch => {
+export const loadNaverMap = params => dispatch => {
     const script = document.createElement('script');
     script.type = "text/javascript"
     script.async = true;
-    script.src = "http://dapi.kakao.com/v2/maps/sdk.js?appkey=aefdc433d657b3802f48149819d88496&libraries=services&autoload=false";
+    script.src = "https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=mda3e6eja3";
     document.head.appendChild(script);
     script.onload = () => {
         return dispatch(changeLoadMap(true))

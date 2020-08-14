@@ -1,1 +1,1 @@
-export {default as KakaoMap} from './KakaoMap'
+export {default as NaverMap} from './NaverMap'
