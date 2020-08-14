@@ -4,7 +4,7 @@ import { BtnVideo } from '../Button';
 import { BoxVideoBtn } from '../Box';
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL } from '../../actions';
+import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 
@@ -22,6 +22,7 @@ class Video extends React.Component {
       waiting: true,
       micState: true,
       camState: true,
+      socket : null
     };
   }
   videoCall = new VideoCall();
@@ -30,7 +31,7 @@ class Video extends React.Component {
     const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
-    const {target} = this.props;
+    const { target } = this.props;
     const roomId = `bangul${target}`;// this.props.match.params;
     this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
@@ -56,8 +57,7 @@ class Video extends React.Component {
   }
 
   componentWillUnmount() {
-    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
-    socket.emit('disconnect')
+    this.state.socket.disconnect();
     console.log('disconnect')
   }
   getUserMedia(cb) {
@@ -217,10 +217,12 @@ class Video extends React.Component {
 /*
 video : {
     home : {
-       url : ''
+       url : '',
+       socket
     },
     kennel : {
-        url : ''
+        url : '',
+        socket
     }
 }
 */
@@ -231,7 +233,8 @@ const mapStateToProps = ({ video }) => ({
 // 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {
   return {
-    onURL: (target) => dispatch(sendVideoURL(target))
+    onURL: (target) => dispatch(sendVideoURL(target)),
+    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket }))
   };
 };
 // withRouter는 this.props.history 사용할 수 있도록 하기 : 다른 화면으로 넘어가도록
