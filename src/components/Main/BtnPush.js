@@ -5,6 +5,7 @@ import { Icon } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
 import { sendCheckConnect } from '../../actions';
+import Switch from '@jikjoo/moonstone/Switch';
 import { connect } from 'react-redux';
 
 // Class형 component 
@@ -13,35 +14,30 @@ class BtnPush extends React.Component {
     constructor(props) {
         super(props)
         // 상태 : react에서 변수를 저장하는 곳
-        this.state = { alarmOn: false }
         // onPush 함수를 component에 종속시키기
         this.onPush = this.onPush.bind(this);
     }
     //BtnPush가 rendering 되고 난 직후
     componentDidMount() {
-        const { push, onCheck } = this.props;
-        if (push === 'home' || push === 'kennel')
-            onCheck(push);
+        const { push, onCheck,check } = this.props;
+        onCheck(push);
     }
     onPush = (e) => {
         const { push, check, history, onCheck } = this.props;
-        if (push === 'home' || push === 'kennel') {
-            onCheck(push);
-            if (!check[push].isOn) this.setState({ alarmOn: true });
-        }
+        onCheck(push);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
         history.push(push)
     }
     render() {
         const { push, children, check, onCheck, ...rest } = this.props;
-        const { alarmOn } = this.state;
         return (
             <Button className={"button btn-push"} onClick={this.onPush}>
                 <div className={"icon-main"}><Icon icon={push} /></div>
                 {text[push]}
-                {alarmOn ?
-                    <div>{`연결 안됨 ${check[push].error}`}</div> : null}
+                <div>
+                    <Switch selected={check[push].isOn} />
+                </div>
                 {children}
             </Button>
 

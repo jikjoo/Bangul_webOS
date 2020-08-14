@@ -1,4 +1,6 @@
-export const LOAD_KAKAO_MAP = 'LOAD_KAKAO_MAP';
+import { checkConnect } from "./checkAction";
+
+export const LOAD_NAVER_MAP = 'LOAD_NAVER_MAP';
 
 export const CHANGE_LOAD_MAP = 'CHANGE_LOAD_MAP';
 
@@ -16,6 +18,6 @@ export const loadNaverMap = params => dispatch => {
     script.src = "https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=mda3e6eja3";
     document.head.appendChild(script);
     script.onload = () => {
-        return dispatch(changeLoadMap(true))
+        return dispatch(checkConnect({target:'location',isOn:true}))
     }
 }

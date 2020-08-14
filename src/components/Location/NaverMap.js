@@ -45,8 +45,8 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
 //const NaverMap_ = touchDeco(NaverMap);
 
 
-const mapStateToProps = ({ location }) => ({
-    isLoaded: location.isLoaded
+const mapStateToProps = ({ check }) => ({
+    isLoaded: check.location.isOn
 });
 
 const mapDispatchToProps = (dispatch) => {
