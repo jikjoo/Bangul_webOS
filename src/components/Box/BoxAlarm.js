@@ -6,12 +6,12 @@ import Button from '@enact/ui/Button';
 
 const BoxAlarm = ({ type, open, ...props }) => {
     const [closed,onClose] = useState(false);
-    useEffect(()=>{
+    /* useEffect(()=>{
         setTimeout(()=>{onClose(true)},2000)
-    },[])
+    },[]) */
     return (
         <Notfication className={`box-alarm ${type}`}
-            open={open&!closed} {...props} scrimType="none">
+            open={(open&!closed)?1:0} {...props} scrimType="none">
             <Icon icon="warning" />
             <span>  {text[type]}  </span>
             <Button className={'button btn-close'} onClick={()=>{onClose(true)}}>
