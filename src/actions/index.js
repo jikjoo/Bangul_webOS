@@ -9,6 +9,15 @@ export {
 } from './videoAction';
 export { LOAD_NAVER_MAP, loadNaverMap, changeLoadMap, CHANGE_LOAD_MAP } from './locationAction';
 
+/* 메인 화면 로딩 끄고 키기 */
+export const SET_LOADING = 'SET_LOADING'
+export const setLoading = (loading) => {
+	return {
+		type : SET_LOADING,
+		loading
+	}
+}
+
 export const navigate = (path) => {
 	return {
 		type: 'NAVIGATE',

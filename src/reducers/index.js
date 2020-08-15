@@ -14,6 +14,7 @@ import {
 	CHANGE_LOAD_MAP,
 	SET_SOCKET_HOME,
 	SET_SOCKET_KENNEL,
+	SET_LOADING,
 } from '../actions';
 import axios from '../api';
 import { CHECK_CONNECT_LOCATION } from '../actions/checkAction';
@@ -78,12 +79,23 @@ function location(state = {}, action) {
 	}
 } */
 
+function loading(state=true,action){
+	const {loading} = action;
+	switch (action.type){
+		case SET_LOADING:
+			return loading
+		default:
+			return state;
+	}
+}
+
 const rootReducer = combineReducers({
 	path,
 	connect,
 	check,
 	video,
 	//location
+	loading
 });
 
 /********* initalState *************/
@@ -119,6 +131,7 @@ export const initialState = {
 	/* location: {
 		isLoaded: false
 	} */
+	loading: true
 }
 
 export default rootReducer;

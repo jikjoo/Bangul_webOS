@@ -4,6 +4,7 @@ import {
     IoIosArrowBack, IoIosVideocam, IoMdThermometer,
     IoMdBulb, IoIosConstruct, IoIosWarning, IoIosCloseCircleOutline
 } from 'react-icons/io'
+import './Common.less';
 /* 
 search icon in https://react-icons.github.io/react-icons/
 */
