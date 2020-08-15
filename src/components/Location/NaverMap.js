@@ -16,19 +16,15 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
         script.src = `http://${HOST}:${PORT}/location/naverNew.js`;
          */
         if (isLoaded) {
-            if (window.naver === undefined)
-                console.log("naver unloaded");
-            else {
-                let naver = window.naver;
-                var mapOptions = {
-                    center: new naver.maps.LatLng(37.3595704, 127.105399),
-                    zoom: 14
-                };
+            let naver = window.naver;
+            var mapOptions = {
+                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                zoom: 14
+            };
 
-                var targetMap = document.getElementById('map');
+            var targetMap = document.getElementById('map');
 
-                var map = new naver.maps.Map(targetMap, mapOptions);
-            }
+            var map = new naver.maps.Map(targetMap, mapOptions);
         }
         else {
             onLoadMap();

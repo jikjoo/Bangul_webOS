@@ -20,7 +20,10 @@ export const loadNaverMap = params => (dispatch, getState) => {
         script.src = "https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=mda3e6eja3";
         document.head.appendChild(script);
         script.onload = () => {
-            return dispatch(checkConnect({ target: 'location', isOn: true }))
+            if (window.naver === undefined) {
+                return dispatch(checkConnect({ target: 'location', isOn: false }))
+            }
+            else return dispatch(checkConnect({ target: 'location', isOn: true }))
         }
     }
 }
