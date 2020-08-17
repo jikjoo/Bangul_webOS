@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import BtnPush from './BtnPush';
+import BtnGoto from './BtnGoto';
 import { connect } from 'react-redux';
 import text from '../../../resources/text.json';
 import BoxAlarm from '../Box/BoxAlarm';

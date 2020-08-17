@@ -9,34 +9,34 @@ import Switch from '@jikjoo/moonstone/Switch';
 import { connect } from 'react-redux';
 
 // Class형 component 
-class BtnPush extends React.Component {
+class BtnGoto extends React.Component {
     //생성자
     constructor(props) {
         super(props)
         // 상태 : react에서 변수를 저장하는 곳
-        // onPush 함수를 component에 종속시키기
-        this.onPush = this.onPush.bind(this);
+        // onGoto 함수를 component에 종속시키기
+        this.onGoto = this.onGoto.bind(this);
     }
-    //BtnPush가 rendering 되고 난 직후
+    //BtnGoto가 rendering 되고 난 직후
     componentDidMount() {
-        const { push, onCheck,check } = this.props;
-        onCheck(push);
+        const { target, onCheck, check } = this.props;
+        onCheck(target);
     }
-    onPush = (e) => {
-        const { push, check, history, onCheck } = this.props;
-        onCheck(push);
+    onGoto = (e) => {
+        const { target, check, history, onCheck } = this.props;
+        onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
-        history.push(push)
+        history.push(target)
     }
     render() {
-        const { push, children, check, onCheck, ...rest } = this.props;
+        const { target, children, check, onCheck, ...rest } = this.props;
         return (
-            <Button className={"button btn-push"} onClick={this.onPush}>
-                <div className={"icon-main"}><Icon icon={push} /></div>
-                {text[push]}
+            <Button className={"button btn-push"} onClick={this.onGoto}>
+                <div className={"icon-main"}><Icon icon={target} /></div>
+                {text[target]}
                 <div>
-                    <Switch selected={check[push].isOn} />
+                    <Switch selected={check[target].isOn} />
                 </div>
                 {children}
             </Button>
@@ -71,6 +71,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 // withRouter는 this.props.history 사용할 수 있도록 하기 : 다른 화면으로 넘어가도록
-const BtnPushContainer = connect(mapStateToProps, mapDispatchToProps)(withRouter(BtnPush));
+const BtnGotoContainer = connect(mapStateToProps, mapDispatchToProps)(withRouter(BtnGoto));
 
-export default BtnPushContainer;
+export default BtnGotoContainer;

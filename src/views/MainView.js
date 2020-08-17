@@ -1,6 +1,6 @@
 import Button from '@jikjoo/moonstone/Button';
 import React from 'react';
-import { BoxMainBtn, BtnPush, Loading } from '../components/Main';
+import { BoxMainBtn, BtnGoto, Loading } from '../components/Main';
 import { BoxPanel, BoxHeader } from '../components/Box';
 
 // 함수형 component
@@ -8,9 +8,9 @@ const MainView = (props) => {
 	return (
 		[<BoxPanel>
 			<BoxMainBtn >
-				<BtnPush push="home" ></BtnPush>
-				<BtnPush push="kennel" ></BtnPush>
-				<BtnPush push="location" ></BtnPush>
+				<BtnGoto target="home" ></BtnGoto>
+				<BtnGoto target="kennel" ></BtnGoto>
+				<BtnGoto target="location" ></BtnGoto>
 			</BoxMainBtn>
 		</BoxPanel>,
 		<Loading/>
