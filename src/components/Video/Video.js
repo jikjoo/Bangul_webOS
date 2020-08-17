@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
-import { BtnVideo } from '../Button';
-import { BoxVideoBtn } from '../Box';
 import './Video.less';
 import { connect } from 'react-redux';
 import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
+import BoxAlarm from '../Box/BoxAlarm';
+import text from '../../../resources/text.json'
 
 class Video extends React.Component {
   constructor(props) {
@@ -15,7 +15,6 @@ class Video extends React.Component {
     this.initialState = {
       localStream: {},
       remoteStreamUrl: '',
-      streamUrl: '',
       initiator: false,
       peer: {},
       full: false,
@@ -100,7 +99,7 @@ class Video extends React.Component {
               console.log("enumerateDevices", { audio: constraints.audio, error })
               navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
-                  this.setState({ streamUrl: stream, localStream: stream });
+                  this.setState({ localStream: stream });
                   //this.localVideo.srcObject = stream;
                   console.log('return enumerate getUserMedia')
                   resolve();
@@ -109,7 +108,7 @@ class Video extends React.Component {
         })
         .then(
           stream => {
-            this.setState({ streamUrl: stream, localStream: stream });
+            this.setState({ localStream: stream });
             //this.localVideo.srcObject = stream;
             console.log('return getUserMedia')
             resolve();
@@ -151,7 +150,7 @@ class Video extends React.Component {
             this.state.peer.addStream(this.state.localStream);
           });
         };
-        this.setState({ streamUrl: stream, localStream: stream });
+        this.setState({localStream: stream });
         this.localVideo.srcObject = stream;
         this.state.peer.addStream(stream);
       });
@@ -192,6 +191,7 @@ class Video extends React.Component {
     }
   };
   render() {
+    const { localStream } = this.state;
     return (
       <div className='box-video'>
         {/* <video
@@ -214,14 +214,14 @@ class Video extends React.Component {
 
         <div className='status'>
           {this.state.connecting && (
-            <p>Establishing connection...</p>
+            <p>{text.connecting_video}</p>
           )}
           {this.state.waiting && (
-            <p>Waiting for someone...</p>
+            <p>{text.waiting_device}</p>
           )}
           {this.renderFull()}
         </div>
-
+        <BoxAlarm open={!localStream.active} type='mic_not_found' />
       </div>
     );
   }
