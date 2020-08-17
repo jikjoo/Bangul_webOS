@@ -4,14 +4,15 @@ import { BtnVideo } from '../Button';
 import { BoxVideoBtn } from '../Box';
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL } from '../../actions';
+import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
+import sample_dog from '../../../resources/sample_dog.jpg'
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       localStream: {},
       remoteStreamUrl: '',
       streamUrl: '',
@@ -22,15 +23,18 @@ class Video extends React.Component {
       waiting: true,
       micState: true,
       camState: true,
-    };
+      socket: null
+    }
+    this.state = this.initialState;
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
+    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
     const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
-    const {target} = this.props;
+    const { target } = this.props;
     const roomId = `bangul${target}`;// this.props.match.params;
     this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
@@ -56,11 +60,13 @@ class Video extends React.Component {
   }
 
   componentWillUnmount() {
-    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
-    socket.emit('disconnect')
+    // 화면 벗어나면, socket 통신 끊기
+    this.state.socket.disconnect();
+    this.setState(this.initialState);
     console.log('disconnect')
   }
   getUserMedia(cb) {
+    //내 마이크 확인해서, stream 얻고 state에 저장하기
     console.log("in getUserMedia")
     return new Promise((resolve, reject) => {
       const { navigator } = window;
@@ -81,6 +87,7 @@ class Video extends React.Component {
           if (error.name !== 'NotFoundError') {
             throw error;
           }
+          //마이크 못찾았을 때, 한번 더 찾는 코드. 사실상 의미 없음
           return navigator.mediaDevices.enumerateDevices()
             .then(function (devices) {
               var mic = devices.find(function (device) {
@@ -94,7 +101,7 @@ class Video extends React.Component {
               navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
                   this.setState({ streamUrl: stream, localStream: stream });
-                  this.localVideo.srcObject = stream;
+                  //this.localVideo.srcObject = stream;
                   console.log('return enumerate getUserMedia')
                   resolve();
                 })
@@ -103,7 +110,7 @@ class Video extends React.Component {
         .then(
           stream => {
             this.setState({ streamUrl: stream, localStream: stream });
-            this.localVideo.srcObject = stream;
+            //this.localVideo.srcObject = stream;
             console.log('return getUserMedia')
             resolve();
           },
@@ -113,6 +120,7 @@ class Video extends React.Component {
   }
 
   setAudioLocal() {
+    // 내 마이크 끄고 키기 설정
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -124,6 +132,7 @@ class Video extends React.Component {
   }
 
   setVideoLocal() {
+    //내 비디오 끄고 키기 설정 
     if (this.state.localStream.getVideoTracks().length > 0) {
       this.state.localStream.getVideoTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -149,6 +158,7 @@ class Video extends React.Component {
     }
    */
   enter = roomId => {
+    // 상대방이랑 연결됐을 때.
     this.setState({ connecting: true });
     const peer = this.videoCall.init(
       this.state.localStream,
@@ -163,6 +173,7 @@ class Video extends React.Component {
       };
       this.state.socket.emit('signal', signal);
     });
+    // 상대방 비디오 스트림 받기
     peer.on('stream', stream => {
       this.remoteVideo.srcObject = stream;
       this.setState({ connecting: false, waiting: false });
@@ -183,19 +194,20 @@ class Video extends React.Component {
   render() {
     return (
       <div className='box-video'>
-        <video
+        {/* <video
           autoPlay
           id='localVideo'
           className="video local"
           muted
           ref={video => (this.localVideo = video)}
-        />
+        /> */}
         <video
           autoPlay
           className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
+          poster={sample_dog}
           ref={video => (this.remoteVideo = video)}
         />
         {this.props.children}
@@ -217,10 +229,12 @@ class Video extends React.Component {
 /*
 video : {
     home : {
-       url : ''
+       url : '',
+       socket
     },
     kennel : {
-        url : ''
+        url : '',
+        socket
     }
 }
 */
@@ -228,13 +242,12 @@ video : {
 const mapStateToProps = ({ video }) => ({
   video
 });
-// 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {
   return {
-    onURL: (target) => dispatch(sendVideoURL(target))
+    onURL: (target) => dispatch(sendVideoURL(target)),
+    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket }))
   };
 };
-// withRouter는 this.props.history 사용할 수 있도록 하기 : 다른 화면으로 넘어가도록
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);
 
 export default VideoContainer;

@@ -4,6 +4,12 @@ action이랑 connect 한 container 포함
 
 Common/에는 공통적으로 사용되는 component
 
+Box에는 공통적으로 사용되는 박스(div)
+
+Button에는 공통적으로 사용되는 버튼
+
+Video에는 장비들과 통신하는 영상 코드
+
 Home,Kennel,Location,Main/에는 각각 View에 들어갈 component들이고
 
 Common에서 받아서 변형하고 함수 등을 추가하여 사용

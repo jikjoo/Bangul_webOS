@@ -1,7 +1,7 @@
 import Button from '@jikjoo/moonstone/Button';
 import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
-import { useRouteMatch, Switch, Route } from 'react-router-dom';
+import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom';
 import { BoxHeader, BoxPanel, BoxVideoBtn } from '../components/Box';
 import BtnVideoPush from '../components/Kennel/BtnVideoPush';
 import VideoKennel from '../components/Kennel/VideoKennel';
@@ -11,12 +11,15 @@ import TempView from './Kennel/TempView';
 import VideoView from './Kennel/VideoView';
 
 const KennelView = (props) => {
-    const { path } = useRouteMatch()
+    const { path } = useRouteMatch();
+    const { location } = useHistory();
+    const { pathname } = location;
+    const sub = pathname.replace(`${path}/`, '');
     return (
         <BoxPanel>
-            <BoxHeader target={"kennel"} />
+            <BoxHeader sub={sub} target={"kennel"} />
             <VideoKennel>
-                <Switch>
+                <Switch >
                     <Route exact path={path}>
                         <BoxVideoBtn>
                             <BtnVideoPush target={"kennel"} sub={"video"} />

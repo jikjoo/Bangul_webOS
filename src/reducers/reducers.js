@@ -10,38 +10,35 @@ import {
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
 	CONNECT_INTERNET,
-	LOAD_KAKAO_MAP,
-	CHANGE_LOAD_MAP
+	LOAD_NAVER_MAP,
+	CHANGE_LOAD_MAP,
+	SET_SOCKET_HOME,
+	SET_SOCKET_KENNEL,
+	SET_LOADING,
 } from '../actions';
 import axios from '../api';
-
-function path(state = '/', action) {
-	switch (action.type) {
-		case 'NAVIGATE':
-			return action.path;
-		default:
-			return state;
-	}
-}
+import { CHECK_CONNECT_LOCATION } from '../actions/checkAction';
 
 function connect(state = {}, action) {
 	switch (action.type) {
 		case CONNECT_SERVER:
 			return Object.assign({}, state, action.payload);
 		case CONNECT_INTERNET:
-			return Object.assign({},state,action.internetOn);
+			return Object.assign({}, state, action.internetOn);
 		default:
 			return state;
 	}
 }
 
 function check(state = '', action) {
-	const { home, kennel } = action;
+	const { home, kennel,location } = action;
 	switch (action.type) {
 		case CHECK_CONNECT_HOME:
 			return Object.assign({}, state, { home });
 		case CHECK_CONNECT_KENNEL:
 			return Object.assign({}, state, { kennel });
+		case CHECK_CONNECT_LOCATION:
+			return Object.assign({}, state, { location });
 		default:
 			return state;
 	}
@@ -54,34 +51,49 @@ function video(state = {}, action) {
 			return Object.assign({}, state, { home });
 		case VIDEO_URL_KENNEL:
 			return Object.assign({}, state, { kennel });
+		case SET_SOCKET_HOME:
+			return Object.assign({}, state, { home });
+		case SET_SOCKET_KENNEL:
+			return Object.assign({}, state, { kennel });
 		default:
 			return state;
 	}
 }
-
-function location(state={},action){
-	const {isLoaded} = action;
-	switch (action.type){
+/* 
+function location(state = {}, action) {
+	const { isLoaded } = action;
+	switch (action.type) {
 		case CHANGE_LOAD_MAP:
-			return Object.assign({},state,{isLoaded})
+			return Object.assign({}, state, { isLoaded })
+		default:
+			return state;
+	}
+} */
+
+function loading(state=true,action){
+	const {loading} = action;
+	switch (action.type){
+		case SET_LOADING:
+			return loading
 		default:
 			return state;
 	}
 }
 
 const rootReducer = combineReducers({
-	path,
 	connect,
 	check,
 	video,
-	location
+	//location
+	loading
 });
 
+/********* initalState *************/
 export const initialState = {
 	connect: {
-		serverOn: true,
+		serverOn: false,
 		serverError: '',
-		internetOn : true
+		//internetOn: true
 	},
 	check: {
 		home: {
@@ -91,19 +103,25 @@ export const initialState = {
 		kennel: {
 			isOn: false,
 			error: ''
+		},
+		location:{
+			isOn : false,
 		}
 	},
 	video: {
 		home: {
-			url: ''
+			url: '',
+			socket : null
 		},
 		kennel: {
-			url: ''
+			url: '',
+			socket : null
 		}
 	},
-	location : {
-		isLoaded : false
-	}
+	/* location: {
+		isLoaded: false
+	} */
+	loading: true
 }
 
 export default rootReducer;

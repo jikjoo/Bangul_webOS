@@ -1,3 +1,4 @@
+@import '~@jikjoo/moonstone/styles/colors.less';
 
 .video {
     /* width:700px;
@@ -5,20 +6,23 @@
     margin-right: auto;
     margin-left : auto;
     height      : 800px;
+    display     : block;
 
     &.remote {
         //object-fit: scale-down;
     }
+
     &.local {
         display: none;
     }
+
     &.video-small {
-        margin-left:initial;
+        margin-left: initial;
     }
 }
 
 .status {
     position: absolute;
-    bottom:50px;
-
+    bottom  : 50px;
+    color   : @moon-gray;
 }

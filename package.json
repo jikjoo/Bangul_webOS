@@ -6,6 +6,7 @@
 	"main": "src/index.js",
 	"homepage": "./",
 	"scripts": {
+		"start": "enact serve",
 		"serve": "enact serve",
 		"pack": "enact pack",
 		"pack-p": "enact pack -p",
