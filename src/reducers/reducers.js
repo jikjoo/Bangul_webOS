@@ -19,15 +19,6 @@ import {
 import axios from '../api';
 import { CHECK_CONNECT_LOCATION } from '../actions/checkAction';
 
-function path(state = '/', action) {
-	switch (action.type) {
-		case 'NAVIGATE':
-			return action.path;
-		default:
-			return state;
-	}
-}
-
 function connect(state = {}, action) {
 	switch (action.type) {
 		case CONNECT_SERVER:
@@ -90,7 +81,6 @@ function loading(state=true,action){
 }
 
 const rootReducer = combineReducers({
-	path,
 	connect,
 	check,
 	video,
@@ -101,9 +91,9 @@ const rootReducer = combineReducers({
 /********* initalState *************/
 export const initialState = {
 	connect: {
-		serverOn: true,
+		serverOn: false,
 		serverError: '',
-		internetOn: true
+		//internetOn: true
 	},
 	check: {
 		home: {

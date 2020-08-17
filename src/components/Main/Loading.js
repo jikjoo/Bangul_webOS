@@ -5,7 +5,8 @@ import text from '../../../resources/text.json'
 
 const Loading = ({ onLoading, loading }) => {
     useEffect(() => {
-        setTimeout(
+        // 켜진 후 2초있다가 꺼짐
+        loading && setTimeout(
             () => onLoading(false), 2000
         )
     }, [])

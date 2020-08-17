@@ -11,9 +11,11 @@ export const changeLoadMap = (isLoaded) => {
     }
 }
 
+// NaverMap이랑 연결됨, sendCheckConnect에서도 실행됨
 export const loadNaverMap = params => (dispatch, getState) => {
     const { check } = getState();
     if (!check.location.isOn) {
+        // head에 네이버 api 추가
         const script = document.createElement('script');
         script.type = "text/javascript"
         script.async = true;

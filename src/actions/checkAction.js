@@ -5,7 +5,7 @@ export const CHECK_CONNECT_HOME = 'CHECK_CONNECT/HOME';
 export const CHECK_CONNECT_KENNEL = 'CHECK_CONNECT/KENNEL';
 export const CHECK_CONNECT_LOCATION = 'CHECK_CONNECT/LOCATION';
 
-//connected with BtnCheck
+//connected with BtnGoto
 export const checkConnect = ({ target, isOn, error }) => {
 	switch (target) {
 		case 'home':
@@ -41,6 +41,7 @@ export const sendCheckConnect = target => (dispatch) => {
 		dispatch(loadNaverMap())
 	}
 	else return axios.get(`${target}/check`)
+		// 서버에 장치들 연결잘되어있는지 확인하기
 		.then(res => {
 			//console.log(res)
 			if (res.status == 200) {

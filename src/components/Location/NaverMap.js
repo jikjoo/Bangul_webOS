@@ -16,6 +16,7 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
         script.src = `http://${HOST}:${PORT}/location/naverNew.js`;
          */
         if (isLoaded) {
+            // loadNaverMap action으로 head에 네이버 API 추가한 후
             let naver = window.naver;
             var mapOptions = {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),

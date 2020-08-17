@@ -6,7 +6,7 @@ export const VIDEO_URL_KENNEL = 'VIDEO_URL/KENNEL';
 export const SET_SOCKET_HOME = 'SET_SOCKET/HOME';
 export const SET_SOCKET_KENNEL = 'SET_SOCKET_KENNEL';
 
-//connected with BtnCheck
+// video URL 설정하기
 export const videoURL = ({ target, url }) => {
     switch (target) {
         case 'home':
@@ -29,7 +29,7 @@ export const videoURL = ({ target, url }) => {
             };
     }
 }
-// async action
+// 서버에 video url 보내기
 export const sendVideoURL = target => dispatch => {
     return axios.get(`${target}/url`)
         .then(res => {
@@ -43,7 +43,7 @@ export const sendVideoURL = target => dispatch => {
         })
 }
 
-
+// 소켓 설정인데, 현재 안쓰임
 export const setSocket = ({ target, socket }) => {
     switch (target) {
         case 'home':

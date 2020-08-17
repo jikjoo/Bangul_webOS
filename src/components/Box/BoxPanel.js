@@ -8,7 +8,7 @@ import BoxAlarm from './BoxAlarm';
 
 const BoxPanel = ({ children,onLine,isConn, err, onConnect, ...rest }) => {
     useEffect(() => {
-        onConnect()
+        !isConn && onConnect()
     })
     const online = window.navigator.onLine;
     return (

@@ -1,6 +1,7 @@
 import Peer from 'simple-peer'
 
 export default class VideoCall {
+    // webRTC 연결 세부 설정
     peer = null 
     init = (stream, initiator) => {
         this.peer = new Peer({

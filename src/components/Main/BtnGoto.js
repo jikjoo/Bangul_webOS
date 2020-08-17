@@ -20,11 +20,11 @@ class BtnGoto extends React.Component {
     //BtnGoto가 rendering 되고 난 직후
     componentDidMount() {
         const { target, onCheck, check } = this.props;
-        onCheck(target);
+        if (!check[target].isOn) onCheck(target);
     }
     onGoto = (e) => {
         const { target, check, history, onCheck } = this.props;
-        onCheck(target);
+        if (!check[target].isOn) onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
         history.push(target)
