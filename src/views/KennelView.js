@@ -1,5 +1,3 @@
-import Button from '@jikjoo/moonstone/Button';
-import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom';
 import { BoxHeader, BoxPanel, BoxVideoBtn } from '../components/Box';
@@ -10,7 +8,7 @@ import LampView from './Kennel/LampView';
 import TempView from './Kennel/TempView';
 import VideoView from './Kennel/VideoView';
 
-const KennelView = (props) => {
+const KennelView = () => {
     const { path } = useRouteMatch();
     const { location } = useHistory();
     const { pathname } = location;

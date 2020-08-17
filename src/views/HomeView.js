@@ -1,11 +1,9 @@
-import Button from '@jikjoo/moonstone/Button';
-import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
 import { BoxHeader, BoxPanel, BoxVideoBtn } from '../components/Box';
 import { VideoHome } from '../components/Home';
 import { BtnVideo } from '../components/Button';
 
-const HomeView = (props) => {
+const HomeView = () => {
     return (
         <BoxPanel >
             <BoxHeader target="home" />

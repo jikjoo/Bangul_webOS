@@ -37,14 +37,14 @@ export const checkConnect = ({ target, isOn, error }) => {
 }
 // async action
 export const sendCheckConnect = target => (dispatch) => {
-	if (target == 'location') {
+	if (target === 'location') {
 		dispatch(loadNaverMap())
 	}
 	else return axios.get(`${target}/check`)
 		// 서버에 장치들 연결잘되어있는지 확인하기
 		.then(res => {
 			//console.log(res)
-			if (res.status == 200) {
+			if (res.status === 200) {
 				dispatch(checkConnect({ target, isOn: true, error: '' }))
 			}
 		})

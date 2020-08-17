@@ -1,11 +1,11 @@
 import React from 'react'
-import Item from '@jikjoo/moonstone/Item'
+import { BtnVideo } from '../Button';
 
-const VomitCheck = (props) =>{
+const VomitCheck = ({...props}) =>{
     return(
-        <Item>
+        <BtnVideo {...props}>
             {`토 안 했어요`}
-        </Item>
+        </BtnVideo>
     )
 }
 

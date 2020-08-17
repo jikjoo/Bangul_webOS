@@ -5,9 +5,7 @@ import {
     IoMdBulb, IoIosConstruct, IoIosWarning, IoIosCloseCircleOutline
 } from 'react-icons/io'
 import './Common.less';
-/* 
-search icon in https://react-icons.github.io/react-icons/
-*/
+// search icon in https://react-icons.github.io/react-icons/
 
 const list = {
     home: GrHome,
@@ -19,13 +17,13 @@ const list = {
     temp: IoMdThermometer,
     video: IoIosVideocam,
     warning: IoIosWarning,
-    close : IoIosCloseCircleOutline
+    close: IoIosCloseCircleOutline
 }
 
 const Icon = ({ icon, ...props }) => {
-    const _Icon = list[icon];
+    const I = list[icon];
     return (
-        list[icon] ? <_Icon {...props} className={`icon icon-${icon}`} /> : null
+        list[icon] ? <I {...props} className={`icon icon-${icon}`} /> : null
     )
 }
 

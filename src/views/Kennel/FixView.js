@@ -1,10 +1,8 @@
-import Button from '@jikjoo/moonstone/Button';
 import BodyText from '@jikjoo/moonstone/BodyText';
 import React from 'react';
-import { BoxHeader, BoxPanel, BoxVideoBtn } from '../../components/Box';
-import { VideoKennel } from '../../components/Kennel';
+import { BoxVideoBtn } from '../../components/Box';
 
-const FixView = (props) => {
+const FixView = () => {
     return (
         <BoxVideoBtn>
             <BodyText>좌측 고정 확인</BodyText>

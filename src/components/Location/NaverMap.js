@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios, { HOST, PORT } from '../../api';
-import Touchable from '@enact/ui/Touchable';
+import React, { useEffect } from 'react';
 import './Location.less';
 import { loadNaverMap } from '../../actions';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 const NaverMap = ({ isLoaded, onLoadMap }) => {
-    const [html, setHtml] = useState('');
-    const history = useHistory()
     useEffect(() => {
         /* 
         const script = document.createElement('script');
@@ -18,14 +13,14 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
         if (isLoaded) {
             // loadNaverMap action으로 head에 네이버 API 추가한 후
             let naver = window.naver;
-            var mapOptions = {
+            const mapOptions = {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
                 zoom: 14
             };
 
-            var targetMap = document.getElementById('map');
+            const targetMap = document.getElementById('map');
 
-            var map = new naver.maps.Map(targetMap, mapOptions);
+            const map = new naver.maps.Map(targetMap, mapOptions);
         }
         else {
             onLoadMap();

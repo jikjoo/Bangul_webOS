@@ -1,5 +1,4 @@
 import React from 'react'
-import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
 import './Video.less';
 import { connect } from 'react-redux';
 import { sendVideoURL, setSocket } from '../../actions';
@@ -64,10 +63,10 @@ class Video extends React.Component {
     this.setState(this.initialState);
     console.log('disconnect')
   }
-  getUserMedia(cb) {
+  getUserMedia() {
     //내 마이크 확인해서, stream 얻고 state에 저장하기
     console.log("in getUserMedia")
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const { navigator } = window;
       /* navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
@@ -89,10 +88,10 @@ class Video extends React.Component {
           //마이크 못찾았을 때, 한번 더 찾는 코드. 사실상 의미 없음
           return navigator.mediaDevices.enumerateDevices()
             .then(function (devices) {
-              var mic = devices.find(function (device) {
+              const mic = devices.find(function (device) {
                 return device.kind === 'audioinput';
               });
-              var constraints = {
+              const constraints = {
                 video: false,
                 audio: mic && op.audio
               };
@@ -125,9 +124,7 @@ class Video extends React.Component {
         track.enabled = !track.enabled;
       });
     }
-    this.setState({
-      micState: !this.state.micState
-    })
+    this.setState(({ micState }) => ({ micState: !micState }))
   }
 
   setVideoLocal() {

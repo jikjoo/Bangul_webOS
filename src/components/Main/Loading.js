@@ -6,14 +6,16 @@ import text from '../../../resources/text.json'
 const Loading = ({ onLoading, loading }) => {
     useEffect(() => {
         // 켜진 후 2초있다가 꺼짐
-        loading && setTimeout(
-            () => onLoading(false), 2000
-        )
-    }, [])
+        if (loading) {
+            setTimeout(
+                () => onLoading(false), 2000
+            )
+        }
+    }, [loading, onLoading])
     return (
         loading ?
             <div className="loading enact-fit">
-                <h>{text.title}</h>
+                <p>{text.title}</p>
             </div>
             : null
     )

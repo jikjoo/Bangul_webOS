@@ -1,10 +1,7 @@
-import Button from '@jikjoo/moonstone/Button';
-import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
-import { BoxHeader, BoxPanel, BoxVideoBtn } from '../../components/Box';
-import { VideoKennel } from '../../components/Kennel';
+import { BoxVideoBtn } from '../../components/Box';
 
-const TempView = (props) => {
+const TempView = () => {
     return (
         <BoxVideoBtn>
             temp

@@ -10,14 +10,11 @@ import {
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
 	CONNECT_INTERNET,
-	LOAD_NAVER_MAP,
-	CHANGE_LOAD_MAP,
 	SET_SOCKET_HOME,
 	SET_SOCKET_KENNEL,
 	SET_LOADING,
+	CHECK_CONNECT_LOCATION
 } from '../actions';
-import axios from '../api';
-import { CHECK_CONNECT_LOCATION } from '../actions/checkAction';
 
 function connect(state = {}, action) {
 	switch (action.type) {
@@ -31,7 +28,7 @@ function connect(state = {}, action) {
 }
 
 function check(state = '', action) {
-	const { home, kennel,location } = action;
+	const { home, kennel, location } = action;
 	switch (action.type) {
 		case CHECK_CONNECT_HOME:
 			return Object.assign({}, state, { home });
@@ -70,9 +67,9 @@ function location(state = {}, action) {
 	}
 } */
 
-function loading(state=true,action){
-	const {loading} = action;
-	switch (action.type){
+function loading(state = true, action) {
+	const { loading } = action;
+	switch (action.type) {
 		case SET_LOADING:
 			return loading
 		default:
@@ -104,18 +101,18 @@ export const initialState = {
 			isOn: false,
 			error: ''
 		},
-		location:{
-			isOn : false,
+		location: {
+			isOn: false,
 		}
 	},
 	video: {
 		home: {
 			url: '',
-			socket : null
+			socket: null
 		},
 		kennel: {
 			url: '',
-			socket : null
+			socket: null
 		}
 	},
 	/* location: {

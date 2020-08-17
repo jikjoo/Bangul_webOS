@@ -2,7 +2,7 @@ import React from 'react';
 
 const BoxContainer = (props) => {
     return (
-        <div className="container">
+        <div className="container" {...props}>
             
         </div>
     )

@@ -1,6 +1,5 @@
 //import kind from '@enact/core/kind';
 import MoonstoneDecorator from '@jikjoo/moonstone/MoonstoneDecorator';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
 	HashRouter as Router,
@@ -15,7 +14,7 @@ import  './App.less';
 import LocationView from '../views/LocationView';
 
 
-const App = (props) => (
+const App = () => (
 	<Router>
 		<Switch>
 			<Route exact path="/" component={MainView} />

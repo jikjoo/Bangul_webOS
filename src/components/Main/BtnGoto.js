@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from '../Button';
-import { useHistory, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Icon } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
@@ -22,7 +22,7 @@ class BtnGoto extends React.Component {
         const { target, onCheck, check } = this.props;
         if (!check[target].isOn) onCheck(target);
     }
-    onGoto = (e) => {
+    onGoto = () => {
         const { target, check, history, onCheck } = this.props;
         if (!check[target].isOn) onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
@@ -30,9 +30,9 @@ class BtnGoto extends React.Component {
         history.push(target)
     }
     render() {
-        const { target, children, check, onCheck, ...rest } = this.props;
+        const { target, children, check } = this.props;
         return (
-            <Button className={"button btn-push"} onClick={this.onGoto}>
+            <Button className={"button btn-push"} onClick={this.onGoto} >
                 <div className={"icon-main"}><Icon icon={target} /></div>
                 {text[target]}
                 <div>
