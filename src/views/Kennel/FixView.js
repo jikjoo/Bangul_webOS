@@ -1,13 +1,13 @@
-import BodyText from '@jikjoo/moonstone/BodyText';
 import React from 'react';
 import { BoxVideoBtn } from '../../components/Box';
+import { BtnVideo } from '../../components/Button';
 
 const FixView = () => {
     return (
         <BoxVideoBtn>
-            <BodyText>좌측 고정 확인</BodyText>
-            <BodyText>우측 고정 확인</BodyText>
-            <BodyText>강한 충격 감지</BodyText>
+            <BtnVideo>좌측 고정<br /> 확인</BtnVideo>
+            <BtnVideo>우측 고정<br /> 확인</BtnVideo>
+            <BtnVideo>강한 충격<br /> 감지</BtnVideo>
         </BoxVideoBtn>
     );
 }
