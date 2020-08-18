@@ -12,10 +12,10 @@ class Video extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      localStream: {},
+      localStream: null,
       remoteStreamUrl: '',
       initiator: false,
-      peer: {},
+      peer: null,
       full: false,
       connecting: false,
       waiting: true,
@@ -103,6 +103,7 @@ class Video extends React.Component {
                   console.log('return enumerate getUserMedia')
                   resolve();
                 })
+                .catch(() => resolve())
             });
         })
         .then(
@@ -218,7 +219,7 @@ class Video extends React.Component {
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream.active} type='mic_not_found' />
+        <BoxAlarm open={!localStream} type='mic_not_found' />
       </div>
     );
   }
