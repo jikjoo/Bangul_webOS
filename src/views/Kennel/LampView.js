@@ -1,12 +1,9 @@
-import Slider from '@jikjoo/moonstone/Slider';
 import React from 'react';
-import { BoxVideoBtn, } from '../../components/Box';
+import { SliderLamp } from '../../components/Kennel';
 
 const LampView = () => {
     return (
-        <BoxVideoBtn>
-            <Slider orientation="vertical" />
-        </BoxVideoBtn>
+        <SliderLamp />
     );
 }
 

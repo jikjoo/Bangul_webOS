@@ -1,3 +1,74 @@
-.icon-video{
+@import '~@jikjoo/moonstone/styles/colors.less';
+
+.icon-in-video {
+    display: block;
     font-size: 50px;
+}
+
+
+
+.button.btn-arrow {
+    font-size: 70px;
+    width    : 20px;
+    height   : 100px;
+    padding  : 0;
+    margin   : 1px;
+    display  : block;
+}
+
+div.slider-lamp {
+    height: 500px;
+    width : 10px;
+    margin: auto;
+}
+
+.button p {
+    white-space: initial;
+}
+
+.item-video {
+    vertical-align: middle;
+    &.btn-set-temp {
+        height    : auto;
+        max-height: max-content;
+    }
+    &.item-sub {
+       height: 160px;
+    }
+    font-family          : "Moonstone";
+    font-size            : 1.25rem;
+    font-style           : normal;
+    font-weight          : 600;
+    -webkit-font-kerning : normal;
+    font-feature-settings: "kern";
+    font-kerning         : normal;
+    //height               : 2.5rem;
+    min-width            : 2.5rem;
+    max-width            : 18.75rem;
+    line-height          : 2.25rem;
+    margin               : 0 0.375rem;
+    padding-left         : 0.875rem;
+    padding-right        : 0.875rem;
+    margin-left          : 0.375rem;
+    margin-right         : 0.375rem;
+    background-color     : @moon-button-bg-color;
+    text-align           : center;
+
+    display    : inline-block;
+    box-sizing : border-box;
+    position   : relative;
+    overflow   : visible;
+    white-space: nowrap;
+    width      : auto;
+    z-index    : 0;
+    cursor     : pointer;
+
+    //display: flex;
+    align-items    : center;
+    justify-content: center;
+    box-sizing     : border-box;
+    //height         : 100%;
+    position       : relative;
+    display        : flex;
+    flex-direction : column;
 }

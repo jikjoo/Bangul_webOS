@@ -13,7 +13,7 @@ const BtnVideoPush = ({ target, sub }) => {
     }
     return (
         <BtnVideo onClick={onPush}>
-            <div className={"icon-video"} ><Icon icon={sub} /></div>
+            <Icon icon={sub} className="icon-in-video"/>
             {text[sub]}
         </BtnVideo>
     )

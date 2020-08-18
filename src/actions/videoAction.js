@@ -66,3 +66,7 @@ export const setSocket = ({ target, socket }) => {
             };
     }
 }
+
+export const sendSetSocket = () => (dispatch) => {
+    
+}
