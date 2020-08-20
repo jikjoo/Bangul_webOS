@@ -38,6 +38,7 @@
 		"@enact/ui": "^3.2.5",
 		"@jikjoo/moonstone": "^3.2.53",
 		"axios": "^0.19.2",
+		"crypto-js": "^4.0.0",
 		"ilib": "^14.2.0",
 		"prop-types": "^15.6.2",
 		"react": "^16.13.1",

@@ -13,15 +13,17 @@ import {
 	SET_SOCKET_HOME,
 	SET_SOCKET_KENNEL,
 	SET_LOADING,
-	CHECK_CONNECT_LOCATION
+	CHECK_CONNECT_LOCATION,
+	SET_MY_IP
 } from '../actions';
+import { SET_LOCATION } from '../actions/locationAction';
 
 function connect(state = {}, action) {
 	switch (action.type) {
 		case CONNECT_SERVER:
 			return Object.assign({}, state, action.payload);
-		case CONNECT_INTERNET:
-			return Object.assign({}, state, action.internetOn);
+		case SET_MY_IP:
+			return Object.assign({}, state, {myip:action.ip});
 		default:
 			return state;
 	}
@@ -56,16 +58,16 @@ function video(state = {}, action) {
 			return state;
 	}
 }
-/* 
+
 function location(state = {}, action) {
-	const { isLoaded } = action;
+	const { location } = action;
 	switch (action.type) {
-		case CHANGE_LOAD_MAP:
-			return Object.assign({}, state, { isLoaded })
+		case SET_LOCATION:
+			return location
 		default:
 			return state;
 	}
-} */
+}
 
 function loading(state = true, action) {
 	const { loading } = action;
@@ -77,11 +79,12 @@ function loading(state = true, action) {
 	}
 }
 
+
 const rootReducer = combineReducers({
 	connect,
 	check,
 	video,
-	//location
+	location,
 	loading
 });
 
@@ -90,7 +93,7 @@ export const initialState = {
 	connect: {
 		serverOn: false,
 		serverError: '',
-		//internetOn: true
+		myip : null
 	},
 	check: {
 		home: {
@@ -118,7 +121,7 @@ export const initialState = {
 	/* location: {
 		isLoaded: false
 	} */
-	loading: true
+	loading: true,
 }
 
 export default rootReducer;

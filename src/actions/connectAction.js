@@ -29,20 +29,24 @@ export const sendConnectServer = () => dispatch => {
 		})
 }
 
-export const connectInternet = (internetOn) => {
+export const SET_MY_IP = 'SET_MY_IP';
+export const setMyIP = (ip) => {
 	return {
-		type: CONNECT_INTERNET,
-		internetOn
+		type : SET_MY_IP,
+		ip
 	}
 }
+
 export const sendConnectInternet = () => dispatch => {
-	return axios.get('http://www.google.com', )
+	return axios.get('https://www.cloudflare.com/cdn-cgi/trace')
 		.then(res => {
-			//console.log(res)
-			dispatch(connectInternet(true))
+			const { data } = res;
+			const substr = data.match(/ip=.*/g)[0]
+			const ip = substr.replace('ip=', '')
+			dispatch(setMyIP(ip));
 		})
 		.catch(err => {
 			console.log(err)
-			dispatch(connectInternet(false))
+			dispatch(setMyIP(null))
 		})
 }

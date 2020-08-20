@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './Location.less';
-import { loadNaverMap } from '../../actions';
+import { loadNaverMap, getLoacation } from '../../actions';
 import { connect } from 'react-redux';
 
-const NaverMap = ({ isLoaded, onLoadMap }) => {
+const NaverMap = ({ isLoaded, onLoadMap, onGetLocation,location }) => {
     useEffect(() => {
         /* 
         const script = document.createElement('script');
@@ -12,9 +12,11 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
          */
         if (isLoaded) {
             // loadNaverMap action으로 head에 네이버 API 추가한 후
+            onGetLocation();
+            const {lat,long} = location;
             let naver = window.naver;
             const mapOptions = {
-                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                center: new naver.maps.LatLng(lat, long),
                 zoom: 14
             };
 
@@ -25,7 +27,7 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
         else {
             onLoadMap();
         }
-    })
+    }, [isLoaded])
     return (
         <div className="box-map">
             <div id="map"></div>
@@ -35,15 +37,28 @@ const NaverMap = ({ isLoaded, onLoadMap }) => {
 }
 //const NaverMap_ = Touchable({ activeProp: 'pressed' }, NaverMap);
 //const NaverMap_ = touchDeco(NaverMap);
+/* 
+location : {
+    country: "KR"
+    code: "4143053000"
+    r1: "경기도"
+    r2: "의왕시"
+    r3: "오전동"
+    lat: 37.353538
+    long: 126.971603
+    net: "SK Broadband Co Ltd"
+}
+ */
 
-
-const mapStateToProps = ({ check }) => ({
-    isLoaded: check.location.isOn
+const mapStateToProps = ({ check, location }) => ({
+    isLoaded: check.location.isOn,
+    location
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onLoadMap: () => dispatch(loadNaverMap())
+        onLoadMap: () => dispatch(loadNaverMap()),
+        onGetLocation: () => dispatch(getLoacation())
     };
 };
 

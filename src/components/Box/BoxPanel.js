@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Panel } from '@jikjoo/moonstone/Panels';
 import './Box.less';
-import { sendConnect } from '../../actions'
+import { sendConnectServer, sendConnectInternet } from '../../actions'
 import { connect } from 'react-redux';
 import BoxAlarm from './BoxAlarm';
 
-const BoxPanel = ({ children, isConn, onConnect, ...rest }) => {
+const BoxPanel = ({ children, isConn, onConnect, onInternet, online, ...rest }) => {
     useEffect(() => {
         !isConn && onConnect()
-    },)
-    const online = window.navigator.onLine;
+        !online && onInternet()
+    })
     return (
         <Panel className={'box box-panel'} {...rest}>
             {/* <Header title={'헤더'} type="compact"/> */}
@@ -22,12 +22,14 @@ const BoxPanel = ({ children, isConn, onConnect, ...rest }) => {
 
 const mapStateToProps = ({ connect }) => ({
     isConn: connect.serverOn,
-    err: connect.serverError
+    err: connect.serverError,
+    online : connect.myip
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onConnect: () => dispatch(sendConnect())
+        onConnect: () => dispatch(sendConnectServer()),
+        onInternet: () => dispatch(sendConnectInternet())
     };
 };
 

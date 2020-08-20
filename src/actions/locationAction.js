@@ -1,8 +1,9 @@
 import { checkConnect } from "./checkAction";
+import axios from '../api'
 
 export const LOAD_NAVER_MAP = 'LOAD_NAVER_MAP';
-
 export const CHANGE_LOAD_MAP = 'CHANGE_LOAD_MAP';
+export const SET_LOCATION = 'SET_LOCATION';
 
 export const changeLoadMap = (isLoaded) => {
     return {
@@ -28,4 +29,23 @@ export const loadNaverMap = () => (dispatch, getState) => {
             else return dispatch(checkConnect({ target: 'location', isOn: true }))
         }
     }
+}
+
+export const setLocation = (location) => {
+    return {
+        type: SET_LOCATION,
+        location
+    }
+}
+
+export const getLoacation = () => (dispatch, getState) => {
+    axios.get('/location/geolocation')
+        .then(res => {
+            const { geoLocation } = res.data;
+            dispatch(setLocation(geoLocation));
+        })
+        .catch(err => {
+            throw err
+        })
+
 }
