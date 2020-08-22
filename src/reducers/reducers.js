@@ -10,14 +10,12 @@ import {
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
 	CONNECT_INTERNET,
-	LOAD_NAVER_MAP,
-	CHANGE_LOAD_MAP,
 	SET_SOCKET_HOME,
 	SET_SOCKET_KENNEL,
 	SET_LOADING,
+	CHECK_CONNECT_LOCATION,
+	SET_LOCATION
 } from '../actions';
-import axios from '../api';
-import { CHECK_CONNECT_LOCATION } from '../actions/checkAction';
 
 function connect(state = {}, action) {
 	switch (action.type) {
@@ -31,7 +29,7 @@ function connect(state = {}, action) {
 }
 
 function check(state = '', action) {
-	const { home, kennel,location } = action;
+	const { home, kennel, location } = action;
 	switch (action.type) {
 		case CHECK_CONNECT_HOME:
 			return Object.assign({}, state, { home });
@@ -59,20 +57,21 @@ function video(state = {}, action) {
 			return state;
 	}
 }
-/* 
+
 function location(state = {}, action) {
-	const { isLoaded } = action;
+	const { location } = action;
 	switch (action.type) {
-		case CHANGE_LOAD_MAP:
-			return Object.assign({}, state, { isLoaded })
+		case SET_LOCATION:
+			return location
 		default:
 			return state;
 	}
-} */
+}
 
-function loading(state=true,action){
-	const {loading} = action;
-	switch (action.type){
+
+function loading(state = true, action) {
+	const { loading } = action;
+	switch (action.type) {
 		case SET_LOADING:
 			return loading
 		default:
@@ -84,44 +83,10 @@ const rootReducer = combineReducers({
 	connect,
 	check,
 	video,
-	//location
+	location,
 	loading
 });
 
-/********* initalState *************/
-export const initialState = {
-	connect: {
-		serverOn: false,
-		serverError: '',
-		//internetOn: true
-	},
-	check: {
-		home: {
-			isOn: false,
-			error: ''
-		},
-		kennel: {
-			isOn: false,
-			error: ''
-		},
-		location:{
-			isOn : false,
-		}
-	},
-	video: {
-		home: {
-			url: '',
-			socket : null
-		},
-		kennel: {
-			url: '',
-			socket : null
-		}
-	},
-	/* location: {
-		isLoaded: false
-	} */
-	loading: true
-}
+export { default as initialState } from './initalState'
 
 export default rootReducer;

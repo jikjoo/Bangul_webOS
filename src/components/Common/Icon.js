@@ -2,12 +2,11 @@ import React from 'react';
 import { GrHome, GrBriefcase, GrCompass } from 'react-icons/gr'
 import {
     IoIosArrowBack, IoIosVideocam, IoMdThermometer,
-    IoMdBulb, IoIosConstruct, IoIosWarning, IoIosCloseCircleOutline
+    IoMdBulb, IoIosConstruct, IoIosWarning, IoIosCloseCircleOutline,
+    IoMdArrowDropup,IoMdArrowDropdown
 } from 'react-icons/io'
 import './Common.less';
-/* 
-search icon in https://react-icons.github.io/react-icons/
-*/
+// search icon in https://react-icons.github.io/react-icons/
 
 const list = {
     home: GrHome,
@@ -19,13 +18,15 @@ const list = {
     temp: IoMdThermometer,
     video: IoIosVideocam,
     warning: IoIosWarning,
-    close : IoIosCloseCircleOutline
+    close: IoIosCloseCircleOutline,
+    arrowUp : IoMdArrowDropup,
+    arrowDown : IoMdArrowDropdown
 }
 
-const Icon = ({ icon, ...props }) => {
-    const _Icon = list[icon];
+const Icon = ({ icon,className, ...props }) => {
+    const I = list[icon];
     return (
-        list[icon] ? <_Icon {...props} className={`icon icon-${icon}`} /> : null
+        list[icon] ? <I {...props} className={`icon icon-${icon} ${className}`} /> : null
     )
 }
 

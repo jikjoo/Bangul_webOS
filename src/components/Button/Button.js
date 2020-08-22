@@ -1,6 +1,6 @@
 import React from 'react';
 import ButtonBase from '@jikjoo/moonstone/Button';
-import styles from './Button.less';
+import './Button.less';
 
 const Button = ({ children, ...props }) => {
     return (

@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
-import { BtnVideo } from '../Button';
-import { BoxVideoBtn } from '../Box';
+import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
 import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
+import BoxAlarm from '../Box/BoxAlarm';
+import text from '../../../resources/text.json'
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      localStream: {},
+      localStream: null,
       remoteStreamUrl: '',
-      streamUrl: '',
       initiator: false,
-      peer: {},
+      peer: null,
       full: false,
       connecting: false,
       waiting: true,
@@ -65,10 +63,10 @@ class Video extends React.Component {
     this.setState(this.initialState);
     console.log('disconnect')
   }
-  getUserMedia(cb) {
+  getUserMedia() {
     //내 마이크 확인해서, stream 얻고 state에 저장하기
     console.log("in getUserMedia")
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const { navigator } = window;
       /* navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
@@ -90,26 +88,27 @@ class Video extends React.Component {
           //마이크 못찾았을 때, 한번 더 찾는 코드. 사실상 의미 없음
           return navigator.mediaDevices.enumerateDevices()
             .then(function (devices) {
-              var mic = devices.find(function (device) {
+              const mic = devices.find(function (device) {
                 return device.kind === 'audioinput';
               });
-              var constraints = {
+              const constraints = {
                 video: false,
                 audio: mic && op.audio
               };
               console.log("enumerateDevices", { audio: constraints.audio, error })
               navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
-                  this.setState({ streamUrl: stream, localStream: stream });
+                  this.setState({ localStream: stream });
                   //this.localVideo.srcObject = stream;
                   console.log('return enumerate getUserMedia')
                   resolve();
                 })
+                .catch(() => resolve())
             });
         })
         .then(
           stream => {
-            this.setState({ streamUrl: stream, localStream: stream });
+            this.setState({ localStream: stream });
             //this.localVideo.srcObject = stream;
             console.log('return getUserMedia')
             resolve();
@@ -126,9 +125,7 @@ class Video extends React.Component {
         track.enabled = !track.enabled;
       });
     }
-    this.setState({
-      micState: !this.state.micState
-    })
+    this.setState(({ micState }) => ({ micState: !micState }))
   }
 
   setVideoLocal() {
@@ -151,7 +148,7 @@ class Video extends React.Component {
             this.state.peer.addStream(this.state.localStream);
           });
         };
-        this.setState({ streamUrl: stream, localStream: stream });
+        this.setState({localStream: stream });
         this.localVideo.srcObject = stream;
         this.state.peer.addStream(stream);
       });
@@ -192,6 +189,7 @@ class Video extends React.Component {
     }
   };
   render() {
+    const { localStream } = this.state;
     return (
       <div className='box-video'>
         {/* <video
@@ -207,6 +205,7 @@ class Video extends React.Component {
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
+          //src="http://172.30.1.42:8080/stream"
           poster={sample_dog}
           ref={video => (this.remoteVideo = video)}
         />
@@ -214,14 +213,14 @@ class Video extends React.Component {
 
         <div className='status'>
           {this.state.connecting && (
-            <p>Establishing connection...</p>
+            <p>{text.connecting_video}</p>
           )}
           {this.state.waiting && (
-            <p>Waiting for someone...</p>
+            <p>{text.waiting_device}</p>
           )}
           {this.renderFull()}
         </div>
-
+        <BoxAlarm open={!localStream} type='mic_not_found' />
       </div>
     );
   }

@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Panel, Header } from '@jikjoo/moonstone/Panels';
+import React, { useEffect } from 'react';
+import { Panel } from '@jikjoo/moonstone/Panels';
 import './Box.less';
-import text from '../../../resources/text.json';
-import { sendConnect } from '../../actions'
+import { sendConnectServer } from '../../actions'
 import { connect } from 'react-redux';
 import BoxAlarm from './BoxAlarm';
 
-const BoxPanel = ({ children,onLine,isConn, err, onConnect, ...rest }) => {
+const BoxPanel = ({ children, isConn, onConnect, ...rest }) => {
     useEffect(() => {
         !isConn && onConnect()
     })
     const online = window.navigator.onLine;
     return (
-        <Panel className={'box box-panel'}>
+        <Panel className={'box box-panel'} {...rest}>
             {/* <Header title={'헤더'} type="compact"/> */}
             {children}
             <BoxAlarm open={!online} type={'internet_not_connected'}></BoxAlarm>
@@ -28,10 +27,10 @@ const mapStateToProps = ({ connect }) => ({
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onConnect: () => dispatch(sendConnect())
+        onConnect: () => dispatch(sendConnectServer())
     };
 };
 
 const BoxPanelContainer = connect(mapStateToProps, mapDispatchToProps)(BoxPanel);
- 
+
 export default BoxPanelContainer;

@@ -2,12 +2,12 @@ import React from 'react';
 import Button from '@jikjoo/moonstone/Button';
 import './Button.less';
 
-const BtnVideo = ({children,...props}) => {
+const BtnVideo = ({ children, className, ...props }) => {
     return (
         <Button
+            className={`button btn-video ${className}`}
             {...props}
-            className={"button btn-video"}
-            >
+        >
             {children}
         </Button>
     )

@@ -1,19 +1,18 @@
-import Button from '@jikjoo/moonstone/Button';
 import React from 'react';
 import { BoxMainBtn, BtnGoto, Loading } from '../components/Main';
-import { BoxPanel, BoxHeader } from '../components/Box';
+import { BoxPanel } from '../components/Box';
 
 // 함수형 component
-const MainView = (props) => {
+const MainView = () => {
 	return (
-		[<BoxPanel>
+		[<BoxPanel key={0}>
 			<BoxMainBtn >
 				<BtnGoto target="home" ></BtnGoto>
 				<BtnGoto target="kennel" ></BtnGoto>
 				<BtnGoto target="location" ></BtnGoto>
 			</BoxMainBtn>
 		</BoxPanel>,
-		<Loading/>
+		<Loading key={1} />
 		]
 	)
 }

@@ -1,14 +1,13 @@
-import Button from '@jikjoo/moonstone/Button';
-import { Panel, Header } from '@jikjoo/moonstone/Panels';
 import React from 'react';
-import { BoxHeader, BoxPanel, BoxVideoBtn } from '../../components/Box';
-import { VideoKennel } from '../../components/Kennel';
+import { BtnVideo } from '../../components/Button';
+import { BtnSetTemp } from '../../components/Kennel';
 
-const TempView = (props) => {
+const TempView = () => {
     return (
-        <BoxVideoBtn>
-            temp
-        </BoxVideoBtn>
+        <>
+            <BtnVideo>현재 온도<br/>27℃</BtnVideo>
+            <BtnSetTemp/>
+        </>
     );
 }
 
