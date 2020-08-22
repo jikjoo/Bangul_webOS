@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './Location.less';
 import { loadNaverMap, getLocation } from '../../actions';
 import { connect } from 'react-redux';
+import { HOST } from '../../api';
 
 const NaverMap = ({ isLoaded, onLoadMap, onGetLocation, location }) => {
     useEffect(() => {
@@ -13,7 +14,7 @@ const NaverMap = ({ isLoaded, onLoadMap, onGetLocation, location }) => {
         onGetLocation();
         if (isLoaded) {
             // loadNaverMap action으로 head에 네이버 API 추가한 후
-            const { lat, long } = location;
+            /* const { lat, long } = location;
             let naver = window.naver;
             console.log({ lat, long });
             const mapOptions = {
@@ -23,7 +24,13 @@ const NaverMap = ({ isLoaded, onLoadMap, onGetLocation, location }) => {
 
             const targetMap = document.getElementById('map');
 
-            const map = new naver.maps.Map(targetMap, mapOptions);
+            const map = new naver.maps.Map(targetMap, mapOptions); */
+
+            const script = document.createElement('script');
+            script.type = "text/javascript"
+            //script.async = true;
+            script.src = `${HOST}/location/naverMap.js`;
+            document.body.appendChild(script);
         }
         else {
             onLoadMap();

@@ -12,7 +12,7 @@
 
 ## 설치
 - `git clone https://github.com/jikjoo/Bangul_webOS`
-- `npm install -g @enact/cli`
+- `npm install -g @enact/cli@2.8.1`
 - `npm install`
 - `.env` 파일 생성 후, 구글 드라이브에서 복사
 

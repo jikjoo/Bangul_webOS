@@ -77,7 +77,7 @@ class Video extends React.Component {
           width: { min: 160, ideal: 640, max: 1280 },
           height: { min: 120, ideal: 360, max: 720 }
         } */
-        video: true,
+        video: false,
         audio: true
       };
       navigator.mediaDevices.getUserMedia(op)
@@ -171,10 +171,10 @@ class Video extends React.Component {
       this.state.socket.emit('signal', signal);
     });
     // 상대방 비디오 스트림 받기
-    /* peer.on('stream', stream => {
+    peer.on('stream', stream => {
       this.remoteVideo.srcObject = stream;
       this.setState({ connecting: false, waiting: false });
-    }); */
+    });
     peer.on('error', function (err) {
       console.log(err);
     });
@@ -205,7 +205,7 @@ class Video extends React.Component {
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
-          src="http://172.30.1.42:8080/stream"
+          //src="http://172.30.1.42:8080/stream"
           poster={sample_dog}
           ref={video => (this.remoteVideo = video)}
         />
