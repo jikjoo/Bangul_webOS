@@ -37,6 +37,7 @@ export const checkConnect = ({ target, isOn, error }) => {
 }
 // async action
 export const sendCheckConnect = target => (dispatch) => {
+	dispatch({type:`${target}/SEND_CHECK_CONNECT`})
 	if (target === 'location') {
 		dispatch(loadNaverMap())
 	}

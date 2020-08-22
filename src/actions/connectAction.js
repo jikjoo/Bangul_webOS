@@ -16,6 +16,7 @@ export const connectServer = ({ serverOn, serverError }) => {
 
 // async action
 export const sendConnectServer = () => dispatch => {
+	dispatch({type:"SEND_CONNECT_SERVER"})
 	return axios.get('/server/hello/webos')
 		.then(res => {
 			//console.log(res)
@@ -36,6 +37,7 @@ export const connectInternet = (internetOn) => {
 	}
 }
 export const sendConnectInternet = () => dispatch => {
+	dispatch({type:'SEND_CONNECT_INTERNET'})
 	return axios.get('http://www.google.com', )
 		.then(res => {
 			//console.log(res)

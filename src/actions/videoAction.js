@@ -31,6 +31,7 @@ export const videoURL = ({ target, url }) => {
 }
 // 서버에 video url 보내기
 export const sendVideoURL = target => dispatch => {
+    dispatch({type:`${target}/SEND_VIDEO_URL`})
     return axios.get(`${target}/url`)
         .then(res => {
             //console.log(res)

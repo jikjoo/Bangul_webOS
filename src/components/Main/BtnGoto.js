@@ -23,20 +23,20 @@ class BtnGoto extends React.Component {
         if (!check[target].isOn) onCheck(target);
     }
     onGoto = () => {
-        const { target, check, history, onCheck } = this.props;
+        const { target, check, history, onCheck,  } = this.props;
         if (!check[target].isOn) onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
         history.push(target)
     }
     render() {
-        const { target, children, check } = this.props;
+        const { target, children, check, serverOn } = this.props;
         return (
             <Button className={"button btn-push"} onClick={this.onGoto} >
                 <div className={"icon-main"}><Icon icon={target} /></div>
                 {text[target]}
                 <div>
-                    <Switch selected={check[target].isOn} />
+                    <Switch selected={check[target].isOn && serverOn} />
                 </div>
                 {children}
             </Button>
@@ -61,8 +61,8 @@ check : {
 }
 */
 
-const mapStateToProps = ({ check }) => ({
-    check
+const mapStateToProps = ({ check, connect }) => ({
+    check,serverOn : connect.serverOn
 });
 // 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {
