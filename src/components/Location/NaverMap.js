@@ -11,31 +11,22 @@ const NaverMap = ({ isLoaded, onLoadMap, onGetLocation, location }) => {
         script.type = "text/javascript"
         script.src = `http://${HOST}:${PORT}/location/naverNew.js`;
          */
-        onGetLocation();
         if (isLoaded) {
             // loadNaverMap action으로 head에 네이버 API 추가한 후
-            /* const { lat, long } = location;
-            let naver = window.naver;
-            console.log({ lat, long });
-            const mapOptions = {
-                center: new naver.maps.LatLng(lat, long),
-                zoom: 14
-            };
-
-            const targetMap = document.getElementById('map');
-
-            const map = new naver.maps.Map(targetMap, mapOptions); */
-
             const script = document.createElement('script');
             script.type = "text/javascript"
             //script.async = true;
             script.src = `${HOST}/location/naverMap.js`;
             document.body.appendChild(script);
+            return script.remove();
         }
         else {
             onLoadMap();
         }
-    }, [isLoaded, location.lat, location.lng])
+    }, [isLoaded,])
+    useEffect(() => {
+        onGetLocation();
+    }, [])
     return (
         <div className="box-map">
             <div id="map"></div>
