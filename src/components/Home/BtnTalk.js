@@ -1,21 +1,35 @@
 import React, { useState } from 'react';
 import BtnSwitch from '../Button/BtnSwitch';
+import { connect } from 'react-redux';
+import { setTalkOn } from '../../actions';
 
-const BtnTalk = ({ children, ...props }) => {
-    const [talkOn, setTalk] = useState(false);
+const BtnTalk = ({ talkOn,setTalkOn }) => {
     const onClick = () => {
-        setTalk(!talkOn);
+        // 내 마이크 끄고 키기 설정
+        setTalkOn(!talkOn)
     }
     return (
         <BtnSwitch
             className="button btn-switch"
             selected={talkOn}
             onClick={onClick}
-            {...props}
         >
             대화하기
         </BtnSwitch>
     )
 }
 
-export default BtnTalk
+const mapStateToProps = ({ video }) => ({
+    talkOn: video.talkOn
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setTalkOn: (talkOn) => dispatch(setTalkOn(talkOn))
+    };
+};
+
+
+const BtnTalkContainer = connect(mapStateToProps, mapDispatchToProps)(BtnTalk);
+
+export default BtnTalkContainer

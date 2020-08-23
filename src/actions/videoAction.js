@@ -5,6 +5,8 @@ export const VIDEO_URL_HOME = 'VIDEO_URL/HOME';
 export const VIDEO_URL_KENNEL = 'VIDEO_URL/KENNEL';
 export const SET_SOCKET_HOME = 'SET_SOCKET/HOME';
 export const SET_SOCKET_KENNEL = 'SET_SOCKET_KENNEL';
+export const SET_AUDIO_ON = 'SET_AUDIO_ON';
+export const SET_TALK_ON = 'SET_TALK_ON';
 
 // video URL 설정하기
 export const videoURL = ({ target, url }) => {
@@ -68,6 +70,16 @@ export const setSocket = ({ target, socket }) => {
     }
 }
 
-export const sendSetSocket = () => (dispatch) => {
-    
+export const setAudioOn = (audioOn) => {
+    return {
+        type : SET_AUDIO_ON,
+        audioOn
+    }
+}
+
+export const setTalkOn = (talkOn) => {
+    return {
+        type : SET_TALK_ON,
+        talkOn
+    }
 }

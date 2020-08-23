@@ -14,7 +14,9 @@ import {
 	SET_SOCKET_KENNEL,
 	SET_LOADING,
 	CHECK_CONNECT_LOCATION,
-	SET_LOCATION
+	SET_LOCATION,
+	SET_AUDIO_ON,
+	SET_TALK_ON
 } from '../actions';
 
 function connect(state = {}, action) {
@@ -43,7 +45,7 @@ function check(state = '', action) {
 }
 
 function video(state = {}, action) {
-	const { home, kennel } = action;
+	const { home, kennel, talkOn, audioOn } = action;
 	switch (action.type) {
 		case VIDEO_URL_HOME:
 			return Object.assign({}, state, { home });
@@ -53,6 +55,10 @@ function video(state = {}, action) {
 			return Object.assign({}, state, { home });
 		case SET_SOCKET_KENNEL:
 			return Object.assign({}, state, { kennel });
+		case SET_AUDIO_ON:
+			return Object.assign({}, state, { audioOn });
+		case SET_TALK_ON:
+			return Object.assign({}, state, { talkOn });
 		default:
 			return state;
 	}

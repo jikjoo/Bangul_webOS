@@ -1,7 +1,7 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket } from '../../actions';
+import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
@@ -14,14 +14,11 @@ class Video extends React.Component {
     super(props);
     this.initialState = {
       localStream: null,
-      remoteStreamUrl: '',
       initiator: false,
       peer: null,
       full: false,
       connecting: false,
       waiting: true,
-      micState: true,
-      camState: true,
       socket: null,
       talkReady: false
     }
@@ -126,10 +123,22 @@ class Video extends React.Component {
           () => { }
         );
     });
+
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.talkOn !== nextProps.talkOn) {
+      // 내 마이크 끄고 키기 설정  -> BtnTalk로
+      if (this.state.localStream.getAudioTracks().length > 0) {
+        this.state.localStream.getAudioTracks().forEach(track => {
+          track.enabled = nextProps.talkOn;
+        });
+      }
+    }
+  }
+  /* 
   setAudioLocal() {
-    // 내 마이크 끄고 키기 설정
+    // 내 마이크 끄고 키기 설정  -> BtnTalk로
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -149,7 +158,7 @@ class Video extends React.Component {
       camState: !this.state.camState
     })
   }
-  /* 
+
     getDisplay() {
       // 내 화면 전송
       window.navigator.mediaDevices.getUserMedia().then(stream => {
@@ -202,6 +211,7 @@ class Video extends React.Component {
   };
   render() {
     const { localStream, talkReady } = this.state;
+    const {audioOn} = this.props;
     return (
       <div className='box-video'>
         {/* <video
@@ -213,6 +223,7 @@ class Video extends React.Component {
         /> */}
         <video
           autoPlay
+          muted={!audioOn}
           className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
@@ -239,7 +250,10 @@ class Video extends React.Component {
 }
 
 Video.propTypes = {
-  target: PropTypes.oneOf(['home', 'kennel'])
+  target: PropTypes.oneOf(['home', 'kennel']),
+  localStream: PropTypes.any,
+  talkOn : PropTypes.bool,
+  audioOn : PropTypes.bool
 }
 
 /*
@@ -251,17 +265,22 @@ video : {
     kennel : {
         url : '',
         socket
-    }
+    },
+    talkOn : true,
+    audioOn : true
 }
 */
 
 const mapStateToProps = ({ video }) => ({
-  video
+  video,
+  talkOn: video.talkOn,
+  audioOn : video.audioOn
 });
 const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
-    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket }))
+    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
+    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);
