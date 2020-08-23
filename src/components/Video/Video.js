@@ -7,6 +7,7 @@ import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
+import PropTypes from 'prop-types';
 
 class Video extends React.Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class Video extends React.Component {
       waiting: true,
       micState: true,
       camState: true,
-      socket: null
+      socket: null,
+      talkReady: false
     }
     this.state = this.initialState;
   }
@@ -33,10 +35,13 @@ class Video extends React.Component {
     const component = this;
     this.setState({ socket });
     const { target } = this.props;
+    const talkReady = target === 'home';
+    this.setState({ talkReady });
     const roomId = `bangul${target}`;// this.props.match.params;
-    this.getUserMedia().then(() => {
+    talkReady ? this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
-    });
+    }) :
+      socket.emit('join', { roomId: roomId });
 
     socket.on('init', () => {
       component.setState({ initiator: true });
@@ -59,6 +64,11 @@ class Video extends React.Component {
 
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
+    if (this.state.localStream) {
+      this.state.localStream.getTracks().forEach(track => {
+        track.stop();
+      })
+    }
     this.state.socket.disconnect();
     this.setState(this.initialState);
     console.log('disconnect')
@@ -141,6 +151,7 @@ class Video extends React.Component {
   }
   /* 
     getDisplay() {
+      // 내 화면 전송
       window.navigator.mediaDevices.getUserMedia().then(stream => {
         stream.oninactive = () => {
           this.state.peer.removeStream(this.state.localStream);
@@ -157,10 +168,11 @@ class Video extends React.Component {
   enter = roomId => {
     // 상대방이랑 연결됐을 때.
     this.setState({ connecting: true });
-    const peer = this.videoCall.init(
-      this.state.localStream,
-      this.state.initiator
-    );
+    const { talkReady } = this.state;
+    const peer = talkReady ? this.videoCall.init(
+      this.state.initiator,
+      this.state.localStream
+    ) : this.videoCall.init(this.state.initiator);
     this.setState({ peer });
 
     peer.on('signal', data => {
@@ -189,7 +201,7 @@ class Video extends React.Component {
     }
   };
   render() {
-    const { localStream } = this.state;
+    const { localStream, talkReady } = this.state;
     return (
       <div className='box-video'>
         {/* <video
@@ -220,11 +232,16 @@ class Video extends React.Component {
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream} type='mic_not_found' />
+        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
       </div>
     );
   }
 }
+
+Video.propTypes = {
+  target: PropTypes.oneOf(['home', 'kennel'])
+}
+
 /*
 video : {
     home : {
