@@ -4,7 +4,7 @@
 	"description": "차량용 스마트 펫케어 : 방울이가 타고있어요",
 	"author": "",
 	"main": "src/index.js",
-	"homepage": "./",
+	"homepage": "https://bangul-petcare.web.app/",
 	"scripts": {
 		"start": "enact serve",
 		"serve": "enact serve",
