@@ -9,6 +9,8 @@
 - 스마트기기 : https://github.com/Chaeoon-Park/Bangul_server-github-
 - 머신러닝 : https://github.com/Adam-Kim/dogvomitML
 - 디자인 :https://github.com/jikjoo/moonstone
+- webRTC : https://github.com/jikjoo/react-webrtc
+- 추천알고리즘 : https://github.com/Adam-Kim/Bangul_Recommend
 
 ## 설치
 - `git clone https://github.com/jikjoo/Bangul_webOS`

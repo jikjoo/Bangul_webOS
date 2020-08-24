@@ -1,27 +1,26 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket } from '../../actions';
+import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
+import PropTypes from 'prop-types';
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
       localStream: null,
-      remoteStreamUrl: '',
       initiator: false,
       peer: null,
       full: false,
       connecting: false,
       waiting: true,
-      micState: true,
-      camState: true,
-      socket: null
+      socket: null,
+      talkReady: false
     }
     this.state = this.initialState;
   }
@@ -33,10 +32,13 @@ class Video extends React.Component {
     const component = this;
     this.setState({ socket });
     const { target } = this.props;
+    const talkReady = target === 'home';
+    this.setState({ talkReady });
     const roomId = `bangul${target}`;// this.props.match.params;
-    this.getUserMedia().then(() => {
+    talkReady ? this.getUserMedia().then(() => {
       socket.emit('join', { roomId: roomId });
-    });
+    }) :
+      socket.emit('join', { roomId: roomId });
 
     socket.on('init', () => {
       component.setState({ initiator: true });
@@ -59,6 +61,11 @@ class Video extends React.Component {
 
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
+    if (this.state.localStream) {
+      this.state.localStream.getTracks().forEach(track => {
+        track.stop();
+      })
+    }
     this.state.socket.disconnect();
     this.setState(this.initialState);
     console.log('disconnect')
@@ -116,10 +123,23 @@ class Video extends React.Component {
           () => { }
         );
     });
+
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.talkOn !== nextProps.talkOn) {
+      // 내 마이크 끄고 키기 설정  -> BtnTalk로
+      if (this.state.localStream &&
+        this.state.localStream.getAudioTracks().length > 0) {
+        this.state.localStream.getAudioTracks().forEach(track => {
+          track.enabled = nextProps.talkOn;
+        });
+      }
+    }
+  }
+  /* 
   setAudioLocal() {
-    // 내 마이크 끄고 키기 설정
+    // 내 마이크 끄고 키기 설정  -> BtnTalk로
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -139,8 +159,9 @@ class Video extends React.Component {
       camState: !this.state.camState
     })
   }
-  /* 
+
     getDisplay() {
+      // 내 화면 전송
       window.navigator.mediaDevices.getUserMedia().then(stream => {
         stream.oninactive = () => {
           this.state.peer.removeStream(this.state.localStream);
@@ -157,10 +178,11 @@ class Video extends React.Component {
   enter = roomId => {
     // 상대방이랑 연결됐을 때.
     this.setState({ connecting: true });
-    const peer = this.videoCall.init(
-      this.state.localStream,
-      this.state.initiator
-    );
+    const { talkReady } = this.state;
+    const peer = talkReady ? this.videoCall.init(
+      this.state.initiator,
+      this.state.localStream
+    ) : this.videoCall.init(this.state.initiator);
     this.setState({ peer });
 
     peer.on('signal', data => {
@@ -189,7 +211,8 @@ class Video extends React.Component {
     }
   };
   render() {
-    const { localStream } = this.state;
+    const { localStream, talkReady } = this.state;
+    const { audioOn } = this.props;
     return (
       <div className='box-video'>
         {/* <video
@@ -201,6 +224,7 @@ class Video extends React.Component {
         /> */}
         <video
           autoPlay
+          muted={!audioOn}
           className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
@@ -220,11 +244,19 @@ class Video extends React.Component {
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream} type='mic_not_found' />
+        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
       </div>
     );
   }
 }
+
+Video.propTypes = {
+  target: PropTypes.oneOf(['home', 'kennel']),
+  localStream: PropTypes.any,
+  talkOn: PropTypes.bool,
+  audioOn: PropTypes.bool
+}
+
 /*
 video : {
     home : {
@@ -234,17 +266,22 @@ video : {
     kennel : {
         url : '',
         socket
-    }
+    },
+    talkOn : true,
+    audioOn : true
 }
 */
 
 const mapStateToProps = ({ video }) => ({
-  video
+  video,
+  talkOn: video.talkOn,
+  audioOn: video.audioOn
 });
 const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
-    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket }))
+    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
+    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);

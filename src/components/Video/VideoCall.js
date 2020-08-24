@@ -3,10 +3,10 @@ import Peer from 'simple-peer'
 export default class VideoCall {
     // webRTC 연결 세부 설정
     peer = null 
-    init = (stream, initiator) => {
-        this.peer = new Peer({
+    init = (initiator,stream=null) => {
+        const opts = {
             initiator: initiator,
-            stream: stream,
+            //stream: stream,
             trickle: false,
             reconnectTimer: 1000,
             iceTransportPolicy: 'relay',
@@ -20,7 +20,9 @@ export default class VideoCall {
                     },
                 ]
             }
-        })
+        }
+        if(stream) opts.stream = stream;
+        this.peer = new Peer(opts)
         return this.peer
     }
     connect = (otherId) => {

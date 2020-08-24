@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
 import BtnSwitch from '../Button/BtnSwitch';
+import { setAudioOn } from '../../actions';
+import { connect } from 'react-redux';
 
-const BtnAudio = ({ children, ...props }) => {
-    const [audioOn, setAudio] = useState(true);
+const BtnAudio = ({ audioOn, setAudioOn }) => {
     const onClick = () => {
-        setAudio(!audioOn);
+        setAudioOn(!audioOn);
     }
     return (
         <BtnSwitch
             className="button btn-switch"
             selected={audioOn}
             onClick={onClick}
-            {...props}
         >
             소리듣기
         </BtnSwitch>
     )
 }
 
-export default BtnAudio
+const mapStateToProps = ({ video }) => ({
+    audioOn: video.audioOn
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setAudioOn: (audioOn) => dispatch(setAudioOn(audioOn))
+    };
+};
+
+
+const BtnAudioContainer = connect(mapStateToProps, mapDispatchToProps)(BtnAudio);
+
+export default BtnAudioContainer

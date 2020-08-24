@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button } from '../Button';
 import { withRouter } from 'react-router-dom';
-import { Icon } from '../Common'
+import { Icon,Switch } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
 import { sendCheckConnect } from '../../actions';
-import Switch from '@jikjoo/moonstone/Switch';
 import { connect } from 'react-redux';
 
 // Class형 component 

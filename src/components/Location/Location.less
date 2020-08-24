@@ -12,8 +12,8 @@
     position               : relative;
     top                    : 7px;
     left                   : 5px;
-    width                  : 34px;
-    height                 : 34px;
+    width                  : 60px;
+    height                 : 60px;
     border                 : 1px solid rgba(58, 70, 88, .45);
     border-radius          : 2px;
     background             : #fcfcfd;
@@ -22,12 +22,15 @@
     background-clip        : padding-box;
     cursor                 : pointer;
 
-    >span {
+    .inner {
+        width                  : 40px;
+        height                 : 40px;
+        margin                 : 7px 0 0 0;
+        background-position    : -153px -31px;
         overflow               : hidden;
         display                : inline-block;
         color                  : transparent !important;
         vertical-align         : top;
-        //background-image: url('./../../../resources/cafe.jpg');
         background-size        : contain !important;
         background-repeat      : no-repeat;
         background-position    : center;
@@ -35,6 +38,7 @@
         background-size        : 200px 200px;
         -webkit-background-size: 200px 200px;
     }
+
 }
 
 .cafe {
@@ -47,13 +51,6 @@
 
 .park {
     background-image: url('./../../../resources/park.jpg');
-}
-
-.inner {
-    width              : 20px;
-    height             : 20px;
-    margin             : 7px 0 0 0;
-    background-position: -153px -31px;
 }
 
 /*

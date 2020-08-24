@@ -27,7 +27,9 @@ export default {
         kennel: {
             url: '',
             socket: null
-        }
+        },
+        talkOn : true,
+        audioOn : true
     },
 	/* location: {
 		isLoaded: false
