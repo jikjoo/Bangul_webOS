@@ -60,3 +60,12 @@ ares-launch com.bangul.app.webos -d webos
 # debugging
 ares-inspect com.bangul.app.webos -d webos
 ```
+
+## Firebase에 올리기
+```
+npm install -g firebase
+firebase login
+npm run pack-p
+# dist/index.html을 public/index.html로 바꾸기
+npm run deploy
+```

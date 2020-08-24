@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site" : "bangul-petcare",
+    "site" : "bangul",
     "public": "dist",
     "ignore": [
       "firebase.json",
