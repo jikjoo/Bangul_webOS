@@ -1,8 +1,7 @@
 import React from 'react';
 import './Button.less';
-import Switch from '@jikjoo/moonstone/Switch';
 import BtnVideo from './BtnVideo';
-import { Icon } from '../Common';
+import { Switch } from '../Common';
 
 const BtnSwitch = ({ children, selected, ...props }) => {
     return (
@@ -11,9 +10,7 @@ const BtnSwitch = ({ children, selected, ...props }) => {
             {...props}
         >
             {children}<br />
-            <Switch className="switch" selected={selected} >
-                ●
-            </Switch>
+            <Switch selected={selected} />
         </BtnVideo>
     )
 }
