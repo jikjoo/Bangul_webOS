@@ -129,7 +129,8 @@ class Video extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.talkOn !== nextProps.talkOn) {
       // 내 마이크 끄고 키기 설정  -> BtnTalk로
-      if (this.state.localStream.getAudioTracks().length > 0) {
+      if (this.state.localStream &&
+        this.state.localStream.getAudioTracks().length > 0) {
         this.state.localStream.getAudioTracks().forEach(track => {
           track.enabled = nextProps.talkOn;
         });
@@ -211,7 +212,7 @@ class Video extends React.Component {
   };
   render() {
     const { localStream, talkReady } = this.state;
-    const {audioOn} = this.props;
+    const { audioOn } = this.props;
     return (
       <div className='box-video'>
         {/* <video
@@ -252,8 +253,8 @@ class Video extends React.Component {
 Video.propTypes = {
   target: PropTypes.oneOf(['home', 'kennel']),
   localStream: PropTypes.any,
-  talkOn : PropTypes.bool,
-  audioOn : PropTypes.bool
+  talkOn: PropTypes.bool,
+  audioOn: PropTypes.bool
 }
 
 /*
@@ -274,7 +275,7 @@ video : {
 const mapStateToProps = ({ video }) => ({
   video,
   talkOn: video.talkOn,
-  audioOn : video.audioOn
+  audioOn: video.audioOn
 });
 const mapDispatchToProps = (dispatch) => {
   return {
