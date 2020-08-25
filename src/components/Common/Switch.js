@@ -2,7 +2,7 @@ import React from 'react';
 import SwitchBase from '@jikjoo/moonstone/Switch';
 
 
-const Switch = ({selected}) => {
+const Switch = ({ selected }) => {
     return (
         <SwitchBase className="switch" selected={selected} >
             ●
