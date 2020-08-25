@@ -9,7 +9,7 @@ const BtnSwitch = ({ children, selected, ...props }) => {
             className="button btn-switch"
             {...props}
         >
-            {children}<br />
+            {children}
             <Switch selected={selected} />
         </BtnVideo>
     )

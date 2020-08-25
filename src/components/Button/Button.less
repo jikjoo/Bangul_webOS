@@ -1,36 +1,59 @@
 @import '~@jikjoo/moonstone/styles/colors.less';
+@import '../../App/App.less';
 
-.button{
+.button {
     vertical-align: middle;
-    &:hover{
+
+    &:hover {
         background-color: transparent;
     }
-    .bg:hover{
+
+    .bg:hover {
         background-color: @moon-accent;
     }
 
 }
 
-.btn-push{
-    flex : 1 1;
-    margin:auto !important;
-    height: -webkit-fill-available !important;
-    width: -webkit-fill-available !important;
-    max-width: unset !important;
+.btn-push {
+    flex        : 1 1;
+    margin      : auto !important;
+    height      : -webkit-fill-available !important;
+    width       : -webkit-fill-available !important;
+    max-width   : unset !important;
     border-style: ridge;
 }
 
-.button.btn-video{
-    margin-top:10px;
+.button.btn-video {
+    margin-top   : 10px;
     margin-bottom: 10px;
-    flex : 1 1;
-    max-height: 200px;
-    width:fit-content;
+    flex         : 1 1;
+    max-height   : 200px;
+    width        : fit-content;
+
+    @media @mobile {
+        width    : auto;
+        max-width: unset;
+        height   : 70px;
+
+        br {
+            display: none;
+        }
+
+    }
 }
 
-.btn-go-back{
-    font-size : 40pt;
+.btn-go-back {
+    font-size     : 40pt;
     vertical-align: middle;
-    width: 100px;
-    height: 100px;
+    width         : 100px;
+    height        : 100px;
+}
+
+@media @mobile {
+    .btn-switch .switch {
+        position: absolute;
+        right   : 3px;
+        top     : 25%;
+    }
+
 }

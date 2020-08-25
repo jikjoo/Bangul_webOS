@@ -1,4 +1,5 @@
 @import '~@jikjoo/moonstone/styles/colors.less';
+@import '../../App/App.less';
 
 .video {
     /* width:700px;
@@ -7,6 +8,12 @@
     margin-left : auto;
     height      : 800px;
     display     : block;
+
+    @media @mobile {
+        width        : fit-content;
+        margin-bottom: auto;
+        height       : auto;
+    }
 
     &.remote {
         //object-fit: scale-down;
@@ -22,10 +29,14 @@
 }
 
 .status {
-    position: absolute;
-    bottom  : 50%;
-    left:0;
-    right:0;
+    position  : absolute;
+    bottom    : 50%;
+    left      : 0;
+    right     : 0;
     text-align: center;
-    color   : @moon-darker-gray;
+    color     : @moon-darker-gray;
+
+    @media @mobile {
+        top: 10%;
+    }
 }

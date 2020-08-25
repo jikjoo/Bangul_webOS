@@ -1,8 +1,15 @@
 @import '~@jikjoo/moonstone/styles/colors.less';
+@import '../../App/App.less';
 
 .icon-in-video {
-    display: block;
+    display  : block;
     font-size: 50px;
+
+    @media @mobile {
+        display : inline-block;
+        position: absolute;
+        left    : 0;
+    }
 }
 
 
@@ -20,40 +27,57 @@ div.slider-lamp {
     height: 500px;
     width : 10px;
     margin: auto;
+
+    @media @mobile {
+        margin: 0 2px;
+        height: 5px;
+        margin-bottom: 40%;
+    }
 }
 
 .button p {
     white-space: initial;
-    word-break: keep-all;
+    word-break : keep-all;
 }
 
 .item-video {
     vertical-align: middle;
+
     &.btn-set-temp {
         height    : auto;
         max-height: max-content;
     }
+
     &.item-sub {
-       height: 160px;
+        height: 160px;
+
+        @media @mobile {
+            display: none;
+        }
     }
-    font-family          : "Moonstone";
-    font-size            : 1.25rem;
-    font-style           : normal;
-    font-weight          : 600;
-    -webkit-font-kerning : normal;
-    font-feature-settings: "kern";
-    font-kerning         : normal;
+
+    @media @mobile {
+        max-width: unset;
+    }
+
+    font-family            : "Moonstone";
+    font-size              : 1.25rem;
+    font-style             : normal;
+    font-weight            : 600;
+    -webkit-font-kerning   : normal;
+    font-feature-settings  : "kern";
+    font-kerning           : normal;
     //height               : 2.5rem;
-    min-width            : 2.5rem;
-    max-width            : 18.75rem;
-    line-height          : 2.25rem;
-    margin               : 0 0.375rem;
-    padding-left         : 0.875rem;
-    padding-right        : 0.875rem;
-    margin-left          : 0.375rem;
-    margin-right         : 0.375rem;
-    background-color     : @moon-button-bg-color;
-    text-align           : center;
+    min-width              : 2.5rem;
+    max-width              : 18.75rem;
+    line-height            : 2.25rem;
+    margin                 : 0 0.375rem;
+    padding-left           : 0.875rem;
+    padding-right          : 0.875rem;
+    margin-left            : 0.375rem;
+    margin-right           : 0.375rem;
+    background-color       : @moon-button-bg-color;
+    text-align             : center;
 
     display    : inline-block;
     box-sizing : border-box;
@@ -65,11 +89,11 @@ div.slider-lamp {
     cursor     : pointer;
 
     //display: flex;
-    align-items    : center;
-    justify-content: center;
-    box-sizing     : border-box;
+    align-items      : center;
+    justify-content  : center;
+    box-sizing       : border-box;
     //height         : 100%;
-    position       : relative;
-    display        : flex;
-    flex-direction : column;
+    position         : relative;
+    display          : flex;
+    flex-direction   : column;
 }
