@@ -10,7 +10,7 @@
     display     : block;
 
     @media @mobile {
-        width        : fit-content;
+        width        : -webkit-fill-available;
         margin-bottom: auto;
         height       : auto;
     }
@@ -37,6 +37,7 @@
     color     : @moon-darker-gray;
 
     @media @mobile {
-        top: 10%;
+        top   : 10%;
+        bottom: auto;
     }
 }
