@@ -4,7 +4,7 @@
 	"description": "차량용 스마트 펫케어 : 방울이가 타고있어요",
 	"author": "",
 	"main": "src/index.js",
-	"homepage": "./",
+	"homepage": "https://bangul.web.app/",
 	"scripts": {
 		"start": "enact serve",
 		"serve": "enact serve",
@@ -15,7 +15,8 @@
 		"lint": "enact lint .",
 		"license": "enact license",
 		"test": "enact test",
-		"test-watch": "enact test --watch"
+		"test-watch": "enact test --watch",
+		"deploy" : "firebase deploy --only hosting:bangul"
 	},
 	"license": "UNLICENSED",
 	"private": true,

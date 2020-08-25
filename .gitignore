@@ -119,5 +119,5 @@ dist
 .DS_Store
 npm-debug.log
 
-# firebse
+# firebase
 .firebase
