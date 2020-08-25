@@ -80,7 +80,7 @@ ssh -p 6622 -o StrictHostKeyChecking=no -o UserKnownHostsFile=null root@localhos
 ```
 
 
-# ~webOS 장비 설정~
+# webOS 장비 설정
 https://www.webosose.org/docs/guides/setup/system-requirements/  
 ### 지급된 장비
 - Rasberry pi 4
@@ -94,3 +94,31 @@ https://www.webosose.org/docs/guides/setup/system-requirements/
 1. 라즈베리파이 랜선이랑 노트북 랜선 연결
 1. 디스플레이 5v in에 전원 연결(usb 옛날 케이블)
 1. 라즈베리파이 전원 연결(ctype 케이블)
+
+# webOS 2.6 image build
+https://www.webosose.org/docs/guides/setup/building-webos-ose/
+- http://build.webos-ports.org/webosose/raspberrypi4/   에서  
+> webos-image-raspberrypi4-master-20200724135247...> 24-Jul-2020 16:16           378142380
+
+다운로드, 압축풀기
+
+# Flashing the image
+- https://sourceforge.net/projects/win32diskimager/ 다운로드
+- Image File에 webos-image~.wic 부르고, SD 카드에 Write하기
+
+# IP 고정
+```
+ares-shell -d webos
+luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 '{
+     "method": "manual",
+     "address": "169.254.203.77",
+     "netmask": "255.255.0.0",
+     "gateway": "169.254.1.1"
+}'
+```
+
+# 화면 비율 조정
+```
+ares-shell -d webos
+config="[{\"device\":\"/dev/dri/card0\",\"hwcursor\":false,\"outputs\":[{\"name\":\"HDMI1\",\"geometry\":\"1024x600+0+0r0s1\",\"mode\":\"1024x600\"}]}]"; luna-send -n 1 -f luna://com.webos.service.config/setConfigs "{\"configs\":{\"com.webos.surfacemanager.displayConfig\": $config}}"
+```
