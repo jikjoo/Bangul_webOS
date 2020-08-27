@@ -11,10 +11,9 @@ const BoxAlarm = ({ type, open, ...props }) => {
         setTimeout(()=>{onClose(true)},2000)
     },[]) */
     /*eslint-disable no-console */
-    console.log({type,open,webosOn});
     return (
         // webOS에서는 자체 알람 안뜨도록
-        typeof webosOn ? null :
+        webosOn ? null :
             <Notfication className={`box-alarm ${type}`}
                 open={(open & !closed)} {...props} scrimType="none">
                 <Icon icon="warning" />

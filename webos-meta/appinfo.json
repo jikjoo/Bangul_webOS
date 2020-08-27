@@ -12,6 +12,6 @@
   "allowAudioCapture": true,
   "allowVideoCapture": true,
   "requiredPermissions": [
-    "notifications"
+    "all","notifications","devices","media"
   ]
 }

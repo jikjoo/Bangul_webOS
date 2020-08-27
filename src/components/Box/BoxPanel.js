@@ -20,8 +20,8 @@ const BoxPanel = ({ children, sendConnectServer, createToast,
         <Panel className={'box box-panel'} {...rest}>
             {/* <Header title={'헤더'} type="compact"/> */}
             {children}
-            {/* <BoxAlarm open={!online} type={'internet_not_connected'}></BoxAlarm>
-            <BoxAlarm open={!isConn} type="server_not_connected" /> */}
+            <BoxAlarm open={!online} type={'internet_not_connected'}></BoxAlarm>
+            <BoxAlarm open={!serverOn} type="server_not_connected" />
         </Panel>
     )
 }

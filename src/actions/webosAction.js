@@ -22,23 +22,11 @@ export const createToast = (type) => (dispatch) => {
             "sourceId": "com.bangul.app.webos",
             "message": `${text.title}: ${text[type]}`,
             "persistent": true,
-            "iconUrl": 'icon.png' // 아이콘 적용 안되는 이슈 #36
+            "iconUrl": "/media/developer/apps/usr/palm/applications/com.bangul.app.webos/icon.png" 
+            // 아이콘 적용 안되는 이슈 #36
         },
         onComplete: (res) => {
             console.log({ createToast: res })
         },
     })
 }
-
-/*
-var bridge = new WebOSServiceBridge();
-bridge.onservicecallback = function (msg) { var response = JSON.parse(msg); console.log(response);};
-var params = JSON.stringify({
-    "sourceId":"com.bangul.app.webos",
-    "message":"hello world"
-})
-bridge.call("luna://com.webos.notification/createToast",params);
-bridge.cancel();
-
- luna-send -n 1 -f -a com.banugl.app.webos luna://com.webos.notification/createToast '{"sourceId":"com.banugl.app.webos","message":"hello world"}'
-*/
