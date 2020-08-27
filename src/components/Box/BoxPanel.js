@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         sendConnectServer: () => dispatch(sendConnectServer()),
         setLoading: (loading) => dispatch(setLoading(loading)),
-        createToast: (alert) => dispatch(createToast(alert))
+        createToast: (type) => dispatch(createToast(type))
     };
 };
 
