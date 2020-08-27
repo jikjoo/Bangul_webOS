@@ -25,13 +25,13 @@
 ## 로컬 서버 디버깅
 - ctrl+shift+i 눌르고 console 확인
 
-## webOS 에뮬레이터에서 실행
+## webOS 에뮬레이터에서 실행 : npm run install-emul
 ```s
 # 에뮬레이터 실행   
 vboxmanage startvm webos-image
 # dist 생성   
 npm run pack
-npm run pack -p (완성모드)
+npm run pack-p (완성모드)
 # ipk 파일 생성   
 ares-package dist
 # app 설치   
@@ -40,14 +40,16 @@ ares-install com.bangul.app.webos_1.0.0_all.ipk -d emulator
 ares-launch com.bangul.app.webos -d emulator
 ```
 ## webOS 디버깅
-- `ares-inspect com.bangul.app.webos -d emulator`
+```
+ares-inspect com.bangul.app.webos -d emulator
+```
 
 ## webOS 장치 연결
 - `ares-setup-device`
 - add 선택
 - 장치 ip 입력(network 설정에서 확인 가능), 이름은 webos로
 
-## webOS 장치에서 실행
+## webOS 장치에서 실행 : npm run install
 ```s
 # dist 생성   
 npm run pack    

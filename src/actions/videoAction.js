@@ -1,12 +1,12 @@
 import axios from '../api'
 import sample from '../../resources/sample_dog.jpg';
 
-export const VIDEO_URL_HOME = 'VIDEO_URL/HOME';
-export const VIDEO_URL_KENNEL = 'VIDEO_URL/KENNEL';
-export const SET_SOCKET_HOME = 'SET_SOCKET/HOME';
-export const SET_SOCKET_KENNEL = 'SET_SOCKET_KENNEL';
-export const SET_AUDIO_ON = 'SET_AUDIO_ON';
-export const SET_TALK_ON = 'SET_TALK_ON';
+export const VIDEO_URL_HOME = 'VIDEO/URL/HOME';
+export const VIDEO_URL_KENNEL = 'VIDEO/URL/KENNEL';
+export const SET_SOCKET_HOME = 'VIDEO/SET_SOCKET/HOME';
+export const SET_SOCKET_KENNEL = 'VIDEO/SET_SOCKET_KENNEL';
+export const VIDEO_SET_AUDIO_ON = 'VIDEO/SET_AUDIO_ON';
+export const VIDEO_SET_TALK_ON = 'VIDEO/SET_TALK_ON';
 
 // video URL 설정하기
 export const videoURL = ({ target, url }) => {
@@ -33,7 +33,7 @@ export const videoURL = ({ target, url }) => {
 }
 // 서버에 video url 보내기
 export const sendVideoURL = target => dispatch => {
-    dispatch({type:`${target}/SEND_VIDEO_URL`})
+    dispatch({type:`VIDEO/SEND_VIDEO_URL/${target}`})
     return axios.get(`${target}/url`)
         .then(res => {
             //console.log(res)
@@ -65,21 +65,21 @@ export const setSocket = ({ target, socket }) => {
             }
         default:
             return {
-                type: 'SOCKET_TARGET_ERROR'
+                type: 'VIDEO/SOCKET_TARGET_ERROR'
             };
     }
 }
 
 export const setAudioOn = (audioOn) => {
     return {
-        type : SET_AUDIO_ON,
+        type : VIDEO_SET_AUDIO_ON,
         audioOn
     }
 }
 
 export const setTalkOn = (talkOn) => {
     return {
-        type : SET_TALK_ON,
+        type : VIDEO_SET_TALK_ON,
         talkOn
     }
 }

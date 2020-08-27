@@ -10,5 +10,8 @@
   "largeIcon": "icon-large.png",
   "uiRevision": 2,
   "allowAudioCapture": true,
-  "allowVideoCapture": true
+  "allowVideoCapture": true,
+  "requiredPermissions": [
+    "notifications"
+  ]
 }

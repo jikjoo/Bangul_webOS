@@ -244,7 +244,7 @@ class Video extends React.Component {
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
+        {/* <BoxAlarm open={!localStream && talkReady} type='mic_not_found' /> */}
       </div>
     );
   }

@@ -1,7 +1,8 @@
 import axios from '../api'
+import { createToast } from './webosAction';
 
-export const CONNECT_SERVER = 'CONNECT_SERVER';
-export const CONNECT_INTERNET = 'CONNECT_INTERNET';
+export const CONNECT_SERVER = 'CONNECT/SERVER';
+export const CONNECT_INTERNET = 'CONNECT/INTERNET';
 
 // connected with BtnConnect
 export const connectServer = ({ serverOn, serverError }) => {
@@ -16,7 +17,7 @@ export const connectServer = ({ serverOn, serverError }) => {
 
 // async action
 export const sendConnectServer = () => dispatch => {
-	dispatch({type:"SEND_CONNECT_SERVER"})
+	dispatch({ type: "CONNECT/SEND/SERVER" })
 	return axios.get('/server/hello/webos')
 		.then(res => {
 			//console.log(res)
@@ -27,6 +28,7 @@ export const sendConnectServer = () => dispatch => {
 		.catch(err => {
 			console.log(err)
 			dispatch(connectServer({ serverOn: false, serverError: err.message }))
+			dispatch(createToast('server_not_connected'));
 		})
 }
 
@@ -37,8 +39,8 @@ export const connectInternet = (internetOn) => {
 	}
 }
 export const sendConnectInternet = () => dispatch => {
-	dispatch({type:'SEND_CONNECT_INTERNET'})
-	return axios.get('http://www.google.com', )
+	dispatch({ type: 'CONNECT/SEND/INTERNET' })
+	return axios.get('http://www.google.com',)
 		.then(res => {
 			//console.log(res)
 			dispatch(connectInternet(true))
