@@ -202,7 +202,7 @@ class Video extends React.Component {
     //remoteDesc = false;
     this.setState({ remoteDesc: false })
     const { pc, ws } = this.state;
-    createPeerConnection();
+    this.createPeerConnection();
     if (stream) {
       pc.addStream(stream);
     }
@@ -383,7 +383,7 @@ class Video extends React.Component {
       }
 
       console.log(JSON.stringify(pcConfig_));
-      pc = new RTCPeerConnection(pcConfig_, pcOptions);
+      const pc = new RTCPeerConnection(pcConfig_, pcOptions);
 
       pc.onicecandidate = this.onIceCandidate;
 
