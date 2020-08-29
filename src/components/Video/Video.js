@@ -1,287 +1,364 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import VideoPlayer, { MediaControls } from '@jikjoo/moonstone/VideoPlayer';
+import { BtnVideo } from '../Button';
+import { BoxVideoBtn } from '../Box';
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
+import { sendVideoURL, setSocket } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
-import sample_dog from '../../../resources/sample_dog.jpg'
-import BoxAlarm from '../Box/BoxAlarm';
-import text from '../../../resources/text.json'
-import PropTypes from 'prop-types';
+import {XMLHttpRequest} from 'w3c-xmlhttprequest'
+import navigator from 'navigator'
+import {
+  RTCPeerConnection,
+  RTCIceCandidate,
+  RTCSessionDescription,
+  RTCView,
+  MediaStream,
+  MediaStreamTrack,
+  getUserMedia,
+} from 'webrtc-adapter';
+
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
+RTCPeerConnection = window.RTCPeerConnection || /*window.mozRTCPeerConnection ||*/ window.webkitRTCPeerConnection;
+RTCSessionDescription = /*window.mozRTCSessionDescription ||*/ window.RTCSessionDescription;
+RTCIceCandidate = /*window.mozRTCIceCandidate ||*/ window.RTCIceCandidate;
+navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
+var URL = window.URL || window.webkitURL;
+
+const pcOptions = {
+  optional: [
+      // Deprecated:
+      //{RtpDataChannels: false},
+      //{DtlsSrtpKeyAgreement: true}
+  ]
+};
+
+var iceCandidates = [];
+var datachannel;
+var pc;
+var keys = [];
+var trickle_ice = true;
+var remoteDesc = false;
+var mediaConstraints = {
+  optional: [],
+  mandatory: {
+      OfferToReceiveAudio: true,
+      OfferToReceiveVideo: true
+  }
+};
+
+const pcConfig = {"iceServers": [
+  {"urls": ["stun:stun.l.google.com:19302", "stun:" + "192.168.137.112" + ":3478"]}
+]};
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      localStream: null,
+      localStream: {},
+      remoteStreamUrl: '',
+      streamUrl: '',
       initiator: false,
-      peer: null,
+      peer: {},
       full: false,
       connecting: false,
       waiting: true,
-      socket: null,
-      talkReady: false
+      micState: true,
+      camState: true,
+      socket: null
     }
     this.state = this.initialState;
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
-    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
-    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
-    const component = this;
-    this.setState({ socket });
-    const { target } = this.props;
-    const talkReady = target === 'home';
-    this.setState({ talkReady });
-    const roomId = `bangul${target}`;// this.props.match.params;
-    talkReady ? this.getUserMedia().then(() => {
-      socket.emit('join', { roomId: roomId });
-    }) :
-      socket.emit('join', { roomId: roomId });
 
-    socket.on('init', () => {
-      component.setState({ initiator: true });
-    });
-    socket.on('ready', () => {
-      component.enter(roomId);
-    });
-    socket.on('desc', data => {
-      if (data.type === 'offer' && component.state.initiator) return;
-      if (data.type === 'answer' && !component.state.initiator) return;
-      component.call(data);
-    });
-    socket.on('disconnected', () => {
-      component.setState({ initiator: true });
-    });
-    socket.on('full', () => {
-      component.setState({ full: true });
-    });
+    addGyronormScript();
+
+    function httpGetAsync(theUrl, callback) {
+      try {
+        console.log("asdf");
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = function () {
+              if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                  callback(xmlHttp.responseText);
+              }
+          };
+          xmlHttp.open("GET", theUrl, true); // true for asynchronous
+          xmlHttp.send(null);
+          console.log(xmlHttp)
+      } catch (e) {
+          console.error(e);
+      }
+  }
+
+  function addGyronormScript() {
+      var srcUrl = "https://rawgit.com/dorukeker/gyronorm.js/master/dist/gyronorm.complete.min.js"
+      httpGetAsync(srcUrl, function (text) {
+          var script = document.createElement("script");
+          script.setAttribute("src", srcUrl);
+      });
+  }
+
+   const ws = new W3CWebSocket('ws://192.168.137.112:8080/stream/webrtc');
+
+   function call(stream) {
+    iceCandidates = [];
+    remoteDesc = false;
+    createPeerConnection();
+    if (stream) {
+        pc.addStream(stream);
+    }
+      var request = {
+          what: "call",
+         options: {
+             force_hw_vcodec: false,
+             vformat: "60",
+             trickle_ice: true
+         }
+      };
+      ws.send(JSON.stringify(request));
+      console.log("call(), request=" + JSON.stringify(request));
+    }
+
+    ws.onopen = () => {
+      console.log('Websocket Client Connected');
+      call();
+    }
+
+    ws.onmessage = (message) => {
+      const msg = JSON.parse(message.data);
+
+      if ( msg.what !== 'undefined') {
+        var what = msg.what;
+        var data = msg.data;
+      }
+    console.log("message = " + what);
+//    console.log("data = " + data);
+
+      switch(what) {
+        case "offer":
+         pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data)),
+            function onRemoteSdpSuccess() {
+                remoteDesc = true;
+                addIceCandidates();
+                console.log('onRemoteSdpSucces()');
+                pc.createAnswer(function (sessionDescription) {
+                    pc.setLocalDescription(sessionDescription);
+                    var request = {
+                        what: "answer",
+                        data: JSON.stringify(sessionDescription)
+                    };
+                    ws.send(JSON.stringify(request));
+                    console.log(request);
+                }, function (error) {
+                  //   alert("Failed to createAnswer: " + error);
+                }, mediaConstraints);
+            },
+            function onRemoteSdpError(event) {
+                //alert('Failed to set remote description (unsupported codec on this browser?): ' + event);
+                //stop();
+            }
+          );
+        case "answer":
+          break;
+        case "message":
+          break;
+        case "iceCandidate": 
+       //     console.log("asdfasdfasdf")
+          if (!msg.data) {
+            console.log("Ice Gathering Complete");
+            break;
+          }
+          
+          var elt = JSON.parse(msg.data);
+          var candidate = new RTCIceCandidate({sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate});
+          iceCandidates.push(candidate);
+          
+          if (remoteDesc) addIceCandidates();
+             
+          document.documentElement.style.cursor = 'default';
+          break;
+        case "icecandidates": {
+          var candidates = JSON.parse(msg.data);
+          for (var i = 0; candidates && i < candidates.length; i++) {
+              elt = candidates[i];
+              let candidate = new RTCIceCandidate({sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate});
+              iceCandidates.push(candidate);
+          }
+          if (remoteDesc) addIceCandidates();
+          document.documentElement.style.cursor = 'default';
+          break;
+        }
+      }
+
+     // console.log("message =", msg);
+    }
+
+    function createPeerConnection() {
+      try {
+      const pcConfig_ = pcConfig;
+      try {
+       // const ice_servers = '[{"urls":"stun:stun4.l.google.com:19302"},{"urls": "turn:numb.viagenie.ca","username":"pillast777@naver.com","credential":"fishnchips1!"}]'
+       
+        var ice_servers = ""
+        if(ice_servers) pcConfig_.iceServers = JSON.parse(ice_servers);
+      }
+      catch {
+        
+      }
+    
+      console.log(JSON.stringify(pcConfig_));
+      pc = new RTCPeerConnection(pcConfig_, pcOptions);
+
+      pc.onicecandidate = onIceCandidate;
+      
+      if ('ontrack' in pc) {
+        pc.ontrack = onTrack;
+      } else {
+        pc.onaddstream = onRemoteStreamAdded; // deprecated
+      }
+      pc.onremovestream = onRemoteStreamRemoved;
+      pc.ondatachannel = onDataChannel;
+      console.log("peer connection successfully created!");
+    }
+     catch {
+
+      }
+    }
+
+    function onRemoteStreamAdded(event) {
+      console.log("Remote stream added:", event.stream);
+      var remoteVideoElement = document.getElementById('remote-video');
+      remoteVideoElement.srcObect = event.stream;
+    //  remoteVideoElement.play();
+    }
+
+    function onRemoteStreamRemoved(event) {
+      var remoteVideoElement = document.getElementById('remote-video');
+      remoteVideoElement.srcObject = null;
+      remoteVideoElement.src = ''; // TODO: remove
+    }
+
+    function onDataChannel(event) {
+      console.log("onDataChannel()");
+      datachannel = event.channel;
+
+      event.channel.onopen = function () {
+          console.log("Data Channel is open!");
+    //      document.getElementById('datachannels').disabled = false;
+      };
+
+      event.channel.onerror = function (error) {
+          console.error("Data Channel Error:", error);
+      };
+
+      event.channel.onmessage = function (event) {
+          console.log("Got Data Channel Message:", event.data);
+    //      document.getElementById('datareceived').value = event.data;
+      };
+
+  //    event.channel.onclose = function () {
+  //        datachannel = null;
+    //      document.getElementById('datachannels').disabled = true;
+    //      console.log("The Data Channel is Closed");
+     // };
+  }
+
+    function onTrack(event) {
+      console.log("Remote track!");
+      var remoteVideoElement = document.getElementById('remote-video');
+      remoteVideoElement.srcObject = event.streams[0];
+    //  remoteVideoElement.play();
+   }
+
+    function onIceCandidate(event) {
+        if(event.candidate){
+            const candidate = {
+              sdpMLineIndex: event.candidate.sdpMLineIndex,
+              sdpMid: event.candidate.sdpMid,
+              candidate: event.candidate.candidate
+            }
+            const request = {
+              what: "addIceCandidate",
+              data: JSON.stringify(candidate)
+            }
+            ws.send(JSON.stringify(candidate));
+        }else {
+          console.log("End of candidates.");
+      }
+    }
+
+    function addIceCandidates() {
+      iceCandidates.forEach(function (candidate) {  
+        pc.addIceCandidate(candidate,
+              function () {
+                  console.log("IceCandidate added: " + JSON.stringify(candidate));
+              },
+              function (error) {
+                  console.error("addIceCandidate error: " + error);
+              }
+          );
+      });
+      iceCandidates = [];
+    } 
   }
 
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
-    if (this.state.localStream) {
-      this.state.localStream.getTracks().forEach(track => {
-        track.stop();
-      })
-    }
-    this.state.socket.disconnect();
-    this.setState(this.initialState);
-    console.log('disconnect')
-  }
-  getUserMedia() {
-    //내 마이크 확인해서, stream 얻고 state에 저장하기
-    console.log("in getUserMedia")
-    return new Promise((resolve) => {
-      const { navigator } = window;
-      /* navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia; */
-      const op = {
-        /* video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
-        } */
-        video: false,
-        audio: true
-      };
-      navigator.mediaDevices.getUserMedia(op)
-        .catch(function (error) {
-          if (error.name !== 'NotFoundError') {
-            throw error;
-          }
-          //마이크 못찾았을 때, 한번 더 찾는 코드. 사실상 의미 없음
-          return navigator.mediaDevices.enumerateDevices()
-            .then(function (devices) {
-              const mic = devices.find(function (device) {
-                return device.kind === 'audioinput';
-              });
-              const constraints = {
-                video: false,
-                audio: mic && op.audio
-              };
-              console.log("enumerateDevices", { audio: constraints.audio, error })
-              navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => {
-                  this.setState({ localStream: stream });
-                  //this.localVideo.srcObject = stream;
-                  console.log('return enumerate getUserMedia')
-                  resolve();
-                })
-                .catch(() => resolve())
-            });
-        })
-        .then(
-          stream => {
-            this.setState({ localStream: stream });
-            //this.localVideo.srcObject = stream;
-            console.log('return getUserMedia')
-            resolve();
-          },
-          () => { }
-        );
-    });
 
   }
+  getUserMedia(cb) {
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.talkOn !== nextProps.talkOn) {
-      // 내 마이크 끄고 키기 설정  -> BtnTalk로
-      if (this.state.localStream &&
-        this.state.localStream.getAudioTracks().length > 0) {
-        this.state.localStream.getAudioTracks().forEach(track => {
-          track.enabled = nextProps.talkOn;
-        });
-      }
-    }
   }
-  /* 
-  setAudioLocal() {
-    // 내 마이크 끄고 키기 설정  -> BtnTalk로
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState(({ micState }) => ({ micState: !micState }))
-  }
-
-  setVideoLocal() {
-    //내 비디오 끄고 키기 설정 
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState({
-      camState: !this.state.camState
-    })
-  }
-
-    getDisplay() {
-      // 내 화면 전송
-      window.navigator.mediaDevices.getUserMedia().then(stream => {
-        stream.oninactive = () => {
-          this.state.peer.removeStream(this.state.localStream);
-          this.getUserMedia().then(() => {
-            this.state.peer.addStream(this.state.localStream);
-          });
-        };
-        this.setState({localStream: stream });
-        this.localVideo.srcObject = stream;
-        this.state.peer.addStream(stream);
-      });
-    }
-   */
-  enter = roomId => {
-    // 상대방이랑 연결됐을 때.
-    this.setState({ connecting: true });
-    const { talkReady } = this.state;
-    const peer = talkReady ? this.videoCall.init(
-      this.state.initiator,
-      this.state.localStream
-    ) : this.videoCall.init(this.state.initiator);
-    this.setState({ peer });
-
-    peer.on('signal', data => {
-      const signal = {
-        room: roomId,
-        desc: data
-      };
-      this.state.socket.emit('signal', signal);
-    });
-    // 상대방 비디오 스트림 받기
-    peer.on('stream', stream => {
-      this.remoteVideo.srcObject = stream;
-      this.setState({ connecting: false, waiting: false });
-    });
-    peer.on('error', function (err) {
-      console.log(err);
-    });
-  };
-
   call = otherId => {
     this.videoCall.connect(otherId);
   };
+
+
   renderFull = () => {
     if (this.state.full) {
       return <p>The room is full</p>;
     }
   };
+
   render() {
-    const { localStream, talkReady } = this.state;
-    const { audioOn } = this.props;
     return (
       <div className='box-video'>
-        {/* <video
-          autoPlay
-          id='localVideo'
-          className="video local"
-          muted
-          ref={video => (this.localVideo = video)}
-        /> */}
+        {}
         <video
           autoPlay
-          muted={!audioOn}
           className={`video remote ${
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
-          id='remoteVideo'
-          //src="http://172.30.1.42:8080/stream"
-          poster={sample_dog}
+          id='remote-video'
           ref={video => (this.remoteVideo = video)}
         />
         {this.props.children}
 
         <div className='status'>
           {this.state.connecting && (
-            <p>{text.connecting_video}</p>
+            <p>Establishing connection...</p>
           )}
           {this.state.waiting && (
-            <p>{text.waiting_device}</p>
+            <p>Waiting for someone...</p>
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
       </div>
     );
   }
 }
 
-Video.propTypes = {
-  target: PropTypes.oneOf(['home', 'kennel']),
-  localStream: PropTypes.any,
-  talkOn: PropTypes.bool,
-  audioOn: PropTypes.bool
-}
-
-/*
-video : {
-    home : {
-       url : '',
-       socket
-    },
-    kennel : {
-        url : '',
-        socket
-    },
-    talkOn : true,
-    audioOn : true
-}
-*/
-
 const mapStateToProps = ({ video }) => ({
-  video,
-  talkOn: video.talkOn,
-  audioOn: video.audioOn
+  video
 });
 const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
-    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
-    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
+    setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket }))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);
