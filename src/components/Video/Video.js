@@ -27,6 +27,7 @@ RTCIceCandidate = /*window.mozRTCIceCandidate ||*/ window.RTCIceCandidate;
 navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
 var URL = window.URL || window.webkitURL;
 
+
 const pcOptions = {
   optional: [
       // Deprecated:
@@ -34,7 +35,6 @@ const pcOptions = {
       //{DtlsSrtpKeyAgreement: true}
   ]
 };
-
 var iceCandidates = [];
 var datachannel;
 var pc;
