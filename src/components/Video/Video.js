@@ -383,7 +383,7 @@ class Video extends React.Component {
       }
 
       console.log(JSON.stringify(pcConfig_));
-      pc = new RTCPeerConnection(pcConfig_, pcOptions);
+      const pc = new RTCPeerConnection(pcConfig_, pcOptions);
 
       pc.onicecandidate = this.onIceCandidate;
 
