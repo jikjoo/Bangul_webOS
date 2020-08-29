@@ -29,3 +29,6 @@ export default class VideoCall {
         this.peer.signal(otherId)
     }  
 } 
+
+
+

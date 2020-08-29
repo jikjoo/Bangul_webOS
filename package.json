@@ -48,7 +48,10 @@
 		"redux": "^4.0.5",
 		"redux-thunk": "^2.3.0",
 		"simple-peer": "^9.7.2",
-		"socket.io-client": "^2.3.0"
+		"socket.io-client": "^2.3.0",
+		"w3c-xmlhttprequest": "^3.0.0",
+		"webrtc-adapter": "^7.7.0",
+		"websocket": "^1.0.32"
 	},
 	"devDependencies": {
 		"redux-devtools-extension": "^2.13.8"

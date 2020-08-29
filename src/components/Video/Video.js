@@ -8,6 +8,30 @@ import sample_dog from '../../../resources/sample_dog.jpg'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
 import PropTypes from 'prop-types';
+import { XMLHttpRequest } from 'w3c-xmlhttprequest'
+const { navigator } = window;
+import {
+  RTCPeerConnection,
+  RTCIceCandidate,
+  RTCSessionDescription,
+  RTCView,
+  MediaStream,
+  MediaStreamTrack,
+  getUserMedia,
+} from 'webrtc-adapter';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+RTCPeerConnection = window.RTCPeerConnection || /*window.mozRTCPeerConnection ||*/ window.webkitRTCPeerConnection;
+RTCSessionDescription = /*window.mozRTCSessionDescription ||*/ window.RTCSessionDescription;
+RTCIceCandidate = /*window.mozRTCIceCandidate ||*/ window.RTCIceCandidate;
+navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
+var URL = window.URL || window.webkitURL;
+
+//ar iceCandidates = [];
+//var datachannel;
+//var pc;
+//var remoteDesc = false;
+
+
 
 class Video extends React.Component {
   constructor(props) {
@@ -20,15 +44,106 @@ class Video extends React.Component {
       connecting: false,
       waiting: true,
       socket: null,
-      talkReady: false
+      talkReady: false,
+      ws: null,
+      pc: null,
+      remoteDesc: false,
+      iceCandidates: [],
+      datachannel: null
     }
     this.state = this.initialState;
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
-    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
-    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
+    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정    
+    this.addGyronormScript();
+    const ws = new W3CWebSocket(process.env.REACT_APP_SIGNALING_SERVER);
+    this.setState({ ws });
+    ws.onopen = () => {
+      console.log('Websocket Client Connected');
+      this.call();
+    }
+    ws.onmessage = (message) => {
+      const msg = JSON.parse(message.data);
+
+      if (msg.what !== 'undefined') {
+        var what = msg.what;
+        var data = msg.data;
+      }
+      console.log("message = " + what);
+      //    console.log("data = " + data);
+      const { pc, remoteDesc, iceCandidates } = this.state;
+      var mediaConstraints = {
+        optional: [],
+        mandatory: {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+        }
+      };
+      switch (what) {
+        case "offer":
+          pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data)),
+            function onRemoteSdpSuccess() {
+              //remoteDesc = true;
+              this.setState({ remoteDesc });
+              this.addIceCandidates();
+              console.log('onRemoteSdpSucces()');
+              pc.createAnswer(function (sessionDescription) {
+                pc.setLocalDescription(sessionDescription);
+                var request = {
+                  what: "answer",
+                  data: JSON.stringify(sessionDescription)
+                };
+                ws.send(JSON.stringify(request));
+                console.log(request);
+              }, function (error) {
+                //   alert("Failed to createAnswer: " + error);
+              }, mediaConstraints);
+            },
+            function onRemoteSdpError(event) {
+              //alert('Failed to set remote description (unsupported codec on this browser?): ' + event);
+              //stop();
+            }
+          );
+        case "answer":
+          break;
+        case "message":
+          break;
+        case "iceCandidate":
+          //     console.log("asdfasdfasdf")
+          if (!msg.data) {
+            console.log("Ice Gathering Complete");
+            break;
+          }
+
+          var elt = JSON.parse(msg.data);
+          var candidate = new RTCIceCandidate({ sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate });
+          //iceCandidates.push(candidate);
+          this.setState({ iceCandidates: [...iceCandidates, candidate] });
+          if (remoteDesc) this.addIceCandidates();
+
+          document.documentElement.style.cursor = 'default';
+          break;
+        case "icecandidates": {
+          var candidates = JSON.parse(msg.data);
+          for (var i = 0; candidates && i < candidates.length; i++) {
+            elt = candidates[i];
+            let candidate = new RTCIceCandidate({ sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate });
+            //iceCandidates.push(candidate);
+            this.setState({ iceCandidates: [...iceCandidates, candidate] });
+          }
+          if (remoteDesc) this.addIceCandidates();
+          document.documentElement.style.cursor = 'default';
+          break;
+        }
+      }
+
+      // console.log("message =", msg);
+    }
+
+
+    /* const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
     const component = this;
     this.setState({ socket });
     const { target } = this.props;
@@ -56,34 +171,150 @@ class Video extends React.Component {
     });
     socket.on('full', () => {
       component.setState({ full: true });
+    }); */
+  }
+  addGyronormScript() {
+    var srcUrl = "https://rawgit.com/dorukeker/gyronorm.js/master/dist/gyronorm.complete.min.js"
+    this.httpGetAsync(srcUrl, function (text) {
+      var script = document.createElement("script");
+      script.setAttribute("src", srcUrl);
     });
+  }
+  httpGetAsync(theUrl, callback) {
+    try {
+      console.log("asdf");
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+          callback(xmlHttp.responseText);
+        }
+      };
+      xmlHttp.open("GET", theUrl, true); // true for asynchronous
+      xmlHttp.send(null);
+      console.log(xmlHttp)
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  call(stream) {
+    iceCandidates = [];
+    //remoteDesc = false;
+    this.setState({ remoteDesc: false })
+    const { pc, ws } = this.state;
+    createPeerConnection();
+    if (stream) {
+      pc.addStream(stream);
+    }
+    var request = {
+      what: "call",
+      options: {
+        force_hw_vcodec: false,
+        vformat: "60",
+        trickle_ice: true
+      }
+    };
+    ws.send(JSON.stringify(request));
+    console.log("call(), request=" + JSON.stringify(request));
+  }
+
+  onRemoteStreamAdded(event) {
+    console.log("Remote stream added:", event.stream);
+    //var remoteVideoElement = document.getElementById('remote-video');
+    //remoteVideoElement.srcObect = event.stream;
+    this.remoteVideo.srcObject = event.stream;
+    //  remoteVideoElement.play();
+  }
+
+  onRemoteStreamRemoved(event) {
+    //var remoteVideoElement = document.getElementById('remote-video');
+    //remoteVideoElement.srcObject = null;
+    //remoteVideoElement.src = ''; // TODO: remove
+    this.remoteVideo.srcObject = null;
+    this.remoteVideo.src='';
+  }
+
+  onDataChannel(event) {
+    console.log("onDataChannel()");
+    //datachannel = event.channel;
+    this.setState({ datachannel: event.channel });
+    event.channel.onopen = function () {
+      console.log("Data Channel is open!");
+      //      document.getElementById('datachannels').disabled = false;
+    };
+
+    event.channel.onerror = function (error) {
+      console.error("Data Channel Error:", error);
+    };
+
+    event.channel.onmessage = function (event) {
+      console.log("Got Data Channel Message:", event.data);
+      //      document.getElementById('datareceived').value = event.data;
+    };
+
+    //    event.channel.onclose = function () {
+    //        datachannel = null;
+    //      document.getElementById('datachannels').disabled = true;
+    //      console.log("The Data Channel is Closed");
+    // };
+  }
+
+  onTrack(event) {
+    console.log("Remote track!");
+    //var remoteVideoElement = document.getElementById('remote-video');
+    //remoteVideoElement.srcObject = event.streams[0];
+    this.remoteVideo.srcObject = event.streams[0];
+    //  remoteVideoElement.play();
+  }
+
+  onIceCandidate(event) {
+    if (event.candidate) {
+      const candidate = {
+        sdpMLineIndex: event.candidate.sdpMLineIndex,
+        sdpMid: event.candidate.sdpMid,
+        candidate: event.candidate.candidate
+      }
+      const request = {
+        what: "addIceCandidate",
+        data: JSON.stringify(candidate)
+      }
+      ws.send(JSON.stringify(candidate));
+    } else {
+      console.log("End of candidates.");
+    }
+  }
+
+  addIceCandidates() {
+    iceCandidates.forEach(function (candidate) {
+      pc.addIceCandidate(candidate,
+        function () {
+          console.log("IceCandidate added: " + JSON.stringify(candidate));
+        },
+        function (error) {
+          console.error("addIceCandidate error: " + error);
+        }
+      );
+    });
+    iceCandidates = [];
   }
 
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
-    if (this.state.localStream) {
+   /*  if (this.state.localStream) {
       this.state.localStream.getTracks().forEach(track => {
         track.stop();
       })
     }
     this.state.socket.disconnect();
     this.setState(this.initialState);
-    console.log('disconnect')
+    console.log('disconnect') */
   }
-  getUserMedia() {
+  /* getUserMedia() {
     //내 마이크 확인해서, stream 얻고 state에 저장하기
     console.log("in getUserMedia")
     return new Promise((resolve) => {
       const { navigator } = window;
-      /* navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia; */
       const op = {
-        /* video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
-        } */
         video: false,
         audio: true
       };
@@ -124,8 +355,52 @@ class Video extends React.Component {
         );
     });
 
-  }
+  } */
 
+  createPeerConnection() {
+    const pcConfig = {
+      "iceServers": [
+        { "urls": process.env.REACT_APP_STUN_SERVERS.split(',') }
+      ]
+    };
+    const pcOptions = {
+      optional: [
+        // Deprecated:
+        //{RtpDataChannels: false},
+        //{DtlsSrtpKeyAgreement: true}
+      ]
+    };
+    try {
+      const pcConfig_ = pcConfig;
+      try {
+        // const ice_servers = '[{"urls":"stun:stun4.l.google.com:19302"},{"urls": "turn:numb.viagenie.ca","username":"pillast777@naver.com","credential":"fishnchips1!"}]'
+
+        var ice_servers = ""
+        if (ice_servers) pcConfig_.iceServers = JSON.parse(ice_servers);
+      }
+      catch {
+
+      }
+
+      console.log(JSON.stringify(pcConfig_));
+      pc = new RTCPeerConnection(pcConfig_, pcOptions);
+
+      pc.onicecandidate = this.onIceCandidate;
+
+      if ('ontrack' in pc) {
+        pc.ontrack = this.onTrack;
+      } else {
+        pc.onaddstream = this.onRemoteStreamAdded; // deprecated
+      }
+      pc.onremovestream = this.onRemoteStreamRemoved;
+      pc.ondatachannel = this.onDataChannel;
+      this.setState({ pc });
+      console.log("peer connection successfully created!");
+    }
+    catch {
+
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (this.props.talkOn !== nextProps.talkOn) {
       // 내 마이크 끄고 키기 설정  -> BtnTalk로
@@ -147,7 +422,7 @@ class Video extends React.Component {
     }
     this.setState(({ micState }) => ({ micState: !micState }))
   }
-
+   
   setVideoLocal() {
     //내 비디오 끄고 키기 설정 
     if (this.state.localStream.getVideoTracks().length > 0) {
@@ -159,7 +434,7 @@ class Video extends React.Component {
       camState: !this.state.camState
     })
   }
-
+   
     getDisplay() {
       // 내 화면 전송
       window.navigator.mediaDevices.getUserMedia().then(stream => {
@@ -175,7 +450,7 @@ class Video extends React.Component {
       });
     }
    */
-  enter = roomId => {
+  /* enter = roomId => {
     // 상대방이랑 연결됐을 때.
     this.setState({ connecting: true });
     const { talkReady } = this.state;
@@ -204,7 +479,7 @@ class Video extends React.Component {
 
   call = otherId => {
     this.videoCall.connect(otherId);
-  };
+  }; */
   renderFull = () => {
     if (this.state.full) {
       return <p>The room is full</p>;
