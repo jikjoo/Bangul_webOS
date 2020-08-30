@@ -1,8 +1,7 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
-import io from 'socket.io-client';
+import { sendVideoURL, setSocket } from '../../actions';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
 import BoxAlarm from '../Box/BoxAlarm';
@@ -83,13 +82,6 @@ class Video extends React.Component {
     const { audioOn } = this.props;
     return (
       <div className='box-video'>
-        {/* <video
-          autoPlay
-          id='localVideo'
-          className="video local"
-          muted
-          ref={video => (this.localVideo = video)}
-        /> */}
         <video
           autoPlay
           muted={!audioOn}
@@ -97,7 +89,6 @@ class Video extends React.Component {
             this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
-          //src="http://172.30.1.42:8080/stream"
           poster={sample_dog}
           ref={video => (this.remoteVideo = video)}
         />
@@ -149,7 +140,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
     setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
-    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);
