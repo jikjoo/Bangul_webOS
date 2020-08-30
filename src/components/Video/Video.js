@@ -33,7 +33,13 @@ class Video extends React.Component {
     // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
     const url = process.env.REACT_APP_SIGNALING_SERVER,
       options = {
-        iceServers: [{ urls: process.env.REACT_APP_STUN_SERVERS.split(',') }],
+        iceServers: [
+          { urls: process.env.REACT_APP_STUN_SERVERS.split(',') },
+          {
+            urls: process.env.REACT_APP_TURN_SERVERS.split(','),
+            username: process.env.REACT_APP_TURN_USERNAME,
+            credential: process.env.REACT_APP_TURN_CREDENCIAL
+          }],
         useH264: false,
         resolution: 60, // 1280x720 30fps
       }
