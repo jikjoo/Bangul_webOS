@@ -16,7 +16,7 @@
 		"license": "enact license",
 		"test": "enact test",
 		"test-watch": "enact test --watch",
-		"install": "enact pack && ares-package dist && ares-install com.bangul.app.webos_1.0.0_all.ipk -d webos",
+		"install-webos": "enact pack && ares-package dist && ares-install com.bangul.app.webos_1.0.0_all.ipk -d webos",
 		"install-emul": "enact pack && ares-package dist && ares-install com.bangul.app.webos_1.0.0_all.ipk -d emulator"
 	},
 	"license": "UNLICENSED",

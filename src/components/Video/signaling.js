@@ -21,7 +21,7 @@ class SignalingChannel {
       this.wsp.sendPacked(request);
     } catch (e) {
       console.error(e);
-      throw e;
+      //throw e;
     }
   }
 
