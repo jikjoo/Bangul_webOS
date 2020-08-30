@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { createToast } from '../../actions';
 import { connect } from 'react-redux';
 
-const VomitCheck = ({ vomitOn, children, createToast }) => {
+const MicNotFound = ({ notFound, children, createToast }) => {
     useEffect(() => {
-        if (vomitOn) {
-            createToast('vomit_on')
+        if (notFound) {
+            createToast('mic_not_found')
         }
-    }, [vomitOn])
+    }, [notFound])
     return (
         <>
             {children}
@@ -22,6 +22,6 @@ const mapDispatchToProps = (dispatch) => {
         createToast: (type) => dispatch(createToast(type))
     };
 };
-const VomitCheckContainer = connect(mapStateToProps, mapDispatchToProps)(VomitCheck);
+const MicNotFoundContainer = connect(mapStateToProps, mapDispatchToProps)(MicNotFound);
 
-export default VomitCheckContainer;
+export default MicNotFoundContainer;

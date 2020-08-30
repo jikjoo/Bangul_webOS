@@ -15,7 +15,9 @@
 		"lint": "enact lint .",
 		"license": "enact license",
 		"test": "enact test",
-		"test-watch": "enact test --watch"
+		"test-watch": "enact test --watch",
+		"install": "enact pack && ares-package dist && ares-install com.bangul.app.webos_1.0.0_all.ipk -d webos",
+		"install-emul": "enact pack && ares-package dist && ares-install com.bangul.app.webos_1.0.0_all.ipk -d emulator"
 	},
 	"license": "UNLICENSED",
 	"private": true,
@@ -24,7 +26,7 @@
 		"theme": "moonstone"
 	},
 	"eslintConfig": {
-		"extends": "enact"
+		"extends": "enact/strict"
 	},
 	"eslintIgnore": [
 		"node_modules/*",
@@ -36,6 +38,7 @@
 		"@enact/i18n": "^3.2.5",
 		"@enact/spotlight": "^3.2.5",
 		"@enact/ui": "^3.2.5",
+		"@enact/webos": "^3.2.5",
 		"@jikjoo/moonstone": "^3.2.53",
 		"axios": "^0.19.2",
 		"deferred": "^0.7.11",

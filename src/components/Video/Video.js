@@ -8,6 +8,7 @@ import sample_dog from '../../../resources/sample_dog.jpg'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
 import PropTypes from 'prop-types';
+import { MicNotFound } from '.';
 
 class Video extends React.Component {
   constructor(props) {
@@ -20,7 +21,8 @@ class Video extends React.Component {
       connecting: false,
       waiting: true,
       socket: null,
-      talkReady: false
+      talkReady: false,
+      micFound: true
     }
     this.state = this.initialState;
   }
@@ -88,7 +90,7 @@ class Video extends React.Component {
         audio: true
       };
       navigator.mediaDevices.getUserMedia(op)
-        .catch(function (error) {
+        /* .catch(function (error) {
           if (error.name !== 'NotFoundError') {
             throw error;
           }
@@ -110,17 +112,24 @@ class Video extends React.Component {
                   console.log('return enumerate getUserMedia')
                   resolve();
                 })
-                .catch(() => resolve())
+                .catch(() => {
+                  this.setState({ localStream: null })
+                  resolve()
+                })
             });
-        })
+        }) */
         .then(
           stream => {
-            this.setState({ localStream: stream });
+            this.setState({ localStream: stream, micFound: true });
             //this.localVideo.srcObject = stream;
             console.log('return getUserMedia')
             resolve();
           },
-          () => { }
+          () => {
+            this.setState({ micFound: false });
+            console.log('rejected getUserMedia')
+            resolve();
+          }
         );
     });
 
@@ -211,7 +220,7 @@ class Video extends React.Component {
     }
   };
   render() {
-    const { localStream, talkReady } = this.state;
+    const { micFound, talkReady } = this.state;
     const { audioOn } = this.props;
     return (
       <div className='box-video'>
@@ -244,7 +253,8 @@ class Video extends React.Component {
           )}
           {this.renderFull()}
         </div>
-        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
+        <BoxAlarm open={!micFound && talkReady} type='mic_not_found' />
+        <MicNotFound notFound={!micFound && talkReady} />
       </div>
     );
   }

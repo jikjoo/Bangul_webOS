@@ -1,16 +1,16 @@
 import axios from '../api'
 import { loadNaverMap } from './locationAction';
 
-export const CHECK_CONNECT_HOME = 'CHECK_CONNECT/HOME';
-export const CHECK_CONNECT_KENNEL = 'CHECK_CONNECT/KENNEL';
-export const CHECK_CONNECT_LOCATION = 'CHECK_CONNECT/LOCATION';
+export const CHECK_SET_HOME = 'CHECK/SET/HOME';
+export const CHECK_SET_KENNEL = 'CHECK/SET/KENNEL';
+export const CHECK_SET_LOCATION = 'CHECK/SET/LOCATION';
 
-//connected with BtnGoto
-export const checkConnect = ({ target, isOn, error }) => {
+//ed with BtnGoto
+export const checkSet = ({ target, isOn, error }) => {
 	switch (target) {
 		case 'home':
 			return {
-				type: CHECK_CONNECT_HOME,
+				type: CHECK_SET_HOME,
 				home: {
 					isOn,
 					error
@@ -18,7 +18,7 @@ export const checkConnect = ({ target, isOn, error }) => {
 			}
 		case 'kennel':
 			return {
-				type: CHECK_CONNECT_KENNEL,
+				type: CHECK_SET_KENNEL,
 				kennel: {
 					isOn,
 					error
@@ -26,7 +26,7 @@ export const checkConnect = ({ target, isOn, error }) => {
 			}
 		case 'location':
 			return {
-				type: CHECK_CONNECT_LOCATION,
+				type: CHECK_SET_LOCATION,
 				location: { isOn }
 			}
 		default:
@@ -36,8 +36,8 @@ export const checkConnect = ({ target, isOn, error }) => {
 	}
 }
 // async action
-export const sendCheckConnect = target => (dispatch) => {
-	dispatch({type:`${target}/SEND_CHECK_CONNECT`})
+export const sendCheck = target => (dispatch) => {
+	dispatch({ type: `CHECK/SEND_CHECK/${target}` })
 	if (target === 'location') {
 		dispatch(loadNaverMap())
 	}
@@ -46,11 +46,11 @@ export const sendCheckConnect = target => (dispatch) => {
 		.then(res => {
 			//console.log(res)
 			if (res.status === 200) {
-				dispatch(checkConnect({ target, isOn: true, error: '' }))
+				dispatch(checkSet({ target, isOn: true, error: '' }))
 			}
 		})
 		.catch(err => {
-			console.log(err)
-			dispatch(checkConnect({ target, isOn: false, error: err.message }))
+			//console.log(err)
+			dispatch(checkSet({ target, isOn: false, error: err.message }))
 		})
 }

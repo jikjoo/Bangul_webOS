@@ -5,18 +5,18 @@ ACTION으로 부터 나온 결과를 state로 저장하는 곳
 import { combineReducers } from 'redux';
 import {
 	CONNECT_SERVER,
-	CHECK_CONNECT_HOME,
-	CHECK_CONNECT_KENNEL,
+	CHECK_SET_HOME,
+	CHECK_SET_KENNEL,
 	VIDEO_URL_HOME,
 	VIDEO_URL_KENNEL,
 	CONNECT_INTERNET,
 	SET_SOCKET_HOME,
 	SET_SOCKET_KENNEL,
-	SET_LOADING,
-	CHECK_CONNECT_LOCATION,
-	SET_LOCATION,
-	SET_AUDIO_ON,
-	SET_TALK_ON
+	LOADING_SET,
+	CHECK_SET_LOCATION,
+	LOCATION_SET,
+	VIDEO_SET_AUDIO_ON,
+	VIDEO_SET_TALK_ON,
 } from '../actions';
 
 function connect(state = {}, action) {
@@ -33,11 +33,11 @@ function connect(state = {}, action) {
 function check(state = '', action) {
 	const { home, kennel, location } = action;
 	switch (action.type) {
-		case CHECK_CONNECT_HOME:
+		case CHECK_SET_HOME:
 			return Object.assign({}, state, { home });
-		case CHECK_CONNECT_KENNEL:
+		case CHECK_SET_KENNEL:
 			return Object.assign({}, state, { kennel });
-		case CHECK_CONNECT_LOCATION:
+		case CHECK_SET_LOCATION:
 			return Object.assign({}, state, { location });
 		default:
 			return state;
@@ -55,9 +55,9 @@ function video(state = {}, action) {
 			return Object.assign({}, state, { home });
 		case SET_SOCKET_KENNEL:
 			return Object.assign({}, state, { kennel });
-		case SET_AUDIO_ON:
+		case VIDEO_SET_AUDIO_ON:
 			return Object.assign({}, state, { audioOn });
-		case SET_TALK_ON:
+		case VIDEO_SET_TALK_ON:
 			return Object.assign({}, state, { talkOn });
 		default:
 			return state;
@@ -67,7 +67,7 @@ function video(state = {}, action) {
 function location(state = {}, action) {
 	const { location } = action;
 	switch (action.type) {
-		case SET_LOCATION:
+		case LOCATION_SET:
 			return location
 		default:
 			return state;
@@ -78,19 +78,20 @@ function location(state = {}, action) {
 function loading(state = true, action) {
 	const { loading } = action;
 	switch (action.type) {
-		case SET_LOADING:
+		case LOADING_SET:
 			return loading
 		default:
 			return state;
 	}
 }
 
+
 const rootReducer = combineReducers({
 	connect,
 	check,
 	video,
 	location,
-	loading
+	loading,
 });
 
 export { default as initialState } from './initalState'

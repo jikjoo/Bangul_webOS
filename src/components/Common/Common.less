@@ -10,7 +10,16 @@
     }
 }
 
-.switch>div {
-    font-size  : 1rem !important;
-    line-height: 1rem !important;
+div.switch.moonstone {
+    &[class*=selected] {
+        background-color: @moon-accent;
+    }
+
+    div.moonstone.highContrast {
+        color: @moon-gray;
+    }
+}
+
+.spottable:focus .switch.moonstone[class*=selected] div.moonstone {
+    color: @moon-accent;
 }

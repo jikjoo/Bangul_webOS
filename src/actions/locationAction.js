@@ -1,9 +1,9 @@
-import { checkConnect } from "./checkAction";
+import { checkSet } from "./checkAction";
 import axios from '../api'
 
-export const LOAD_NAVER_MAP = 'LOAD_NAVER_MAP';
-export const CHANGE_LOAD_MAP = 'CHANGE_LOAD_MAP';
-export const SET_LOCATION = 'SET_LOCATION';
+export const LOAD_NAVER_MAP = 'LOCATION/LOAD_NAVER_MAP';
+export const CHANGE_LOAD_MAP = 'LOCATION/CHANGE_LOAD_MAP';
+export const LOCATION_SET = 'LOCATION/SET';
 
 export const changeLoadMap = (isLoaded) => {
     return {
@@ -12,9 +12,9 @@ export const changeLoadMap = (isLoaded) => {
     }
 }
 
-// NaverMap이랑 연결됨, sendCheckConnect에서도 실행됨
+// NaverMap이랑 연결됨, sendCheck에서도 실행됨
 export const loadNaverMap = () => (dispatch, getState) => {
-    dispatch({ type: 'LOAD_NAVER_MAP' })
+    dispatch({ type: LOAD_NAVER_MAP })
     const { check, connect } = getState();
     if (!check.location.isOn) {
         // head에 네이버 api 추가
@@ -25,22 +25,22 @@ export const loadNaverMap = () => (dispatch, getState) => {
         document.head.appendChild(script);
         script.onload = () => {
             if (window.naver === undefined) {
-                return dispatch(checkConnect({ target: 'location', isOn: false }))
+                return dispatch(checkSet({ target: 'location', isOn: false }))
             }
-            else return dispatch(checkConnect({ target: 'location', isOn: true }))
+            else return dispatch(checkSet({ target: 'location', isOn: true }))
         }
     }
 }
 
 export const setLocation = (location) => {
     return {
-        type: SET_LOCATION,
+        type: LOCATION_SET,
         location
     }
 }
 
 export const getLocation = () => (dispatch, getState) => {
-    dispatch({ type: 'GET_LOCATION' })
+    dispatch({ type: 'LOCATION/GET_LOCATION' })
     return axios.get('/location/geolocation')
         .then(res => {
             const { geoLocation } = res.data;

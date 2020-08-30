@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Icon,Switch } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
-import { sendCheckConnect } from '../../actions';
+import { sendCheck } from '../../actions';
 import { connect } from 'react-redux';
 
 // Class형 component 
@@ -66,7 +66,7 @@ const mapStateToProps = ({ check, connect }) => ({
 // 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCheck: (target) => dispatch(sendCheckConnect(target))
+        onCheck: (target) => dispatch(sendCheck(target))
     };
 };
 // withRouter는 this.props.history 사용할 수 있도록 하기 : 다른 화면으로 넘어가도록
