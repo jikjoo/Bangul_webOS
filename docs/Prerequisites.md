@@ -122,3 +122,27 @@ luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 '{
 ares-shell -d webos
 config="[{\"device\":\"/dev/dri/card0\",\"hwcursor\":false,\"outputs\":[{\"name\":\"HDMI1\",\"geometry\":\"1024x600+0+0r0s1\",\"mode\":\"1024x600\"}]}]"; luna-send -n 1 -f luna://com.webos.service.config/setConfigs "{\"configs\":{\"com.webos.surfacemanager.displayConfig\": $config}}"
 ```
+
+# AI.VOICE 설정하기
+https://www.webosose.org/docs/iot/setup/setting-up-google-assistant-iot/#creating-a-new-project
+
+- 피쉬앤칩스 구글 로그인 후, https://console.actions.google.com/ 접속
+- 프로젝트 생성 -> bangul, korean, South Korea ->
+- 맨 밑에 device 추가 -> bangul_webos, bangul, scene ->
+- download credentials -> StartStop 추가
+- 다운 받은 clinet_secret.~~.json 이름 변경 client_secret.json
+
+cmd
+``` 
+ares-push ./Downloads/client_secret.json /home/developer
+ares-shell 
+su
+mkdir /etc/googleAssistant
+cp client_secret.json /etc/googleAssistant/
+cd /etc/googleAssistant
+```
+- [Google API 활성화하기](https://console.developers.google.com/apis/api/embeddedassistant.googleapis.com/overview)
+- webos 프로젝트로 설정하고, [OAUTH 동의화면](https://console.developers.google.com/apis/credentials/consent)
+- 이메일만 설정하고 확인
+
+
