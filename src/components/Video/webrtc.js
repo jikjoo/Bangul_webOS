@@ -2,24 +2,30 @@
 https://github.com/lproj/screen-sharing-app/blob/master/src/webrtc.js
 */
 
-import {
-    RTCPeerConnection,
-    RTCIceCandidate,
-    RTCSessionDescription,
-    RTCView,
-    MediaStream,
-    MediaStreamTrack,
-    getUserMedia,
-} from "webrtc-adapter";
+import "webrtc-adapter";
 import deferred from "deferred";
 import SignalingChannel from "./signaling";
-RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
-RTCSessionDescription = window.RTCSessionDescription;
-RTCIceCandidate = window.RTCIceCandidate;
+const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+const RTCSessionDescription = window.RTCSessionDescription;
+const RTCIceCandidate = window.RTCIceCandidate;
+const { navigator } = window;
 class WebrtcSession {
     constructor(url, options) {
         this.url = url;
         this.options = options;
+        /* 
+        {
+            iceServers : [
+          { urls: process.env.REACT_APP_STUN_SERVERS.split(',') },
+          {
+            urls: process.env.REACT_APP_TURN_SERVERS.split(','),
+            username: process.env.REACT_APP_TURN_USERNAME,
+            credential: process.env.REACT_APP_TURN_CREDENCIAL
+          }],
+            useH264 : false,
+            resolution : 60,
+        }
+        */
     }
 
     setOnStreamCallback(onStream) {
@@ -114,7 +120,7 @@ class WebrtcSession {
         await this.signaling.close();
     }
 
-    async call() {
+    async call(localstream) {
         const config = { iceServers: this.options.iceServers };
         this.pc = config.iceServers
             ? new RTCPeerConnection(config)
@@ -150,6 +156,10 @@ class WebrtcSession {
                 this.onDataChannel(event.channel);
             }
         };
+
+        if(localstream){
+            this.pc.addStream(localstream);
+        }
 
         this.signaling = await SignalingChannel.create(this.url);
         this.signaling.addMessageListener(
@@ -187,6 +197,23 @@ class WebrtcSession {
         }
         catch{ }
     }
+    getUserAudio() {
+        return new Promise((resolve, reject) => {
+            const op = {
+                video: false,
+                audio: true
+            }
+            navigator.mediaDevices.getUserMedia(op)
+                .then(stream => {
+                    console.log('return getUserAudio');
+                    resolve(stream);
+                })
+                .catch((err) => {
+                    reject();
+                })
+        })
+    }
+
 }
 
 export default WebrtcSession;

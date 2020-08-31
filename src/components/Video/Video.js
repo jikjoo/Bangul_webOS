@@ -29,6 +29,11 @@ class Video extends React.Component {
   }
 
   componentDidMount() {
+    // home일 때만 Audio 가능하게
+    const { target } = this.props;
+    const talkReady = target === 'home';
+    this.setState({ talkReady });
+
     // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
     const url = process.env.REACT_APP_SIGNALING_SERVER,
       options = {
@@ -50,7 +55,13 @@ class Video extends React.Component {
       this.session.setOnDataChannelCallback(datachannel => {
         this.datachannel = datachannel;
       })
-      this.session.call();
+      if (talkReady) {
+        this.session.getUserAudio().then(localstream => {
+          this.setState({ localstream });
+        })
+          .catch(() => { this.setState({ micFound: false }) });
+      }
+      this.session.call(this.state.localStream);
     } catch (e) {
       throw e;
     }
