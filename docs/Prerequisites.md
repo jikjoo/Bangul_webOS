@@ -126,23 +126,34 @@ config="[{\"device\":\"/dev/dri/card0\",\"hwcursor\":false,\"outputs\":[{\"name\
 # AI.VOICE 설정하기
 https://www.webosose.org/docs/iot/setup/setting-up-google-assistant-iot/#creating-a-new-project
 
-- 피쉬앤칩스 구글 로그인 후, https://console.actions.google.com/ 접속
-- 프로젝트 생성 -> bangul, korean, South Korea ->
-- 맨 밑에 device 추가 -> bangul_webos, bangul, scene ->
-- download credentials -> StartStop 추가
-- 다운 받은 clinet_secret.~~.json 이름 변경 client_secret.json
+1. 피쉬앤칩스 구글 로그인 후, https://console.actions.google.com/ 접속
+2. 프로젝트 생성 -> bangul, korean, South Korea ->
+3. 맨 밑에 device 추가 -> bangul_webos, bangul, scene ->
+4. download credentials -> StartStop 추가
+5. 다운 받은 clinet_secret.~~.json 이름 변경 client_secret.json
 
 cmd
 ``` 
-ares-push ./Downloads/client_secret.json /home/developer
-ares-shell 
-su
-mkdir /etc/googleAssistant
-cp client_secret.json /etc/googleAssistant/
+ares-push ./Downloads/client_secret.json /etc/googleAssistant -d webos
+ares-shell -d webos
 cd /etc/googleAssistant
 ```
-- [Google API 활성화하기](https://console.developers.google.com/apis/api/embeddedassistant.googleapis.com/overview)
-- webos 프로젝트로 설정하고, [OAUTH 동의화면](https://console.developers.google.com/apis/credentials/consent)
-- 이메일만 설정하고 확인
-
-
+6. [Google API 활성화하기](https://console.developers.google.com/apis/api/embeddedassistant.googleapis.com/overview)
+7. webos 프로젝트로 설정하고, [OAUTH 동의화면](https://console.developers.google.com/apis/credentials/consent)
+8. 이메일만 설정하고 확인
+```
+# root@raspberrypi4:/etc/googleAssistant#
+./get_credentials.sh
+```
+9. link 복붙해서 브라우저에서 열기 -> fishnchips20@naver.com -> 허용 -> 코드 복사
+1. Code : 코드 복사
+1. credentials.json is ready for use :-) 나오면 성공
+```
+vi ./device_id.json
+# id : bangul_webos, model_id : bangul-aac20-bangul_webos-fya9jd (device registration에서 찾기)
+./register_device_id.sh
+vi /etc/systemd/system.conf.d/ai.conf
+# GOOGLEAI_DEVICE_MODEL : bangul-aac20-bangul_webos-fya9jd,
+# GOOGLEAI_DEVICE_ID : bangul_webos
+systemctl restart ai
+ ```
