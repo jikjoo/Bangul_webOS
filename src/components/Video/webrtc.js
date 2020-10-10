@@ -48,7 +48,7 @@ class WebrtcSession {
         var what = msg.what;
         var data = msg.data;
 
-        console.dir(msg);
+        //console.dir(msg);
 
         switch (what) {
             case "offer":
@@ -69,7 +69,7 @@ class WebrtcSession {
                         what: "answer",
                         data: JSON.stringify(this.pc.localDescription)
                     };
-                    console.dir(request);
+                    //console.dir(request);
                     await this.signaling.send(request);
                 } catch (e) {
                     console.error(e);
@@ -94,9 +94,9 @@ class WebrtcSession {
                 var candidate = new RTCIceCandidate(JSON.parse(data));
                 await this.hasRemoteDesc.promise;
                 await this.pc.addIceCandidate(candidate);
-                console.debug(
+                /* console.debug(
                     "added remote IceCandidate: " + JSON.stringify(candidate)
-                );
+                ); */
                 break;
 
             case "iceCandidates": // received when trickle ice is NOT used (see the "call" request)
@@ -133,7 +133,7 @@ class WebrtcSession {
                     what: "addIceCandidate",
                     data: JSON.stringify(candidate)
                 };
-                console.dir(request);
+                //console.dir(request);
                 await this.signaling.send(request);
             } else {
                 console.debug("end of local ICE candidates.");

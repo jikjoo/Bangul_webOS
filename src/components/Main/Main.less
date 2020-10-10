@@ -1,20 +1,37 @@
 @import '~@jikjoo/moonstone/styles/colors.less';
 
 .icon-main {
-    font-size : 50pt;
+    font-size: 50pt;
 }
 
-.alarm{
+.alarm {
     position: absolute;
-    bottom:100px;
-    left:50%;
+    bottom  : 100px;
+    left    : 50%;
 }
-.loading{
-    z-index: 110;
+
+.loading {
+    z-index         : 110;
     background-color: @moon-accent;
-    font-size: 50pt;
-    
-    text-align: center;
+    font-size       : 50pt;
+
+    text-align    : center;
     vertical-align: middle;
-    line-height: 600px;
+    line-height   : 300px;
+
+    img {
+        position: absolute;
+        margin  : auto;
+        left    : 0;
+        right   : 0;
+        top     : 20%;
+    }
+
+    p {
+        position: absolute;
+        margin  : auto;
+        left    : 0;
+        right   : 0;
+        top     : 45%;
+    }
 }

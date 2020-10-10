@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../Button';
 import { withRouter } from 'react-router-dom';
-import { Icon,Switch } from '../Common'
+import { Icon, Switch } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
 import { sendCheck } from '../../actions';
@@ -22,7 +22,7 @@ class BtnGoto extends React.Component {
         if (!check[target].isOn) onCheck(target);
     }
     onGoto = () => {
-        const { target, check, history, onCheck,  } = this.props;
+        const { target, check, history, onCheck, } = this.props;
         if (!check[target].isOn) onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
@@ -35,7 +35,7 @@ class BtnGoto extends React.Component {
                 <div className={"icon-main"}><Icon icon={target} /></div>
                 {text[target]}
                 <div>
-                    <Switch selected={check[target].isOn && serverOn} />
+                    <Switch selected={serverOn} />
                 </div>
                 {children}
             </Button>
@@ -61,7 +61,7 @@ check : {
 */
 
 const mapStateToProps = ({ check, connect }) => ({
-    check,serverOn : connect.serverOn
+    check, serverOn: connect.serverOn
 });
 // 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {

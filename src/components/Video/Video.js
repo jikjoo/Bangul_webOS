@@ -1,14 +1,16 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket } from '../../actions';
+import { sendCapture, sendVideoURL, setSocket } from '../../actions';
 import VideoCall from './VideoCall'
-import sample_dog from '../../../resources/sample_dog.jpg'
+import waiting from '../../../resources/waiting.png'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
 import PropTypes from 'prop-types';
 import { MicNotFound } from '.';
 import WebrtcSession from './webrtc';
+
+
 
 class Video extends React.Component {
   constructor(props) {
@@ -26,6 +28,17 @@ class Video extends React.Component {
     }
     this.state = this.initialState;
     this.onStream = this.onStream.bind(this);
+  }
+  capture() {
+    try {
+      const canvasEl = document.createElement("canvas");
+      const context = canvasEl.getContext("2d");
+      context.drawImage(this.remoteVideo, 0, 0, 200, 200);
+      return canvasEl.toDataURL('image/png');
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
 
   componentDidMount() {
@@ -70,10 +83,21 @@ class Video extends React.Component {
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
     this.session.hangup();
+    //clearInterval(this.captureInterval)
   }
 
   onStream(stream) {
     this.remoteVideo.srcObject = stream;
+    try {
+      this.captureInterval = setInterval(async () => {
+        const captureImage = this.capture();
+        await this.props.sendCapture(captureImage);
+      }, 60*1000)
+    }
+    catch (e) {
+      console.log(e);
+    }
+    //clearInterval(this.captureInterval);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -96,23 +120,22 @@ class Video extends React.Component {
         <video
           autoPlay
           muted={!audioOn}
-          className={`video remote ${
-            this.state.connecting || this.state.waiting ? 'hide' : ''
+          className={`video remote ${this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
-          poster={sample_dog}
+          poster={waiting}
           ref={video => (this.remoteVideo = video)}
         />
         {this.props.children}
 
-        <div className='status'>
+        {/* <div className='status'>
           {this.state.connecting && (
             <p>{text.connecting_video}</p>
           )}
           {this.state.waiting && (
             <p>{text.waiting_device}</p>
           )}
-        </div>
+        </div> */}
         <BoxAlarm open={!micFound && talkReady} type='mic_not_found' />
         <MicNotFound notFound={!micFound && talkReady} />
       </div>
@@ -151,6 +174,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
     setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
+    sendCapture: (captureImage) => dispatch(sendCapture(captureImage))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);
