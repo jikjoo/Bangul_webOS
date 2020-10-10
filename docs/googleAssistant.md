@@ -26,3 +26,20 @@ User -> "방울아 켄넬 화면 보여줘" -> googleAssistant -> request to Dia
 
 ### Prompt
 - Action이 유저한테 응답할 때 형태랑 계속할지를 정의
+
+
+### Dialogflow
+- Custom Action 만들기
+- https://dialogflow.cloud.google.com/
+- Intents : 행동들의 묶음
+- Contexts : 변수 저장
+- Events : Optional way to trigger intent ex) Welcome
+- Training Phrases : 사용자가 말하는 입력. Intent 실행시키는 법
+- Actions and parameters : 어떤 행동 했는지 ex) input.welcome
+- Responses : 사용자에게 주는 응답. ex) 안녕하세요 직주씨!
+
+예시)
+Intents : 테스팅
+Training Pharses : ["테스트", "테스팅"]
+Actions : input.testing
+Responses : ["테스팅 중입니다.", "테스트 하고 있어요"]
