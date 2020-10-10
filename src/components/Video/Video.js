@@ -1,7 +1,7 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
+import { sendVideoURL, setSocket, setLocalStream, sendCapture } from '../../actions';
 import io from 'socket.io-client';
 import VideoCall from './VideoCall'
 import sample_dog from '../../../resources/sample_dog.jpg'
@@ -209,6 +209,8 @@ class Video extends React.Component {
     peer.on('error', function (err) {
       console.log(err);
     });
+    const captureImage = this.capture()
+    this.props.sendCapture(captureImage);
   };
 
   call = otherId => {
@@ -219,6 +221,13 @@ class Video extends React.Component {
       return <p>The room is full</p>;
     }
   };
+  capture() {
+    const canvasEl = document.createElement("canvas");
+    const context = canvasEl.getContext("2d");
+    context.drawImage(this.remoteVideo, 0, 0, 400, 400);
+    return canvasEl.toDataURL('image/png');
+  }
+
   render() {
     const { micFound, talkReady } = this.state;
     const { audioOn } = this.props;
@@ -234,8 +243,7 @@ class Video extends React.Component {
         <video
           autoPlay
           muted={!audioOn}
-          className={`video remote ${
-            this.state.connecting || this.state.waiting ? 'hide' : ''
+          className={`video remote ${this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
           //src="http://172.30.1.42:8080/stream"
@@ -291,7 +299,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
     setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
-    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
+    setLocalStream: (localStream) => dispatch(setLocalStream(localStream)),
+    sendCapture : (captureImage) => dispatch(sendCapture(captureImage))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);

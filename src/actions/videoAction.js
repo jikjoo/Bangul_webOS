@@ -33,7 +33,7 @@ export const videoURL = ({ target, url }) => {
 }
 // 서버에 video url 보내기
 export const sendVideoURL = target => dispatch => {
-    dispatch({type:`VIDEO/SEND_VIDEO_URL/${target}`})
+    dispatch({ type: `VIDEO/SEND_VIDEO_URL/${target}` })
     return axios.get(`${target}/url`)
         .then(res => {
             //console.log(res)
@@ -72,14 +72,26 @@ export const setSocket = ({ target, socket }) => {
 
 export const setAudioOn = (audioOn) => {
     return {
-        type : VIDEO_SET_AUDIO_ON,
+        type: VIDEO_SET_AUDIO_ON,
         audioOn
     }
 }
 
 export const setTalkOn = (talkOn) => {
     return {
-        type : VIDEO_SET_TALK_ON,
+        type: VIDEO_SET_TALK_ON,
         talkOn
     }
+}
+
+// 서버에 캡쳐 이미지 보내기
+export const sendCapture = (capture) => dispatch => {
+    dispatch({ type: `VIDEO/SEND_CAPTURE`, payload: capture })
+    return axios.post(`kennel/getImage`, capture)
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
