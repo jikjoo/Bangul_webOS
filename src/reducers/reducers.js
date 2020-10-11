@@ -17,6 +17,7 @@ import {
 	LOCATION_SET,
 	VIDEO_SET_AUDIO_ON,
 	VIDEO_SET_TALK_ON,
+	VIDEO_SET_VOMIT
 } from '../actions';
 
 function connect(state = {}, action) {
@@ -45,7 +46,7 @@ function check(state = '', action) {
 }
 
 function video(state = {}, action) {
-	const { home, kennel, talkOn, audioOn } = action;
+	const { home, kennel, talkOn, audioOn, vomit } = action;
 	switch (action.type) {
 		case VIDEO_URL_HOME:
 			return Object.assign({}, state, { home });
@@ -59,6 +60,8 @@ function video(state = {}, action) {
 			return Object.assign({}, state, { audioOn });
 		case VIDEO_SET_TALK_ON:
 			return Object.assign({}, state, { talkOn });
+		case VIDEO_SET_VOMIT:
+			return Object.assign({}, state, { vomit });
 		default:
 			return state;
 	}

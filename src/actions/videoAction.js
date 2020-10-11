@@ -7,6 +7,7 @@ export const SET_SOCKET_HOME = 'VIDEO/SET_SOCKET/HOME';
 export const SET_SOCKET_KENNEL = 'VIDEO/SET_SOCKET_KENNEL';
 export const VIDEO_SET_AUDIO_ON = 'VIDEO/SET_AUDIO_ON';
 export const VIDEO_SET_TALK_ON = 'VIDEO/SET_TALK_ON';
+export const VIDEO_SET_VOMIT = 'VIDEO/SET_VOMIT';
 
 // video URL 설정하기
 export const videoURL = ({ target, url }) => {
@@ -85,17 +86,32 @@ export const setTalkOn = (talkOn) => {
 }
 
 // 서버에 캡쳐 이미지 보내기
-export const sendCapture = (capture) => dispatch => {
-    dispatch({ type: `VIDEO/SEND_CAPTURE`, payload: capture })
+export const sendCapture = (capture) => (dispatch, getState) => {
+    dispatch({ type: `VIDEO/SEND_CAPTURE` })
     return axios.post(`${HOST_ML}/ml/image`, { data: capture }, /* {
         header: {
             'Content-Type': 'multipart/form-data'
         }
     } */)
         .then(res => {
-            console.log(res.data)
+            const { vomit_past } = getState().video;
+            //console.log(res)
+            if ('shit' in res.data) {
+                const { shit } = res.data;
+                const vomit = Number(shit);
+                if (vomit !== vomit_past) {
+                    dispatch(setVomit(vomit))
+                }
+            }
         })
         .catch(err => {
             console.log(err)
         })
+}
+
+export const setVomit = (vomit) => {
+    return {
+        type: VIDEO_SET_VOMIT,
+        vomit
+    }
 }

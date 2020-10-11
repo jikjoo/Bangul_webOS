@@ -3,6 +3,7 @@ import { createToast } from '../../actions';
 import { connect } from 'react-redux';
 
 const VomitCheck = ({ vomitOn, children, createToast }) => {
+    console.log({vomitOn})
     useEffect(() => {
         if (vomitOn) {
             createToast('vomit_on')
@@ -15,7 +16,8 @@ const VomitCheck = ({ vomitOn, children, createToast }) => {
     )
 }
 
-const mapStateToProps = () => ({
+const mapStateToProps = ({video}) => ({
+    vomitOn : video.vomit > 0 ? true : false
 });
 const mapDispatchToProps = (dispatch) => {
     return {

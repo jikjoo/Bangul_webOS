@@ -28,13 +28,15 @@ class Video extends React.Component {
     }
     this.state = this.initialState;
     this.onStream = this.onStream.bind(this);
+    this.interval = 10 * 1000;
   }
-  capture() {
+  captureSend() {
     try {
       const canvasEl = document.createElement("canvas");
       const context = canvasEl.getContext("2d");
       context.drawImage(this.remoteVideo, 0, 0, 200, 200);
-      return canvasEl.toDataURL('image/png');
+      const captureImage = canvasEl.toDataURL('image/png');
+      this.props.sendCapture(captureImage);
     }
     catch (e) {
       console.log(e)
@@ -83,16 +85,16 @@ class Video extends React.Component {
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
     this.session.hangup();
-    //clearInterval(this.captureInterval)
+    clearInterval(this.captureInterval)
   }
 
   onStream(stream) {
     this.remoteVideo.srcObject = stream;
     try {
+      //this.captureSend();
       this.captureInterval = setInterval(async () => {
-        const captureImage = this.capture();
-        await this.props.sendCapture(captureImage);
-      }, 60*1000)
+        await this.captureSend();
+      }, this.interval)
     }
     catch (e) {
       console.log(e);
