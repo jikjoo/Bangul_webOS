@@ -30,13 +30,13 @@ class Video extends React.Component {
     this.onStream = this.onStream.bind(this);
     this.interval = 10 * 1000;
   }
-  captureSend() {
+  async captureSend() {
     try {
       const canvasEl = document.createElement("canvas");
       const context = canvasEl.getContext("2d");
       context.drawImage(this.remoteVideo, 0, 0, 200, 200);
       const captureImage = canvasEl.toDataURL('image/png');
-      this.props.sendCapture(captureImage);
+      await this.props.sendCapture("test");
     }
     catch (e) {
       console.log(e)
@@ -80,6 +80,15 @@ class Video extends React.Component {
     } catch (e) {
       throw e;
     }
+   /*  try {
+      //this.captureSend();
+      this.captureInterval = setInterval(async () => {
+        await this.captureSend();
+      }, this.interval)
+    }
+    catch (e) {
+      console.log(e);
+    } */
   }
 
   componentWillUnmount() {
