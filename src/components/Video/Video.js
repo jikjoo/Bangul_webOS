@@ -1,13 +1,16 @@
 import React from 'react'
 import './Video.less';
 import { connect } from 'react-redux';
-import { sendVideoURL, setSocket, setLocalStream } from '../../actions';
-import io from 'socket.io-client';
+import { sendCapture, sendVideoURL, setSocket } from '../../actions';
 import VideoCall from './VideoCall'
-import sample_dog from '../../../resources/sample_dog.jpg'
+import waiting from '../../../resources/waiting.png'
 import BoxAlarm from '../Box/BoxAlarm';
 import text from '../../../resources/text.json'
 import PropTypes from 'prop-types';
+import { MicNotFound } from '.';
+import WebrtcSession from './webrtc';
+
+
 
 class Video extends React.Component {
   constructor(props) {
@@ -20,110 +23,83 @@ class Video extends React.Component {
       connecting: false,
       waiting: true,
       socket: null,
-      talkReady: false
+      talkReady: false,
+      micFound: true
     }
     this.state = this.initialState;
+    this.onStream = this.onStream.bind(this);
+    this.interval = 10 * 1000;
   }
-  videoCall = new VideoCall();
+  captureSend() {
+    try {
+      const canvasEl = document.createElement("canvas");
+      const context = canvasEl.getContext("2d");
+      context.drawImage(this.remoteVideo, 0, 0, 200, 200);
+      const captureImage = canvasEl.toDataURL('image/png');
+      this.props.sendCapture(captureImage);
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
 
   componentDidMount() {
-    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
-    const socket = io(process.env.REACT_APP_SIGNALING_SERVER);
-    const component = this;
-    this.setState({ socket });
+    // home일 때만 Audio 가능하게
     const { target } = this.props;
     const talkReady = target === 'home';
     this.setState({ talkReady });
-    const roomId = `bangul${target}`;// this.props.match.params;
-    talkReady ? this.getUserMedia().then(() => {
-      socket.emit('join', { roomId: roomId });
-    }) :
-      socket.emit('join', { roomId: roomId });
 
-    socket.on('init', () => {
-      component.setState({ initiator: true });
-    });
-    socket.on('ready', () => {
-      component.enter(roomId);
-    });
-    socket.on('desc', data => {
-      if (data.type === 'offer' && component.state.initiator) return;
-      if (data.type === 'answer' && !component.state.initiator) return;
-      component.call(data);
-    });
-    socket.on('disconnected', () => {
-      component.setState({ initiator: true });
-    });
-    socket.on('full', () => {
-      component.setState({ full: true });
-    });
+    // Video 컴퍼넌트 렌더링 된 직후, socket 연결 설정
+    const url = process.env.REACT_APP_SIGNALING_SERVER,
+      options = {
+        iceServers: [
+          { urls: process.env.REACT_APP_STUN_SERVERS.split(',') },
+          {
+            urls: process.env.REACT_APP_TURN_SERVERS.split(','),
+            username: process.env.REACT_APP_TURN_USERNAME,
+            credential: process.env.REACT_APP_TURN_CREDENCIAL
+          }],
+        useH264: false,
+        resolution: 60, // 1280x720 30fps
+      }
+    try {
+      this.session = new WebrtcSession(url, options);
+      this.session.setOnStreamCallback(this.onStream);
+      this.session.setOnCloseCallback(() => { console.log('close') });
+      this.session.setOnMessageCallback((msg) => { console.log(`message = ${msg}`) })
+      this.session.setOnDataChannelCallback(datachannel => {
+        this.datachannel = datachannel;
+      })
+      if (talkReady) {
+        this.session.getUserAudio().then(localstream => {
+          this.setState({ localstream });
+        })
+          .catch(() => { this.setState({ micFound: false }) });
+      }
+      this.session.call(this.state.localStream);
+    } catch (e) {
+      throw e;
+    }
   }
 
   componentWillUnmount() {
     // 화면 벗어나면, socket 통신 끊기
-    if (this.state.localStream) {
-      this.state.localStream.getTracks().forEach(track => {
-        track.stop();
-      })
-    }
-    this.state.socket.disconnect();
-    this.setState(this.initialState);
-    console.log('disconnect')
+    this.session.hangup();
+    clearInterval(this.captureInterval)
   }
-  getUserMedia() {
-    //내 마이크 확인해서, stream 얻고 state에 저장하기
-    console.log("in getUserMedia")
-    return new Promise((resolve) => {
-      const { navigator } = window;
-      /* navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia; */
-      const op = {
-        /* video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
-        } */
-        video: false,
-        audio: true
-      };
-      navigator.mediaDevices.getUserMedia(op)
-        .catch(function (error) {
-          if (error.name !== 'NotFoundError') {
-            throw error;
-          }
-          //마이크 못찾았을 때, 한번 더 찾는 코드. 사실상 의미 없음
-          return navigator.mediaDevices.enumerateDevices()
-            .then(function (devices) {
-              const mic = devices.find(function (device) {
-                return device.kind === 'audioinput';
-              });
-              const constraints = {
-                video: false,
-                audio: mic && op.audio
-              };
-              console.log("enumerateDevices", { audio: constraints.audio, error })
-              navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => {
-                  this.setState({ localStream: stream });
-                  //this.localVideo.srcObject = stream;
-                  console.log('return enumerate getUserMedia')
-                  resolve();
-                })
-                .catch(() => resolve())
-            });
-        })
-        .then(
-          stream => {
-            this.setState({ localStream: stream });
-            //this.localVideo.srcObject = stream;
-            console.log('return getUserMedia')
-            resolve();
-          },
-          () => { }
-        );
-    });
 
+  onStream(stream) {
+    this.remoteVideo.srcObject = stream;
+    try {
+      //this.captureSend();
+      this.captureInterval = setInterval(async () => {
+        await this.captureSend();
+      }, this.interval)
+    }
+    catch (e) {
+      console.log(e);
+    }
+    //clearInterval(this.captureInterval);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -137,114 +113,33 @@ class Video extends React.Component {
       }
     }
   }
-  /* 
-  setAudioLocal() {
-    // 내 마이크 끄고 키기 설정  -> BtnTalk로
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState(({ micState }) => ({ micState: !micState }))
-  }
 
-  setVideoLocal() {
-    //내 비디오 끄고 키기 설정 
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState({
-      camState: !this.state.camState
-    })
-  }
-
-    getDisplay() {
-      // 내 화면 전송
-      window.navigator.mediaDevices.getUserMedia().then(stream => {
-        stream.oninactive = () => {
-          this.state.peer.removeStream(this.state.localStream);
-          this.getUserMedia().then(() => {
-            this.state.peer.addStream(this.state.localStream);
-          });
-        };
-        this.setState({localStream: stream });
-        this.localVideo.srcObject = stream;
-        this.state.peer.addStream(stream);
-      });
-    }
-   */
-  enter = roomId => {
-    // 상대방이랑 연결됐을 때.
-    this.setState({ connecting: true });
-    const { talkReady } = this.state;
-    const peer = talkReady ? this.videoCall.init(
-      this.state.initiator,
-      this.state.localStream
-    ) : this.videoCall.init(this.state.initiator);
-    this.setState({ peer });
-
-    peer.on('signal', data => {
-      const signal = {
-        room: roomId,
-        desc: data
-      };
-      this.state.socket.emit('signal', signal);
-    });
-    // 상대방 비디오 스트림 받기
-    peer.on('stream', stream => {
-      this.remoteVideo.srcObject = stream;
-      this.setState({ connecting: false, waiting: false });
-    });
-    peer.on('error', function (err) {
-      console.log(err);
-    });
-  };
-
-  call = otherId => {
-    this.videoCall.connect(otherId);
-  };
-  renderFull = () => {
-    if (this.state.full) {
-      return <p>The room is full</p>;
-    }
-  };
   render() {
-    const { localStream, talkReady } = this.state;
+    const { micFound, talkReady } = this.state;
     const { audioOn } = this.props;
     return (
       <div className='box-video'>
-        {/* <video
-          autoPlay
-          id='localVideo'
-          className="video local"
-          muted
-          ref={video => (this.localVideo = video)}
-        /> */}
         <video
           autoPlay
           muted={!audioOn}
-          className={`video remote ${
-            this.state.connecting || this.state.waiting ? 'hide' : ''
+          className={`video remote ${this.state.connecting || this.state.waiting ? 'hide' : ''
             }`}
           id='remoteVideo'
-          //src="http://172.30.1.42:8080/stream"
-          poster={sample_dog}
+          poster={waiting}
           ref={video => (this.remoteVideo = video)}
         />
         {this.props.children}
 
-        <div className='status'>
+        {/* <div className='status'>
           {this.state.connecting && (
             <p>{text.connecting_video}</p>
           )}
           {this.state.waiting && (
             <p>{text.waiting_device}</p>
           )}
-          {this.renderFull()}
-        </div>
-        <BoxAlarm open={!localStream && talkReady} type='mic_not_found' />
+        </div> */}
+        <BoxAlarm open={!micFound && talkReady} type='mic_not_found' />
+        <MicNotFound notFound={!micFound && talkReady} />
       </div>
     );
   }
@@ -281,7 +176,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onURL: (target) => dispatch(sendVideoURL(target)),
     setSocket: ({ target, socket }) => dispatch(setSocket({ target, socket })),
-    setLocalStream: (localStream) => dispatch(setLocalStream(localStream))
+    sendCapture: (captureImage) => dispatch(sendCapture(captureImage))
   };
 };
 const VideoContainer = connect(mapStateToProps, mapDispatchToProps)(Video);

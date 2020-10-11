@@ -29,7 +29,8 @@ export default {
             socket: null
         },
         talkOn : true,
-        audioOn : true
+        audioOn : true,
+        vomit : 0
     },
 	/* location: {
 		isLoaded: false

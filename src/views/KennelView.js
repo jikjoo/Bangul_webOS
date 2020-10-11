@@ -7,7 +7,7 @@ import FixView from './Kennel/FixView';
 import LampView from './Kennel/LampView';
 import TempView from './Kennel/TempView';
 import VideoView from './Kennel/VideoView';
-import { ItemVideo } from '../components/Kennel';
+import { ItemVideo, VomitCheck } from '../components/Kennel';
 import { Icon } from '../components/Common';
 import text from '../../resources/text.json';
 
@@ -20,6 +20,7 @@ const KennelView = () => {
     return (
         <BoxPanel>
             <BoxHeader sub={sub} target={"kennel"} />
+            <VomitCheck />
             <VideoKennel>
                 <BoxVideoBtn>
 

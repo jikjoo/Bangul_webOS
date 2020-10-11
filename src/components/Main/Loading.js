@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { setLoading } from '../../actions';
 import { connect } from 'react-redux';
-import text from '../../../resources/text.json'
+import text from '../../../resources/text.json';
+import riding from '../../../resources/riding.png';
 
 const Loading = ({ onLoading, loading }) => {
     useEffect(() => {
@@ -15,6 +16,7 @@ const Loading = ({ onLoading, loading }) => {
     return (
         loading ?
             <div className="loading enact-fit">
+                <img src={riding} />
                 <p>{text.title}</p>
             </div>
             : null

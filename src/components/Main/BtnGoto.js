@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from '../Button';
 import { withRouter } from 'react-router-dom';
-import { Icon,Switch } from '../Common'
+import { Icon, Switch } from '../Common'
 import text from '../../../resources/text'
 import './Main.less'
-import { sendCheckConnect } from '../../actions';
+import { sendCheck } from '../../actions';
 import { connect } from 'react-redux';
 
 // Class형 component 
@@ -22,7 +22,7 @@ class BtnGoto extends React.Component {
         if (!check[target].isOn) onCheck(target);
     }
     onGoto = () => {
-        const { target, check, history, onCheck,  } = this.props;
+        const { target, check, history, onCheck, } = this.props;
         if (!check[target].isOn) onCheck(target);
         // 장치들과 연결이 안됐을 때, 화면으로 넘어갈 수 있을지 말지
         //else
@@ -35,7 +35,7 @@ class BtnGoto extends React.Component {
                 <div className={"icon-main"}><Icon icon={target} /></div>
                 {text[target]}
                 <div>
-                    <Switch selected={check[target].isOn && serverOn} />
+                    <Switch selected={serverOn} />
                 </div>
                 {children}
             </Button>
@@ -61,12 +61,12 @@ check : {
 */
 
 const mapStateToProps = ({ check, connect }) => ({
-    check,serverOn : connect.serverOn
+    check, serverOn: connect.serverOn
 });
 // 장치의 연결을 확인하는 action과 onCheck 함수 연결하기
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCheck: (target) => dispatch(sendCheckConnect(target))
+        onCheck: (target) => dispatch(sendCheck(target))
     };
 };
 // withRouter는 this.props.history 사용할 수 있도록 하기 : 다른 화면으로 넘어가도록

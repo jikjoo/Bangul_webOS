@@ -6,3 +6,5 @@ const axios = Axios;
 axios.defaults.baseURL = `${HOST}:${PORT}`
 
 export default axios;
+
+export const HOST_ML = process.env.REACT_APP_ML_HOST
